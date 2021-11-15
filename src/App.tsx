@@ -1,28 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
+import { Todolist } from './component/Todolist';
 
-function App() {
-    return (
-        <div className="App">
-            <div>
-                <h3>What to learn</h3>
-                <div>
-                    <input/>
-                    <button>+</button>
-                </div>
-                <ul>
-                    <li><input type="checkbox" checked={true}/> <span>HTML&CSS</span></li>
-                    <li><input type="checkbox" checked={true}/> <span>JS</span></li>
-                    <li><input type="checkbox" checked={false}/> <span>React</span></li>
-                </ul>
-                <div>
-                    <button>All</button>
-                    <button>Active</button>
-                    <button>Completed</button>
-                </div>
-            </div>
-        </div>
-    );
+export type TasksType = {
+	id : number
+	title : string
+	isDone : boolean
 }
 
-export default App;
+export function App () {
+
+	const [tasks, setTasks] = useState<Array<TasksType>> ( [
+		{ id : 1, title : 'html', isDone : true },
+		{ id : 2, title : 'css', isDone : true },
+		{ id : 3, title : 'js', isDone : false }
+	]);
+
+	return (
+		<div className="App">
+			<Todolist
+				title={ 'what to learn' }
+				tasks={ tasks }
+			/>
+		</div>
+	);
+}
