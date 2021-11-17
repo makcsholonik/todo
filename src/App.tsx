@@ -13,12 +13,11 @@ export type TaskFilterType = 'all' | 'active' | 'completed';
 export function App () {
 
 	const [tasks, setTasks] = useState<Array<TasksType>> ( [
-		{ id : v1(), title : 'html', isDone : true },
-		{ id : v1(), title : 'css', isDone : true },
-		{ id : v1(), title : 'js', isDone : false },
-		{ id : v1(), title : 'react', isDone : false },
+		{ id : v1 (), title : 'html', isDone : true },
+		{ id : v1 (), title : 'css', isDone : true },
+		{ id : v1 (), title : 'js', isDone : false },
+		{ id : v1 (), title : 'react', isDone : false },
 	] );
-	const [filter, setFilter] = useState<TaskFilterType> ( 'all');
 
 	// удаление таски
 	const removeTask = ( taskId : string ) => {
@@ -27,26 +26,42 @@ export function App () {
 	};
 
 	// фильтрация тасок
-	const changeFilter = (filter: TaskFilterType) => {
-		setFilter(filter);
-	}
 	// 1. раз значения меняются, а мы хотим чтобы после смены значения проходила перерисовк, то мы должны использовать useState
 	// 2. в todolist пускаем не все таски, а отфильтрованые таски перед return (taskForTodolist)
+
+	const [filter, setFilter] = useState<TaskFilterType> ( 'all' );
+
+	const changeFilter = ( filter : TaskFilterType ) => {
+		setFilter ( filter );
+	};
+
 	let taskForTodolist = tasks;
 	if (filter === 'active') {
-		taskForTodolist = tasks.filter (t => !t.isDone)
+		taskForTodolist = tasks.filter ( t => !t.isDone );
 	}
 	if (filter === 'completed') {
-		taskForTodolist = tasks.filter (t => t.isDone)
+		taskForTodolist = tasks.filter ( t => t.isDone );
 	}
+
+	// добавление таски
+	// 1. генерируем новую таску
+	// 2. в качестве callback передаём в todolist
+	// 3. в todolist создаём useState что прочитать значение(value) input
+	// 4. useState (taskTitle,setTaskTitle), считывание значения input c помощью ф-ии onChangeHandler
+
+	const addTask = ( title : string ) => {
+		const newTask = { id : v1 (), title : title, isDone : false };
+		setTasks ( [...tasks, newTask] );
+	};
 
 	return (
 		<div className="App">
 			<Todolist
 				title={ 'what to learn' }
 				tasks={ taskForTodolist }
-				removeTask={removeTask}
-				changeFilter={changeFilter}
+				removeTask={ removeTask }
+				changeFilter={ changeFilter }
+				addTask={ addTask }
 			/>
 		</div>
 	);
