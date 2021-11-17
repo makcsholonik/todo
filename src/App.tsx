@@ -54,6 +54,17 @@ export function App () {
 		setTasks ( [...tasks, newTask] );
 	};
 
+	// изменение статуса таски (checkbox)
+
+	const changeTaskStatus = ( taskId : string, isDone : boolean ) => {
+		let task = tasks.find ( t => t.id === taskId );
+		// псевдоистина/псевдоложь !!!
+		if (task) {
+			task.isDone = isDone;
+		}
+		setTasks ( [...tasks] );
+	};
+
 	return (
 		<div className="App">
 			<Todolist
@@ -62,6 +73,7 @@ export function App () {
 				removeTask={ removeTask }
 				changeFilter={ changeFilter }
 				addTask={ addTask }
+				changeTaskStatus={ changeTaskStatus }
 			/>
 		</div>
 	);
