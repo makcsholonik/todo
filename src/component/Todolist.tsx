@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent, KeyboardEvent } from 'react';
 import { TaskFilterType, TasksType } from '../App';
 
 type TodolistPropsType = {
@@ -21,13 +21,24 @@ export function Todolist ( props : TodolistPropsType ) {
 		props.addTask ( taskTitle );
 		setTaskTitle ( '' );
 	};
+	// добавление по нажатию на Enter
+	const onKeyPressHandler = ( e : KeyboardEvent<HTMLInputElement> ) => {
+		if (e.ctrlKey && e.charCode === 13) {
+			props.addTask ( taskTitle );
+			setTaskTitle ( '' );
+		}
+	};
 	// <----- добавление таски
 
 	return (
 		<div>
 			<h3>{ props.title }</h3>
 			<div>
-				<input value={ taskTitle } onChange={ onChangeHandler }/>
+				<input
+					value={ taskTitle }
+					onChange={ onChangeHandler }
+					onKeyPress={ onKeyPressHandler }
+				/>
 				<button onClick={ onClickHandler }>+</button>
 			</div>
 			<ul>
