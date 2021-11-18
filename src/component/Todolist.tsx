@@ -19,11 +19,18 @@ export function Todolist ( props : TodolistPropsType ) {
 		setTaskTitle ( e.currentTarget.value );
 	};
 	const onNewTaskClickHandler = () => {
-		props.addTask ( taskTitle );
-		setTaskTitle ( '' );
+		// title не равен пустой строке и отсекаем пробелы (1 вариант)
+		if (taskTitle.trim () !== '') {
+			props.addTask ( taskTitle );
+			setTaskTitle ( '' );
+		}
 	};
 	// добавление по нажатию на Ctrl+Enter
 	const onNewTaskKeyPressHandler = ( e : KeyboardEvent<HTMLInputElement> ) => {
+		// title не равен пустой строке и отсекаем пробелы  (2 вариант)
+		if (taskTitle.trim () === '') {
+			return;
+		}
 		if (e.ctrlKey && e.charCode === 13) {
 			props.addTask ( taskTitle );
 			setTaskTitle ( '' );
