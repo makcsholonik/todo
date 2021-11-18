@@ -12,7 +12,6 @@ type TodolistPropsType = {
 
 export function Todolist ( props : TodolistPropsType ) {
 
-
 	// добавление таски ----->
 	const [taskTitle, setTaskTitle] = useState<string> ( '' );
 	const onNewTaskChangeHandler = ( e : ChangeEvent<HTMLInputElement> ) => {
@@ -23,13 +22,16 @@ export function Todolist ( props : TodolistPropsType ) {
 		if (taskTitle.trim () !== '') {
 			props.addTask ( taskTitle );
 			setTaskTitle ( '' );
+		} else {
+			setError ( 'title is required' );
 		}
 	};
 	// добавление по нажатию на Ctrl+Enter
 	const onNewTaskKeyPressHandler = ( e : KeyboardEvent<HTMLInputElement> ) => {
+		setError ( null ); // убирает ошибку - title is required, при нажатии любой клавиши
 		// title не равен пустой строке и отсекаем пробелы  (2 вариант)
 		if (taskTitle.trim () === '') {
-			return;
+			setError ( 'title is required' );
 		}
 		if (e.ctrlKey && e.charCode === 13) {
 			props.addTask ( taskTitle );
@@ -43,6 +45,12 @@ export function Todolist ( props : TodolistPropsType ) {
 	const onActiveClickFilterHandler = () => props.changeFilter ( 'active' );
 	const onCompletedClickFilterHandler = () => props.changeFilter ( 'completed' );
 
+	// error
+	// 1. доваляем className input & div (title is required)
+	// 2. добавляем зависимость классов от ошибки
+
+	const [error, setError] = useState<string | null> ( null );
+
 	return (
 		<div>
 			<h3>{ props.title }</h3>
@@ -51,8 +59,10 @@ export function Todolist ( props : TodolistPropsType ) {
 					value={ taskTitle }
 					onChange={ onNewTaskChangeHandler }
 					onKeyPress={ onNewTaskKeyPressHandler }
+					className={ error ? 'error' : '' }
 				/>
 				<button onClick={ onNewTaskClickHandler }>+</button>
+				{ error ? <div className={ 'error-message' }>{ error }</div> : '' }
 			</div>
 			<ul>
 				{/*Отрисовка тасок*/ }
