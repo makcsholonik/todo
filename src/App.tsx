@@ -10,6 +10,12 @@ export type TasksType = {
 }
 export type TaskFilterType = 'all' | 'active' | 'completed';
 
+export type TodolistsType = {
+	id : string
+	title : string
+	filter : TaskFilterType
+}
+
 export function App () {
 
 	const [tasks, setTasks] = useState<Array<TasksType>> ( [
@@ -65,17 +71,31 @@ export function App () {
 		setTasks ( [...tasks] );
 	};
 
+	const [todolists, setTodolists] = useState<Array<TodolistsType>> ( [
+		{ id : v1 (), title : 'what to learn', filter : 'active' },
+		{ id : v1 (), title : 'what to buy', filter : 'active' }
+	] );
+
 	return (
 		<div className="App">
-			<Todolist
-				title={ 'what to learn' }
-				tasks={ taskForTodolist }
-				removeTask={ removeTask }
-				changeFilter={ changeFilter }
-				addTask={ addTask }
-				changeTaskStatus={ changeTaskStatus }
-				filter={filter}
-			/>
+
+			{
+				todolists.map ( ( tl ) => {
+					return (
+						<Todolist
+							key={ tl.id }
+							title={ tl.title }
+							tasks={ taskForTodolist }
+							removeTask={ removeTask }
+							changeFilter={ changeFilter }
+							addTask={ addTask }
+							changeTaskStatus={ changeTaskStatus }
+							filter={ tl.filter }
+						/>
+					);
+				} )
+			}
+
 		</div>
 	);
 }
