@@ -6,7 +6,7 @@ type TodolistPropsType = {
 	tasks : Array<TasksType>
 	removeTask : ( id : string, todolistId : string ) => void
 	changeFilter : ( filter : TaskFilterType, todolistId : string ) => void
-	addTask : ( title : string ) => void
+	addTask : ( title : string, todolistId : string ) => void
 	changeTaskStatus : ( taskId : string, isDone : boolean ) => void
 	filter : TaskFilterType
 	todolistId : string
@@ -44,7 +44,7 @@ export function Todolist ( props : TodolistPropsType ) {
 
 	// кнопки фильтрации
 	const onAllClickFilterHandler = () => props.changeFilter ( 'all', props.todolistId );
-	const onActiveClickFilterHandler = () => props.changeFilter ( 'active', props.todolistId);
+	const onActiveClickFilterHandler = () => props.changeFilter ( 'active', props.todolistId );
 	const onCompletedClickFilterHandler = () => props.changeFilter ( 'completed', props.todolistId );
 
 	// error

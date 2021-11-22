@@ -46,13 +46,16 @@ export function App () {
 
 	// добавление таски
 	// 1. генерируем новую таску
-	// 2. в качестве callback передаём в todolist
-	// 3. в todolist создаём useState что прочитать значение(value) input
-	// 4. useState (taskTitle,setTaskTitle), считывание значения input c помощью ф-ии onChangeHandler
+	// 2. достаём все таски из конкретного тудулиста
+	// 3. создаём новые такси + раскукожанный массив старых тасок
+	// 4. засовываем новые таски в объект
 
-	const addTask = ( title : string ) => {
-		const newTask = { id : v1 (), title : title, isDone : false };
-		setTasks ( [...tasks, newTask] );
+	const addTask = ( title : string, todolistId : string ) => {
+		const newTask = { id : v1 (), title : title, isDone : false }; // 1
+		let taskTodolist = tasks[ todolistId ]; // 2
+		let newTasks = [newTask, ...tasks[ todolistId ]]; // 3
+		tasks[ todolistId ] = newTasks; // 4
+		setTasks ( { ...tasks } );
 	};
 
 	// изменение статуса таски (checkbox)
