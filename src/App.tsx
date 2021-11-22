@@ -18,13 +18,6 @@ export type TodolistsType = {
 
 export function App () {
 
-	const [tasks, setTasks] = useState<Array<TasksType>> ( [
-		{ id : v1 (), title : 'html', isDone : true },
-		{ id : v1 (), title : 'css', isDone : true },
-		{ id : v1 (), title : 'js', isDone : false },
-		{ id : v1 (), title : 'react', isDone : false },
-	] );
-
 	// удаление таски
 	const removeTask = ( taskId : string ) => {
 		let filteredTask = tasks.filter ( t => t.id !== taskId );
@@ -66,10 +59,32 @@ export function App () {
 		setTasks ( [...tasks] );
 	};
 
+	const todolistId1 = v1 ();
+	const todolistId2 = v1 ();
+
 	const [todolists, setTodolists] = useState<Array<TodolistsType>> ( [
-		{ id : v1 (), title : 'what to learn', filter : 'all' },
-		{ id : v1 (), title : 'what to buy', filter : 'all' }
+		{ id : todolistId1, title : 'what to learn', filter : 'all' },
+		{ id : todolistId2, title : 'what to buy', filter : 'all' }
 	] );
+
+	// храним таски в ассоциативном массиве
+	// 1. генерируем id-шники (const todolistId1 = v1(); const todolistId2 = v1())
+	// 2. создаём ассоциативный массив
+
+	const [tasks, setTasks] = useState ( {
+		[ todolistId1 ] : [
+			{ id : v1 (), title : 'html', isDone : true },
+			{ id : v1 (), title : 'css', isDone : true },
+			{ id : v1 (), title : 'js', isDone : false },
+			{ id : v1 (), title : 'react', isDone : false },
+		],
+		[ todolistId2 ] : [
+			{ id : v1 (), title : 'book', isDone : true },
+			{ id : v1 (), title : 'tea', isDone : true },
+			{ id : v1 (), title : 'milk', isDone : false },
+		]
+	} );
+
 
 	return (
 		<div className="App">
@@ -79,7 +94,7 @@ export function App () {
 
 					let taskForTodolist = tasks;
 					if (tl.filter === 'active') {
-						taskForTodolist = tasks.filter ( t => !t.isDone );
+						taskForTodolist = tasks[tl.id].filter ( t => !t.isDone );
 					}
 					if (tl.filter === 'completed') {
 						taskForTodolist = tasks.filter ( t => t.isDone );
