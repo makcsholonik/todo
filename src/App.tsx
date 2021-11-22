@@ -19,9 +19,17 @@ export type TodolistsType = {
 export function App () {
 
 	// удаление таски
-	const removeTask = ( taskId : string ) => {
-		let filteredTask = tasks.filter ( t => t.id !== taskId );
-		setTasks ( filteredTask );
+	// 1. добавляет todolistId, чтобы знать с какого тудулиста удалять таску
+	// 2. достаём все таски из конкретного тудулиста
+	// 3. удаляем найденную таску из массива
+	// 4. заменяем таски отфильтрованными тасками
+	// 5. сэтаем чтобы перерисовать
+
+	const removeTask = ( taskId : string, todolistId : string ) => {
+		let taskTodolist = tasks[ todolistId ]; // 2
+		let filteredTasks = taskTodolist.filter ( t => t.id !== taskId ); // 3
+		tasks[ todolistId ] = filteredTasks; // 4
+		setTasks ( { ...tasks } ); // 5
 	};
 
 	// фильтрация тасок
@@ -35,7 +43,6 @@ export function App () {
 			setTodolists ( [...todolists] );
 		}
 	};
-
 
 	// добавление таски
 	// 1. генерируем новую таску
@@ -92,12 +99,12 @@ export function App () {
 			{
 				todolists.map ( ( tl ) => {
 
-					let taskForTodolist = tasks[tl.id];
+					let taskForTodolist = tasks[ tl.id ];
 					if (tl.filter === 'active') {
-						taskForTodolist = tasks[tl.id].filter ( t => !t.isDone );
+						taskForTodolist = taskForTodolist.filter ( t => !t.isDone );
 					}
 					if (tl.filter === 'completed') {
-						taskForTodolist = tasks[tl.id].filter ( t => t.isDone );
+						taskForTodolist = taskForTodolist.filter ( t => t.isDone );
 					}
 
 					return (
@@ -115,7 +122,6 @@ export function App () {
 					);
 				} )
 			}
-
 		</div>
 	);
 }
