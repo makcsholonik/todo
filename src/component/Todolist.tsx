@@ -5,10 +5,11 @@ type TodolistPropsType = {
 	title : string
 	tasks : Array<TasksType>
 	removeTask : ( id : string ) => void
-	changeFilter : ( filter : TaskFilterType ) => void
+	changeFilter : ( filter : TaskFilterType, todolistId : string ) => void
 	addTask : ( title : string ) => void
 	changeTaskStatus : ( taskId : string, isDone : boolean ) => void
 	filter : TaskFilterType
+	todolistId : string
 }
 
 export function Todolist ( props : TodolistPropsType ) {
@@ -42,9 +43,9 @@ export function Todolist ( props : TodolistPropsType ) {
 	// <----- добавление таски
 
 	// кнопки фильтрации
-	const onAllClickFilterHandler = () => props.changeFilter ( 'all' );
-	const onActiveClickFilterHandler = () => props.changeFilter ( 'active' );
-	const onCompletedClickFilterHandler = () => props.changeFilter ( 'completed' );
+	const onAllClickFilterHandler = () => props.changeFilter ( 'all', props.todolistId );
+	const onActiveClickFilterHandler = () => props.changeFilter ( 'active', props.todolistId);
+	const onCompletedClickFilterHandler = () => props.changeFilter ( 'completed', props.todolistId );
 
 	// error
 	// 1. доваляем className input & div (title is required)

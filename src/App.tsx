@@ -35,19 +35,14 @@ export function App () {
 	// 1. раз значения меняются, а мы хотим чтобы после смены значения проходила перерисовк, то мы должны использовать useState
 	// 2. в todolist пускаем не все таски, а отфильтрованые таски перед return (taskForTodolist)
 
-	const [filter, setFilter] = useState<TaskFilterType> ( 'all' );
-
-	const changeFilter = ( filter : TaskFilterType ) => {
-		setFilter ( filter );
+	const changeFilter = ( filter : TaskFilterType, todolistId : string ) => {
+		let todolist = todolists.find ( tl => tl.id === todolistId );
+		if (todolist) {
+			todolist.filter = filter;
+			setTodolists ( [...todolists] );
+		}
 	};
 
-	let taskForTodolist = tasks;
-	if (filter === 'active') {
-		taskForTodolist = tasks.filter ( t => !t.isDone );
-	}
-	if (filter === 'completed') {
-		taskForTodolist = tasks.filter ( t => t.isDone );
-	}
 
 	// добавление таски
 	// 1. генерируем новую таску
@@ -72,8 +67,8 @@ export function App () {
 	};
 
 	const [todolists, setTodolists] = useState<Array<TodolistsType>> ( [
-		{ id : v1 (), title : 'what to learn', filter : 'active' },
-		{ id : v1 (), title : 'what to buy', filter : 'active' }
+		{ id : v1 (), title : 'what to learn', filter : 'all' },
+		{ id : v1 (), title : 'what to buy', filter : 'all' }
 	] );
 
 	return (
@@ -81,6 +76,15 @@ export function App () {
 
 			{
 				todolists.map ( ( tl ) => {
+
+					let taskForTodolist = tasks;
+					if (tl.filter === 'active') {
+						taskForTodolist = tasks.filter ( t => !t.isDone );
+					}
+					if (tl.filter === 'completed') {
+						taskForTodolist = tasks.filter ( t => t.isDone );
+					}
+
 					return (
 						<Todolist
 							key={ tl.id }
@@ -91,6 +95,7 @@ export function App () {
 							addTask={ addTask }
 							changeTaskStatus={ changeTaskStatus }
 							filter={ tl.filter }
+							todolistId={ tl.id }
 						/>
 					);
 				} )
