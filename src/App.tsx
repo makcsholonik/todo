@@ -92,12 +92,12 @@ export function App () {
 			{
 				todolists.map ( ( tl ) => {
 
-					let taskForTodolist = tasks;
+					let taskForTodolist = tasks[tl.id];
 					if (tl.filter === 'active') {
 						taskForTodolist = tasks[tl.id].filter ( t => !t.isDone );
 					}
 					if (tl.filter === 'completed') {
-						taskForTodolist = tasks.filter ( t => t.isDone );
+						taskForTodolist = tasks[tl.id].filter ( t => t.isDone );
 					}
 
 					return (
