@@ -26,8 +26,8 @@ export function App () {
 	// 5. сэтаем чтобы перерисовать
 
 	const removeTask = ( taskId : string, todolistId : string ) => {
-		let taskTodolist = tasks[ todolistId ]; // 2
-		let filteredTasks = taskTodolist.filter ( t => t.id !== taskId ); // 3
+		let tasksTodolist = tasks[ todolistId ]; // 2
+		let filteredTasks = tasksTodolist.filter ( t => t.id !== taskId ); // 3
 		tasks[ todolistId ] = filteredTasks; // 4
 		setTasks ( { ...tasks } ); // 5
 	};
@@ -52,21 +52,21 @@ export function App () {
 
 	const addTask = ( title : string, todolistId : string ) => {
 		const newTask = { id : v1 (), title : title, isDone : false }; // 1
-		let taskTodolist = tasks[ todolistId ]; // 2
-		let newTasks = [newTask, ...tasks[ todolistId ]]; // 3
+		let tasksTodolist = tasks[ todolistId ]; // 2
+		let newTasks = [newTask, ...tasksTodolist]; // 3
 		tasks[ todolistId ] = newTasks; // 4
 		setTasks ( { ...tasks } );
 	};
 
 	// изменение статуса таски (checkbox)
 
-	const changeTaskStatus = ( taskId : string, isDone : boolean ) => {
-		let task = tasks.find ( t => t.id === taskId );
-		// псевдоистина/псевдоложь !!!
+	const changeTaskStatus = ( taskId : string, isDone : boolean, todolistId : string  ) => {
+		let taskTodolist = tasks[ todolistId ];
+		let task = taskTodolist.find ( t => t.id === taskId );
 		if (task) {
 			task.isDone = isDone;
+			setTasks ( {...tasks} );
 		}
-		setTasks ( [...tasks] );
 	};
 
 	const todolistId1 = v1 ();
