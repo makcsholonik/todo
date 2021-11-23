@@ -7,51 +7,43 @@ type TodolistPropsType = {
 	removeTask : ( id : string, todolistId : string ) => void
 	changeFilter : ( filter : TaskFilterType, todolistId : string ) => void
 	addTask : ( title : string, todolistId : string ) => void
-	changeTaskStatus : ( taskId : string, isDone : boolean ) => void
+	changeTaskStatus : ( taskId : string, isDone : boolean, todolistId : string ) => void
 	filter : TaskFilterType
 	todolistId : string
 }
 
 export function Todolist ( props : TodolistPropsType ) {
 
-	// добавление таски ----->
 	const [taskTitle, setTaskTitle] = useState<string> ( '' );
-	const onNewTaskChangeHandler = ( e : ChangeEvent<HTMLInputElement> ) => {
-		setTaskTitle ( e.currentTarget.value );
-	};
+	const [error, setError] = useState<string | null> ( null );
+
 	const onNewTaskClickHandler = () => {
-		// title не равен пустой строке и отсекаем пробелы (1 вариант)
-		if (taskTitle.trim () !== '') {
-			props.addTask ( taskTitle );
+		// title не равен пустой строке и отсекаем пробелы
+		let newTitle = taskTitle.trim ();
+		if (newTitle !== '') {
+			props.addTask ( newTitle, props.todolistId );
 			setTaskTitle ( '' );
 		} else {
 			setError ( 'title is required' );
 		}
 	};
-	// добавление по нажатию на Ctrl+Enter
+
+	const onNewTaskChangeHandler = ( e : ChangeEvent<HTMLInputElement> ) => {
+		setTaskTitle ( e.currentTarget.value );
+	};
+
+	// добавление по нажатию на Enter
 	const onNewTaskKeyPressHandler = ( e : KeyboardEvent<HTMLInputElement> ) => {
 		setError ( null ); // убирает ошибку - title is required, при нажатии любой клавиши
-		// title не равен пустой строке и отсекаем пробелы  (2 вариант)
-		if (taskTitle.trim () === '') {
-			setError ( 'title is required' );
-		}
-		if (e.ctrlKey && e.charCode === 13) {
-			props.addTask ( taskTitle );
-			setTaskTitle ( '' );
+		if (e.charCode === 13) {
+			onNewTaskClickHandler ();
 		}
 	};
-	// <----- добавление таски
 
 	// кнопки фильтрации
 	const onAllClickFilterHandler = () => props.changeFilter ( 'all', props.todolistId );
 	const onActiveClickFilterHandler = () => props.changeFilter ( 'active', props.todolistId );
 	const onCompletedClickFilterHandler = () => props.changeFilter ( 'completed', props.todolistId );
-
-	// error
-	// 1. доваляем className input & div (title is required)
-	// 2. добавляем зависимость классов от ошибки
-
-	const [error, setError] = useState<string | null> ( null );
 
 	return (
 		<div>
@@ -75,7 +67,7 @@ export function Todolist ( props : TodolistPropsType ) {
 						const onRemoveTaskHandler = () => props.removeTask ( t.id, props.todolistId );
 
 						// изменение статуса таски (checkbox)
-						const onChangeStatusHandler = ( e : ChangeEvent<HTMLInputElement> ) => props.changeTaskStatus ( t.id, e.currentTarget.checked );
+						const onChangeStatusHandler = ( e : ChangeEvent<HTMLInputElement> ) => props.changeTaskStatus ( t.id, e.currentTarget.checked, props.todolistId );
 
 						return (
 							<li key={ t.id } className={ t.isDone ? 'is-done' : '' }>
