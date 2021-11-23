@@ -60,13 +60,21 @@ export function App () {
 
 	// изменение статуса таски (checkbox)
 
-	const changeTaskStatus = ( taskId : string, isDone : boolean, todolistId : string  ) => {
+	const changeTaskStatus = ( taskId : string, isDone : boolean, todolistId : string ) => {
 		let taskTodolist = tasks[ todolistId ];
 		let task = taskTodolist.find ( t => t.id === taskId );
 		if (task) {
 			task.isDone = isDone;
-			setTasks ( {...tasks} );
+			setTasks ( { ...tasks } );
 		}
+	};
+
+	const removeTodolist = ( todolistId : string ) => {
+		let filteredTodo = todolists.filter ( tl => tl.id !== todolistId );
+		setTodolists ( filteredTodo );
+		// удаляем таски из удаленного тудулиста
+		delete tasks[ todolistId ];
+		setTasks ( { ...tasks } );
 	};
 
 	const todolistId1 = v1 ();
@@ -121,6 +129,7 @@ export function App () {
 							changeTaskStatus={ changeTaskStatus }
 							filter={ tl.filter }
 							todolistId={ tl.id }
+							removeTodolist={ removeTodolist }
 						/>
 					);
 				} )
