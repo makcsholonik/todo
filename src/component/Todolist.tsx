@@ -1,5 +1,6 @@
 import React, { useState, ChangeEvent, KeyboardEvent } from 'react';
 import { TaskFilterType, TasksType } from '../App';
+import AddItemForm from './AddItemForm';
 
 type TodolistPropsType = {
 	title : string
@@ -14,32 +15,6 @@ type TodolistPropsType = {
 }
 
 export function Todolist ( props : TodolistPropsType ) {
-
-	const [taskTitle, setTaskTitle] = useState<string> ( '' );
-	const [error, setError] = useState<string | null> ( null );
-
-	const onNewTaskClickHandler = () => {
-		// title не равен пустой строке и отсекаем пробелы
-		let newTitle = taskTitle.trim ();
-		if (newTitle !== '') {
-			props.addTask ( newTitle, props.todolistId );
-			setTaskTitle ( '' );
-		} else {
-			setError ( 'title is required' );
-		}
-	};
-
-	const onNewTaskChangeHandler = ( e : ChangeEvent<HTMLInputElement> ) => {
-		setTaskTitle ( e.currentTarget.value );
-	};
-
-	// добавление по нажатию на Enter
-	const onNewTaskKeyPressHandler = ( e : KeyboardEvent<HTMLInputElement> ) => {
-		setError ( null ); // убирает ошибку - title is required, при нажатии любой клавиши
-		if (e.charCode === 13) {
-			onNewTaskClickHandler ();
-		}
-	};
 
 	// кнопки фильтрации
 	const onAllClickFilterHandler = () => props.changeFilter ( 'all', props.todolistId );
@@ -56,16 +31,7 @@ export function Todolist ( props : TodolistPropsType ) {
 			<h3>{ props.title }
 				<button onClick={ removeTodolist }>x</button>
 			</h3>
-			<div>
-				<input
-					value={ taskTitle }
-					onChange={ onNewTaskChangeHandler }
-					onKeyPress={ onNewTaskKeyPressHandler }
-					className={ error ? 'error' : '' }
-				/>
-				<button onClick={ onNewTaskClickHandler }>+</button>
-				{ error ? <div className={ 'error-message' }>{ error }</div> : '' }
-			</div>
+			<AddItemForm addTask={ props.addTask } todolistId={ props.todolistId }/>
 			<ul>
 				{/*Отрисовка тасок*/ }
 				{
