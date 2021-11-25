@@ -17,6 +17,10 @@ export type TodolistsType = {
 	filter : TaskFilterType
 }
 
+export type TasksStateType = {
+	[ key : string ] : Array<TasksType>
+}
+
 export function App () {
 
 	// удаление таски
@@ -78,8 +82,8 @@ export function App () {
 		setTasks ( { ...tasks } );
 	};
 
-	const todolistId1 = v1 ();
-	const todolistId2 = v1 ();
+	const todolistId1 : string = v1 ();
+	const todolistId2 : string = v1 ();
 
 	const [todolists, setTodolists] = useState<Array<TodolistsType>> ( [
 		{ id : todolistId1, title : 'what to learn', filter : 'all' },
@@ -90,7 +94,7 @@ export function App () {
 	// 1. генерируем id-шники (const todolistId1 = v1(); const todolistId2 = v1())
 	// 2. создаём ассоциативный массив
 
-	const [tasks, setTasks] = useState ( {
+	const [tasks, setTasks] = useState<TasksStateType> ( {
 		[ todolistId1 ] : [
 			{ id : v1 (), title : 'html', isDone : true },
 			{ id : v1 (), title : 'css', isDone : true },
