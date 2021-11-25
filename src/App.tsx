@@ -104,10 +104,20 @@ export function App () {
 		]
 	} );
 
+	// добавление тудулиста
+	// 1. создаём новый todolist
+	// 2. сэтаем
+	// 3. создаём новое свойство для тасок (ключ: id тудулиста, значение: пустой массив тасок)
+	const addTodolist = ( title : string ) => {
+		const newTodolist : TodolistsType = { id : v1 (), title : title, filter : 'all' };
+		setTodolists ( [...todolists, newTodolist] );
+		setTasks ( { ...tasks, [ newTodolist.id ] : [] } );
+	};
+
 
 	return (
 		<div className="App">
-			<AddItemForm addItem={ ( title : string ) => {alert ( title );} }/>
+			<AddItemForm addItem={ addTodolist }/>
 			{
 				todolists.map ( ( tl ) => {
 
