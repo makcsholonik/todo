@@ -1,6 +1,7 @@
-import React, { useState, ChangeEvent, KeyboardEvent } from 'react';
+import React, { ChangeEvent } from 'react';
 import { TaskFilterType, TasksType } from '../App';
 import AddItemForm from './AddItemForm';
+import { EditableSpan } from './EditableSpan';
 
 type TodolistPropsType = {
 	title : string
@@ -27,9 +28,9 @@ export function Todolist ( props : TodolistPropsType ) {
 	};
 
 	// обёртка над ф-ей AddItem
-	const addTask =(title: string) => {
-		props.addTask (title, props.todolistId)
-	}
+	const addTask = ( title : string ) => {
+		props.addTask ( title, props.todolistId );
+	};
 
 	return (
 		<div>
@@ -55,7 +56,7 @@ export function Todolist ( props : TodolistPropsType ) {
 									checked={ t.isDone }
 									onChange={ onChangeStatusHandler }
 								/>
-								<span>{ t.title }</span>
+								<EditableSpan title={ t.title }/>
 								<button onClick={ onRemoveTaskHandler }>x</button>
 							</li>
 						);
