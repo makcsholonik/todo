@@ -26,12 +26,17 @@ export function Todolist ( props : TodolistPropsType ) {
 		props.removeTodolist ( props.todolistId );
 	};
 
+	// обёртка над ф-ей AddItem
+	const addTask =(title: string) => {
+		props.addTask (title, props.todolistId)
+	}
+
 	return (
 		<div>
 			<h3>{ props.title }
 				<button onClick={ removeTodolist }>x</button>
 			</h3>
-			<AddItemForm addTask={ props.addTask } todolistId={ props.todolistId }/>
+			<AddItemForm addItem={ addTask }/>
 			<ul>
 				{/*Отрисовка тасок*/ }
 				{

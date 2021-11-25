@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './App.css';
 import { Todolist } from './component/Todolist';
 import { v1 } from 'uuid';
+import AddItemForm from './component/AddItemForm';
 
 export type TasksType = {
 	id : string
@@ -106,7 +107,7 @@ export function App () {
 
 	return (
 		<div className="App">
-
+			<AddItemForm addItem={ ( title : string ) => {alert ( title );} }/>
 			{
 				todolists.map ( ( tl ) => {
 
