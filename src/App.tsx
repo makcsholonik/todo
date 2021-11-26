@@ -74,6 +74,19 @@ export function App () {
 		}
 	};
 
+	const changeTaskTitle = ( taskId : string, newTitle : string, todolistId : string ) => {
+		// достаём нужный массив по todolistId
+		let taskTodolist = tasks[ todolistId ];
+		// находим нужную таску
+		let task = taskTodolist.find ( t => t.id === taskId );
+		// если таска найдена меняем её title
+		if (task) {
+			task.title = newTitle;
+			// засетаем с стейт копию объекта
+			setTasks ( { ...tasks } );
+		}
+	};
+
 	const removeTodolist = ( todolistId : string ) => {
 		let filteredTodo = todolists.filter ( tl => tl.id !== todolistId );
 		setTodolists ( filteredTodo );
@@ -142,6 +155,7 @@ export function App () {
 							changeFilter={ changeFilter }
 							addTask={ addTask }
 							changeTaskStatus={ changeTaskStatus }
+							changeTaskTitle={changeTaskTitle}
 							filter={ tl.filter }
 							todolistId={ tl.id }
 							removeTodolist={ removeTodolist }

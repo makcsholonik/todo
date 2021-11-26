@@ -10,6 +10,7 @@ type TodolistPropsType = {
 	changeFilter : ( filter : TaskFilterType, todolistId : string ) => void
 	addTask : ( title : string, todolistId : string ) => void
 	changeTaskStatus : ( taskId : string, isDone : boolean, todolistId : string ) => void
+	changeTaskTitle : ( taskId : string, newTitle : string, todolistId : string ) => void
 	filter : TaskFilterType
 	todolistId : string
 	removeTodolist : ( todolistId : string ) => void
@@ -49,6 +50,9 @@ export function Todolist ( props : TodolistPropsType ) {
 						// изменение статуса таски (checkbox)
 						const onChangeStatusHandler = ( e : ChangeEvent<HTMLInputElement> ) => props.changeTaskStatus ( t.id, e.currentTarget.checked, props.todolistId );
 
+						// изменяем имя таски
+						const onChangeTitleHandler = ( newTitle : string ) => props.changeTaskTitle ( t.id, newTitle, props.todolistId );
+
 						return (
 							<li key={ t.id } className={ t.isDone ? 'is-done' : '' }>
 								<input
@@ -56,7 +60,7 @@ export function Todolist ( props : TodolistPropsType ) {
 									checked={ t.isDone }
 									onChange={ onChangeStatusHandler }
 								/>
-								<EditableSpan title={ t.title }/>
+								<EditableSpan title={ t.title } onChange={ onChangeTitleHandler }/>
 								<button onClick={ onRemoveTaskHandler }>x</button>
 							</li>
 						);
