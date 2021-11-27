@@ -95,6 +95,15 @@ export function App () {
 		setTasks ( { ...tasks } );
 	};
 
+	const changeTodolistTitle = ( todolistId : string, newTitle : string ) => {
+		// поиск нужного тудулиста
+		let todo = todolists.find ( tl => tl.id === todolistId );
+		if (todo) {
+			todo.title = newTitle;
+			setTodolists ( [...todolists] );
+		}
+	};
+
 	const todolistId1 : string = v1 ();
 	const todolistId2 : string = v1 ();
 
@@ -155,10 +164,11 @@ export function App () {
 							changeFilter={ changeFilter }
 							addTask={ addTask }
 							changeTaskStatus={ changeTaskStatus }
-							changeTaskTitle={changeTaskTitle}
+							changeTaskTitle={ changeTaskTitle }
 							filter={ tl.filter }
 							todolistId={ tl.id }
 							removeTodolist={ removeTodolist }
+							changeTodolistTitle={ changeTodolistTitle }
 						/>
 					);
 				} )

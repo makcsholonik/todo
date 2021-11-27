@@ -14,6 +14,7 @@ type TodolistPropsType = {
 	filter : TaskFilterType
 	todolistId : string
 	removeTodolist : ( todolistId : string ) => void
+	changeTodolistTitle : ( todolistId : string, newTitle : string ) => void
 }
 
 export function Todolist ( props : TodolistPropsType ) {
@@ -28,6 +29,11 @@ export function Todolist ( props : TodolistPropsType ) {
 		props.removeTodolist ( props.todolistId );
 	};
 
+	// изменение имени тудулиста
+	const changeTodolistTitle = ( newTitle : string ) => {
+		props.changeTodolistTitle ( props.todolistId, newTitle );
+	};
+
 	// обёртка над ф-ей AddItem
 	const addTask = ( title : string ) => {
 		props.addTask ( title, props.todolistId );
@@ -35,7 +41,8 @@ export function Todolist ( props : TodolistPropsType ) {
 
 	return (
 		<div>
-			<h3>{ props.title }
+			<h3>
+				<EditableSpan title={ props.title } onChange={ changeTodolistTitle }/>
 				<button onClick={ removeTodolist }>x</button>
 			</h3>
 			<AddItemForm addItem={ addTask }/>
