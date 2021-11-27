@@ -10,99 +10,16 @@ export type TasksType = {
 	isDone : boolean
 }
 export type TaskFilterType = 'all' | 'active' | 'completed';
-
 export type TodolistsType = {
 	id : string
 	title : string
 	filter : TaskFilterType
 }
-
 export type TasksStateType = {
 	[ key : string ] : Array<TasksType>
 }
 
 export function App () {
-
-	// удаление таски
-	// 1. добавляет todolistId, чтобы знать с какого тудулиста удалять таску
-	// 2. достаём все таски из конкретного тудулиста
-	// 3. удаляем найденную таску из массива
-	// 4. заменяем таски отфильтрованными тасками
-	// 5. сэтаем чтобы перерисовать
-
-	const removeTask = ( taskId : string, todolistId : string ) => {
-		let tasksTodolist = tasks[ todolistId ]; // 2
-		let filteredTasks = tasksTodolist.filter ( t => t.id !== taskId ); // 3
-		tasks[ todolistId ] = filteredTasks; // 4
-		setTasks ( { ...tasks } ); // 5
-	};
-
-	// фильтрация тасок
-	// 1. раз значения меняются, а мы хотим чтобы после смены значения проходила перерисовк, то мы должны использовать useState
-	// 2. в todolist пускаем не все таски, а отфильтрованые таски перед return (taskForTodolist)
-
-	const changeFilter = ( filter : TaskFilterType, todolistId : string ) => {
-		let todolist = todolists.find ( tl => tl.id === todolistId );
-		if (todolist) {
-			todolist.filter = filter;
-			setTodolists ( [...todolists] );
-		}
-	};
-
-	// добавление таски
-	// 1. генерируем новую таску
-	// 2. достаём все таски из конкретного тудулиста
-	// 3. создаём новые такси + раскукожанный массив старых тасок
-	// 4. засовываем новые таски в объект
-
-	const addTask = ( title : string, todolistId : string ) => {
-		const newTask = { id : v1 (), title : title, isDone : false }; // 1
-		let tasksTodolist = tasks[ todolistId ]; // 2
-		let newTasks = [newTask, ...tasksTodolist]; // 3
-		tasks[ todolistId ] = newTasks; // 4
-		setTasks ( { ...tasks } );
-	};
-
-	// изменение статуса таски (checkbox)
-
-	const changeTaskStatus = ( taskId : string, isDone : boolean, todolistId : string ) => {
-		let taskTodolist = tasks[ todolistId ];
-		let task = taskTodolist.find ( t => t.id === taskId );
-		if (task) {
-			task.isDone = isDone;
-			setTasks ( { ...tasks } );
-		}
-	};
-
-	const changeTaskTitle = ( taskId : string, newTitle : string, todolistId : string ) => {
-		// достаём нужный массив по todolistId
-		let taskTodolist = tasks[ todolistId ];
-		// находим нужную таску
-		let task = taskTodolist.find ( t => t.id === taskId );
-		// если таска найдена меняем её title
-		if (task) {
-			task.title = newTitle;
-			// засетаем с стейт копию объекта
-			setTasks ( { ...tasks } );
-		}
-	};
-
-	const removeTodolist = ( todolistId : string ) => {
-		let filteredTodo = todolists.filter ( tl => tl.id !== todolistId );
-		setTodolists ( filteredTodo );
-		// удаляем таски из удаленного тудулиста
-		delete tasks[ todolistId ];
-		setTasks ( { ...tasks } );
-	};
-
-	const changeTodolistTitle = ( todolistId : string, newTitle : string ) => {
-		// поиск нужного тудулиста
-		let todo = todolists.find ( tl => tl.id === todolistId );
-		if (todo) {
-			todo.title = newTitle;
-			setTodolists ( [...todolists] );
-		}
-	};
 
 	const todolistId1 : string = v1 ();
 	const todolistId2 : string = v1 ();
@@ -115,7 +32,6 @@ export function App () {
 	// храним таски в ассоциативном массиве
 	// 1. генерируем id-шники (const todolistId1 = v1(); const todolistId2 = v1())
 	// 2. создаём ассоциативный массив
-
 	const [tasks, setTasks] = useState<TasksStateType> ( {
 		[ todolistId1 ] : [
 			{ id : v1 (), title : 'html', isDone : true },
@@ -130,6 +46,67 @@ export function App () {
 		]
 	} );
 
+	// добавление таски
+	// 1. генерируем новую таску
+	// 2. достаём все таски из конкретного тудулиста
+	// 3. создаём новые такси + раскукожанный массив старых тасок
+	// 4. засовываем новые таски в объект
+	const addTask = ( title : string, todolistId : string ) => {
+		const newTask = { id : v1 (), title : title, isDone : false }; // 1
+		let tasksTodolist = tasks[ todolistId ]; // 2
+		let newTasks = [newTask, ...tasksTodolist]; // 3
+		tasks[ todolistId ] = newTasks; // 4
+		setTasks ( { ...tasks } );
+	};
+
+	// удаление таски
+	// 1. добавляет todolistId, чтобы знать с какого тудулиста удалять таску
+	// 2. достаём все таски из конкретного тудулиста
+	// 3. удаляем найденную таску из массива
+	// 4. заменяем таски отфильтрованными тасками
+	// 5. сэтаем чтобы перерисовать
+	const removeTask = ( taskId : string, todolistId : string ) => {
+		let tasksTodolist = tasks[ todolistId ]; // 2
+		let filteredTasks = tasksTodolist.filter ( t => t.id !== taskId ); // 3
+		tasks[ todolistId ] = filteredTasks; // 4
+		setTasks ( { ...tasks } ); // 5
+	};
+
+	// изменение статуса таски (checkbox)
+	const changeTaskStatus = ( taskId : string, isDone : boolean, todolistId : string ) => {
+		let taskTodolist = tasks[ todolistId ];
+		let task = taskTodolist.find ( t => t.id === taskId );
+		if (task) {
+			task.isDone = isDone;
+			setTasks ( { ...tasks } );
+		}
+	};
+
+	// изменение названия таски
+	const changeTaskTitle = ( taskId : string, newTitle : string, todolistId : string ) => {
+		// достаём нужный массив по todolistId
+		let taskTodolist = tasks[ todolistId ];
+		// находим нужную таску
+		let task = taskTodolist.find ( t => t.id === taskId );
+		// если таска найдена меняем её title
+		if (task) {
+			task.title = newTitle;
+			// засетаем с стейт копию объекта
+			setTasks ( { ...tasks } );
+		}
+	};
+
+	// фильтрация тасок
+	// 1. раз значения меняются, а мы хотим чтобы после смены значения проходила перерисовк, то мы должны использовать useState
+	// 2. в todolist пускаем не все таски, а отфильтрованые таски перед return (taskForTodolist)
+	const changeFilter = ( filter : TaskFilterType, todolistId : string ) => {
+		let todolist = todolists.find ( tl => tl.id === todolistId );
+		if (todolist) {
+			todolist.filter = filter;
+			setTodolists ( [...todolists] );
+		}
+	};
+
 	// добавление тудулиста
 	// 1. создаём новый todolist
 	// 2. сэтаем
@@ -140,6 +117,24 @@ export function App () {
 		setTasks ( { ...tasks, [ newTodolist.id ] : [] } );
 	};
 
+	// удаление тудулиста
+	const removeTodolist = ( todolistId : string ) => {
+		let filteredTodo = todolists.filter ( tl => tl.id !== todolistId );
+		setTodolists ( filteredTodo );
+		// удаляем таски из удаленного тудулиста
+		delete tasks[ todolistId ];
+		setTasks ( { ...tasks } );
+	};
+
+	// изменение названия тудулиста
+	const changeTodolistTitle = ( todolistId : string, newTitle : string ) => {
+		// поиск нужного тудулиста
+		let todo = todolists.find ( tl => tl.id === todolistId );
+		if (todo) {
+			todo.title = newTitle;
+			setTodolists ( [...todolists] );
+		}
+	};
 
 	return (
 		<div className="App">
