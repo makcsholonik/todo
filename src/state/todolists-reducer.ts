@@ -1,6 +1,8 @@
 import { TaskFilterType, TodolistsType } from '../App';
 import { v1 } from 'uuid';
 
+// typing
+
 type ActionType = RemoveTodolistActionType
 	| AddTodolistActionType
 	| ChangeTodolistTitleActionType
@@ -28,6 +30,9 @@ export type ChangeTodolistFilterActionType = {
 // меня вызовут и дадут мне стейт (почти всегда объект)
 // и инструкцию (action, тоже объект)
 // согласно прописаному type в этом action (инструкции) я поменяю state
+
+// reducer
+
 export const todolistsReducer = ( state : TodolistsType[], action : ActionType ) : TodolistsType[] => {
 	switch (action.type) {
 		case 'REMOVE-TODOLIST': {
@@ -57,4 +62,19 @@ export const todolistsReducer = ( state : TodolistsType[], action : ActionType )
 		default:
 			return state;
 	}
+};
+
+// action creator
+
+export const RemoveTodolistAC = ( todolistId : string ) : RemoveTodolistActionType => {
+	return { type : 'REMOVE-TODOLIST', id : todolistId };
+};
+export const AddTodolistAC = ( newTodolistTitle : string ) : AddTodolistActionType => {
+	return { type : 'ADD-TODOLIST', title : newTodolistTitle };
+};
+export const ChangeTodolistTitleAC = ( todolistId : string, newTodolistTitle : string ) : ChangeTodolistTitleActionType => {
+	return { type : 'CHANGE-TODOLIST-TITLE', id : todolistId, title : newTodolistTitle };
+};
+export const ChangeTodolistFilterAC = ( todolistId : string, newFilter : TaskFilterType ) : ChangeTodolistFilterActionType => {
+	return { type : 'CHANGE-TODOLIST-FILTER', id : todolistId, filter : newFilter };
 };
