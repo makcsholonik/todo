@@ -6,6 +6,7 @@ import { v1 } from 'uuid';
 type ActionType = RemoveTaskActionType
 	| AddTaskActionType
 	| ChangeTaskStatusType
+	| ChangeTaskTitleType
 
 export type RemoveTaskActionType = {
 	type : 'REMOVE-TASK'
@@ -21,6 +22,12 @@ export type ChangeTaskStatusType = {
 	type : 'CHANGE-TASK-STATUS'
 	taskId : string
 	isDone : boolean
+	todolistId : string
+}
+export type ChangeTaskTitleType = {
+	type : 'CHANGE-TASK-TITLE'
+	taskId : string
+	newTitle : string
 	todolistId : string
 }
 
@@ -51,6 +58,15 @@ export const tasksReducer = ( state : TasksStateType, action : ActionType ) : Ta
 			}
 			return stateCopy;
 		}
+		case 'CHANGE-TASK-TITLE': {
+			const stateCopy = { ...state };
+			const tasks = stateCopy[ action.todolistId ];
+			const task = tasks.find ( t => t.id === action.taskId );
+			if (task) {
+				task.title = action.newTitle;
+			}
+			return stateCopy;
+		}
 		default:
 			return state;
 	}
@@ -66,4 +82,7 @@ export const addTaskAC = ( title : string, todolistId : string ) : AddTaskAction
 };
 export const changeTaskStatusAC = ( taskId : string, isDone : boolean, todolistId : string ) : ChangeTaskStatusType => {
 	return { type : 'CHANGE-TASK-STATUS', taskId, isDone, todolistId };
+};
+export const changeTaskTitleAC = ( taskId : string, newTitle : string, todolistId : string ) : ChangeTaskTitleType => {
+	return { type : 'CHANGE-TASK-TITLE', taskId, newTitle, todolistId };
 };
