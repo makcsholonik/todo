@@ -91,9 +91,6 @@ export function App () {
 		}
 	};
 
-	// фильтрация тасок
-	// 1. раз значения меняются, а мы хотим чтобы после смены значения проходила перерисовк, то мы должны использовать useState
-	// 2. в todolist пускаем не все таски, а отфильтрованые таски перед return (taskForTodolist)
 	const changeFilter = ( filter : TaskFilterType, todolistId : string ) => {
 		let todolist = todolists.find ( tl => tl.id === todolistId );
 		if (todolist) {
@@ -102,31 +99,28 @@ export function App () {
 		}
 	};
 
-	// добавление тудулиста
-	// 1. создаём новый todolist
-	// 2. сэтаем
-	// 3. создаём новое свойство для тасок (ключ: id тудулиста, значение: пустой массив тасок)
 	const addTodolist = ( title : string ) => {
-		const newTodolist : TodolistsType = { id : v1 (), title : title, filter : 'all' };
-		setTodolists ( [...todolists, newTodolist] );
-		setTasks ( { ...tasks, [ newTodolist.id ] : [] } );
+		const newTodolistId = v1 ();
+		const newTodolist : TodolistsType = { id : newTodolistId, title : title, filter : 'all' };
+		setTodolists ( [newTodolist, ...todolists] );
+		setTasks ( { ...tasks, [ newTodolistId ] : [] } );
 	};
 
-	// удаление тудулиста
 	const removeTodolist = ( todolistId : string ) => {
-		let filteredTodo = todolists.filter ( tl => tl.id !== todolistId );
-		setTodolists ( filteredTodo );
-		// удаляем таски из удаленного тудулиста
-		delete tasks[ todolistId ];
+		// засунем в стейт список тудулистов, id которых не равны тому, который нужно выкинуть
+		setTodolists ( todolists.filter ( tl => tl.id !== todolistId ) );
+		// удалим таски для этого тудулиста из второго стейта, где мы храним отдельно таски
+		delete tasks[ todolistId ]; // удаляем св-во из объекта... значением которого являлся массив тасок
+		// засетаем в стейт копию объекта, чтобы React отреагировал перерисовкой
 		setTasks ( { ...tasks } );
 	};
 
-	// изменение названия тудулиста
 	const changeTodolistTitle = ( todolistId : string, newTitle : string ) => {
-		// поиск нужного тудулиста
-		let todo = todolists.find ( tl => tl.id === todolistId );
-		if (todo) {
-			todo.title = newTitle;
+		// найдём нужный todolist
+		let todolist = todolists.find ( tl => tl.id === todolistId );
+		if (todolist) {
+			// если нашёлся - изменим ему заголовок
+			todolist.title = newTitle;
 			setTodolists ( [...todolists] );
 		}
 	};
