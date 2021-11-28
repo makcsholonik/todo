@@ -35,3 +35,25 @@ test ( 'correct todolist should be added', () => {
 	expect ( endState[ 2 ].filter ).toBe ( 'all' );
 } );
 
+test ( 'correct todolist should change its name', () => {
+	let todolistId1 = v1 ();
+	let todolistId2 = v1 ();
+
+	let newTodolistTitle = "New Todolist";
+
+	const startState : Array<TodolistsType> = [
+		{ id : todolistId1, title : "What to learn", filter : "all" },
+		{ id : todolistId2, title : "What to buy", filter : "all" }
+	];
+
+	const action = {
+		type : 'CHANGE-TODOLIST-TITLE',
+		id : todolistId2,
+		title : newTodolistTitle
+	};
+
+	const endState = todolistsReducer ( startState, action );
+
+	expect ( endState[ 0 ].title ).toBe ( "What to learn" );
+	expect ( endState[ 1 ].title ).toBe ( newTodolistTitle );
+} );
