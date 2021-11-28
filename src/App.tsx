@@ -46,52 +46,47 @@ export function App () {
 		]
 	} );
 
-	// добавление таски
-	// 1. генерируем новую таску
-	// 2. достаём все таски из конкретного тудулиста
-	// 3. создаём новые такси + раскукожанный массив старых тасок
-	// 4. засовываем новые таски в объект
 	const addTask = ( title : string, todolistId : string ) => {
-		const newTask = { id : v1 (), title : title, isDone : false }; // 1
-		let tasksTodolist = tasks[ todolistId ]; // 2
-		let newTasks = [newTask, ...tasksTodolist]; // 3
-		tasks[ todolistId ] = newTasks; // 4
+		const newTask = { id : v1 (), title : title, isDone : false };
+		// достанем нужный массив по todolistId:
+		let tasksTodolist = tasks[ todolistId ];
+		// перезапишем в этом объекте массив для нужного тудулиста копией, добавив в начало новую таску:
+		tasks[ todolistId ] = [newTask, ...tasksTodolist];
+		// засетаем в стейт копию объекта, чтобы React отреагировал перерисовкой
 		setTasks ( { ...tasks } );
 	};
 
-	// удаление таски
-	// 1. добавляет todolistId, чтобы знать с какого тудулиста удалять таску
-	// 2. достаём все таски из конкретного тудулиста
-	// 3. удаляем найденную таску из массива
-	// 4. заменяем таски отфильтрованными тасками
-	// 5. сэтаем чтобы перерисовать
 	const removeTask = ( taskId : string, todolistId : string ) => {
-		let tasksTodolist = tasks[ todolistId ]; // 2
-		let filteredTasks = tasksTodolist.filter ( t => t.id !== taskId ); // 3
-		tasks[ todolistId ] = filteredTasks; // 4
-		setTasks ( { ...tasks } ); // 5
+		// достанем нужный массив по todolistId:
+		let tasksTodolist = tasks[ todolistId ];
+		// перезапишем в этом объекте массив для нужного тудулиста отфилтрованным массивом:
+		tasks[ todolistId ] = tasksTodolist.filter ( t => t.id !== taskId );
+		// засетаем в стейт копию объекта, чтобы React отреагировал перерисовкой
+		setTasks ( { ...tasks } );
 	};
 
-	// изменение статуса таски (checkbox)
 	const changeTaskStatus = ( taskId : string, isDone : boolean, todolistId : string ) => {
+		// достанем нужный массив по todolistId:
 		let taskTodolist = tasks[ todolistId ];
+		// найдём нужную таску:
 		let task = taskTodolist.find ( t => t.id === taskId );
+		// изменим таску, если она нашлась
 		if (task) {
 			task.isDone = isDone;
+			// засетаем в стейт копию объекта, чтобы React отреагировал перерисовкой
 			setTasks ( { ...tasks } );
 		}
 	};
 
-	// изменение названия таски
 	const changeTaskTitle = ( taskId : string, newTitle : string, todolistId : string ) => {
-		// достаём нужный массив по todolistId
+		// достанем нужный массив по todolistId:
 		let taskTodolist = tasks[ todolistId ];
-		// находим нужную таску
+		// найдём нужную таску:
 		let task = taskTodolist.find ( t => t.id === taskId );
-		// если таска найдена меняем её title
+		// изменим таску, если она нашлась
 		if (task) {
 			task.title = newTitle;
-			// засетаем с стейт копию объекта
+			// засетаем в стейт копию объекта, чтобы React отреагировал перерисовкой
 			setTasks ( { ...tasks } );
 		}
 	};
