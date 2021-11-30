@@ -8,6 +8,12 @@ import {
 	todolistsReducer
 } from './todolists-reducer';
 
+
+// тестирование (тест состоит из 3-х частей)
+// 1. Стартовые данные
+// 2. Action
+// 3. Проверка (expect)
+
 test ( 'correct todolist should be removed', () => {
 	let todolistId1 = v1 ();
 	let todolistId2 = v1 ();
