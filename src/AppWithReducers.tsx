@@ -1,8 +1,16 @@
-import React, { useState } from 'react';
+import React, { useReducer, useState } from 'react';
 import './App.css';
 import { Todolist } from './component/Todolist';
 import { v1 } from 'uuid';
 import AddItemForm from './component/AddItemForm';
+import {
+	addTodolistAC,
+	changeTodolistFilterAC,
+	changeTodolistTitleAC,
+	removeTodolistAC,
+	todolistsReducer
+} from './state/todolists-reducer';
+import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer } from './state/tasks-reducer';
 
 export type TasksType = {
 	id : string
@@ -24,15 +32,12 @@ export function AppWithReducers () {
 	const todolistId1 : string = v1 ();
 	const todolistId2 : string = v1 ();
 
-	const [todolists, setTodolists] = useState<Array<TodolistsType>> ( [
+	const [todolists, dispatchToTodolistsReducer] = useReducer ( todolistsReducer, [
 		{ id : todolistId1, title : 'what to learn', filter : 'all' },
 		{ id : todolistId2, title : 'what to buy', filter : 'all' }
 	] );
 
-	// храним таски в ассоциативном массиве
-	// 1. генерируем id-шники (const todolistId1 = v1(); const todolistId2 = v1())
-	// 2. создаём ассоциативный массив
-	const [tasks, setTasks] = useState<TasksStateType> ( {
+	const [tasks, dispatchToTasksReducer] = useReducer ( tasksReducer, {
 		[ todolistId1 ] : [
 			{ id : v1 (), title : 'html', isDone : true },
 			{ id : v1 (), title : 'css', isDone : true },
@@ -47,82 +52,37 @@ export function AppWithReducers () {
 	} );
 
 	const addTask = ( title : string, todolistId : string ) => {
-		const newTask = { id : v1 (), title : title, isDone : false };
-		// достанем нужный массив по todolistId:
-		let tasksTodolist = tasks[ todolistId ];
-		// перезапишем в этом объекте массив для нужного тудулиста копией, добавив в начало новую таску:
-		tasks[ todolistId ] = [newTask, ...tasksTodolist];
-		// засетаем в стейт копию объекта, чтобы React отреагировал перерисовкой
-		setTasks ( { ...tasks } );
+		dispatchToTasksReducer ( addTaskAC ( title, todolistId ) );
 	};
 
 	const removeTask = ( taskId : string, todolistId : string ) => {
-		// достанем нужный массив по todolistId:
-		let tasksTodolist = tasks[ todolistId ];
-		// перезапишем в этом объекте массив для нужного тудулиста отфилтрованным массивом:
-		tasks[ todolistId ] = tasksTodolist.filter ( t => t.id !== taskId );
-		// засетаем в стейт копию объекта, чтобы React отреагировал перерисовкой
-		setTasks ( { ...tasks } );
+		dispatchToTasksReducer ( removeTaskAC ( taskId, todolistId ) );
 	};
 
 	const changeTaskStatus = ( taskId : string, isDone : boolean, todolistId : string ) => {
-		// достанем нужный массив по todolistId:
-		let taskTodolist = tasks[ todolistId ];
-		// найдём нужную таску:
-		let task = taskTodolist.find ( t => t.id === taskId );
-		// изменим таску, если она нашлась
-		if (task) {
-			task.isDone = isDone;
-			// засетаем в стейт копию объекта, чтобы React отреагировал перерисовкой
-			setTasks ( { ...tasks } );
-		}
+		dispatchToTasksReducer ( changeTaskStatusAC ( taskId, isDone, todolistId ) );
 	};
 
 	const changeTaskTitle = ( taskId : string, newTitle : string, todolistId : string ) => {
-		// достанем нужный массив по todolistId:
-		let taskTodolist = tasks[ todolistId ];
-		// найдём нужную таску:
-		let task = taskTodolist.find ( t => t.id === taskId );
-		// изменим таску, если она нашлась
-		if (task) {
-			task.title = newTitle;
-			// засетаем в стейт копию объекта, чтобы React отреагировал перерисовкой
-			setTasks ( { ...tasks } );
-		}
+		dispatchToTasksReducer ( changeTaskTitleAC ( taskId, newTitle, todolistId ) );
 	};
 
 	const changeFilter = ( filter : TaskFilterType, todolistId : string ) => {
-		let todolist = todolists.find ( tl => tl.id === todolistId );
-		if (todolist) {
-			todolist.filter = filter;
-			setTodolists ( [...todolists] );
-		}
+		dispatchToTodolistsReducer ( changeTodolistFilterAC ( todolistId, filter ) );
 	};
 
 	const addTodolist = ( title : string ) => {
-		const newTodolistId = v1 ();
-		const newTodolist : TodolistsType = { id : newTodolistId, title : title, filter : 'all' };
-		setTodolists ( [newTodolist, ...todolists] );
-		setTasks ( { ...tasks, [ newTodolistId ] : [] } );
+		dispatchToTodolistsReducer ( addTodolistAC ( title ) );
+		dispatchToTasksReducer ( addTodolistAC ( title ) );
 	};
 
 	const removeTodolist = ( todolistId : string ) => {
-		// засунем в стейт список тудулистов, id которых не равны тому, который нужно выкинуть
-		setTodolists ( todolists.filter ( tl => tl.id !== todolistId ) );
-		// удалим таски для этого тудулиста из второго стейта, где мы храним отдельно таски
-		delete tasks[ todolistId ]; // удаляем св-во из объекта... значением которого являлся массив тасок
-		// засетаем в стейт копию объекта, чтобы React отреагировал перерисовкой
-		setTasks ( { ...tasks } );
+		dispatchToTodolistsReducer ( removeTodolistAC ( todolistId ) );
+		dispatchToTasksReducer ( removeTodolistAC ( todolistId ) );
 	};
 
 	const changeTodolistTitle = ( todolistId : string, newTitle : string ) => {
-		// найдём нужный todolist
-		let todolist = todolists.find ( tl => tl.id === todolistId );
-		if (todolist) {
-			// если нашёлся - изменим ему заголовок
-			todolist.title = newTitle;
-			setTodolists ( [...todolists] );
-		}
+		dispatchToTodolistsReducer ( changeTodolistTitleAC ( todolistId, newTitle ) );
 	};
 
 	return (
