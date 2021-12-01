@@ -28,13 +28,23 @@ export type ChangeTodolistFilterActionType = {
 	filter : TaskFilterType
 }
 
+// initial state
+
+export const todolistId1 : string = v1 ();
+export const todolistId2 : string = v1 ();
+
+const initialState : Array<TodolistsType> = [
+	{ id : todolistId1, title : 'what to learn', filter : 'all' },
+	{ id : todolistId2, title : 'what to buy', filter : 'all' }
+];
+
 // меня вызовут и дадут мне стейт (почти всегда объект)
 // и инструкцию (action, тоже объект)
 // согласно прописаному type в этом action (инструкции) я поменяю state
 
 // reducer
 
-export const todolistsReducer = ( state : TodolistsType[], action : ActionType ) : TodolistsType[] => {
+export const todolistsReducer = ( state : TodolistsType[] = initialState, action : ActionType ) : TodolistsType[] => {
 	switch (action.type) {
 		case 'REMOVE-TODOLIST': {
 			return state.filter ( tl => tl.id !== action.todolistId );
