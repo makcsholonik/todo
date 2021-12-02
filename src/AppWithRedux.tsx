@@ -29,6 +29,7 @@ export type TasksStateType = {
 
 export function AppWithRedux () {
 
+	// получаем ф-ию dispatch которая в стор может задиспатчить экшн.
 	const dispatch = useDispatch ();
 
 	// достаём тудулисты и таски
