@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import './App.css';
 import { Todolist } from './component/Todolist';
 import { AddItemForm } from './component/AddItemForm';
@@ -37,32 +37,32 @@ export const AppWithRedux = React.memo ( () => {
 	const tasks = useSelector<AppRootState, TasksStateType> ( state => state.tasks );
 
 	// tasks
-	const addTask = ( title : string, todolistId : string ) => {
+	const addTask = useCallback ( ( title : string, todolistId : string ) => {
 		dispatch ( addTaskAC ( title, todolistId ) );
-	};
-	const removeTask = ( taskId : string, todolistId : string ) => {
+	}, [] );
+	const removeTask = useCallback ( ( taskId : string, todolistId : string ) => {
 		dispatch ( removeTaskAC ( taskId, todolistId ) );
-	};
-	const changeTaskStatus = ( taskId : string, isDone : boolean, todolistId : string ) => {
+	}, [] );
+	const changeTaskStatus = useCallback ( ( taskId : string, isDone : boolean, todolistId : string ) => {
 		dispatch ( changeTaskStatusAC ( taskId, isDone, todolistId ) );
-	};
-	const changeTaskTitle = ( taskId : string, newTitle : string, todolistId : string ) => {
+	}, [] );
+	const changeTaskTitle = useCallback ( ( taskId : string, newTitle : string, todolistId : string ) => {
 		dispatch ( changeTaskTitleAC ( taskId, newTitle, todolistId ) );
-	};
+	}, [] );
 
 	// todolists
-	const changeFilter = ( filter : TaskFilterType, todolistId : string ) => {
+	const changeFilter = useCallback ( ( filter : TaskFilterType, todolistId : string ) => {
 		dispatch ( changeTodolistFilterAC ( todolistId, filter ) );
-	};
-	const addTodolist = ( title : string ) => {
+	}, [] );
+	const addTodolist = useCallback ( ( title : string ) => {
 		dispatch ( addTodolistAC ( title ) );
-	};
-	const removeTodolist = ( todolistId : string ) => {
+	}, [] );
+	const removeTodolist = useCallback ( ( todolistId : string ) => {
 		dispatch ( removeTodolistAC ( todolistId ) );
-	};
-	const changeTodolistTitle = ( todolistId : string, newTitle : string ) => {
+	}, [] );
+	const changeTodolistTitle = useCallback ( ( todolistId : string, newTitle : string ) => {
 		dispatch ( changeTodolistTitleAC ( todolistId, newTitle ) );
-	};
+	}, [] );
 
 	return (
 		<div className="App">

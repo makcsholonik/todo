@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useCallback } from 'react';
 import { AddItemForm } from './AddItemForm';
 import { EditableSpan } from './EditableSpan';
 import { TaskFilterType, TasksType } from '../AppWithRedux';
@@ -32,14 +32,14 @@ export const Todolist = React.memo ( ( props : TodolistPropsType ) => {
 	};
 
 	// изменение имени тудулиста
-	const changeTodolistTitle = ( newTitle : string ) => {
+	const changeTodolistTitle = useCallback ( ( newTitle : string ) => {
 		props.changeTodolistTitle ( props.todolistId, newTitle );
-	};
+	}, [] );
 
 	// обёртка над ф-ей AddItem
-	const addTask = ( title : string ) => {
+	const addTask = useCallback ( ( title : string ) => {
 		props.addTask ( title, props.todolistId );
-	};
+	}, [] );
 
 	return (
 		<div>
