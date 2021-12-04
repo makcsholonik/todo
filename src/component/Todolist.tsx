@@ -41,6 +41,15 @@ export const Todolist = React.memo ( ( props : TodolistPropsType ) => {
 		props.addTask ( title, props.todolistId );
 	}, [] );
 
+	let taskForTodolist = props.tasks;
+
+	if (props.filter === 'active') {
+		taskForTodolist = props.tasks.filter ( t => !t.isDone );
+	}
+	if (props.filter === 'completed') {
+		taskForTodolist = props.tasks.filter ( t => t.isDone );
+	}
+
 	return (
 		<div>
 			<h3>
@@ -51,7 +60,7 @@ export const Todolist = React.memo ( ( props : TodolistPropsType ) => {
 			<ul>
 				{/*Отрисовка тасок*/ }
 				{
-					props.tasks.map ( ( t ) => {
+					taskForTodolist.map ( ( t ) => {
 
 						// удаление таски
 						const onRemoveTaskHandler = () => props.removeTask ( t.id, props.todolistId );
