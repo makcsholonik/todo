@@ -36,19 +36,7 @@ export type ChangeTaskTitleType = {
 
 // initial state
 
-const initialState : TasksStateType = {
-	[ todolistId1 ] : [
-		{ id : v1 (), title : 'html', isDone : true },
-		{ id : v1 (), title : 'css', isDone : true },
-		{ id : v1 (), title : 'js', isDone : false },
-		{ id : v1 (), title : 'react', isDone : false },
-	],
-	[ todolistId2 ] : [
-		{ id : v1 (), title : 'book', isDone : true },
-		{ id : v1 (), title : 'tea', isDone : true },
-		{ id : v1 (), title : 'milk', isDone : false },
-	]
-};
+const initialState : TasksStateType = {};
 
 // reducer
 

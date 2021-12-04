@@ -33,10 +33,7 @@ export type ChangeTodolistFilterActionType = {
 export const todolistId1 : string = v1 ();
 export const todolistId2 : string = v1 ();
 
-const initialState : Array<TodolistsType> = [
-	{ id : todolistId1, title : 'what to learn', filter : 'all' },
-	{ id : todolistId2, title : 'what to buy', filter : 'all' }
-];
+const initialState : Array<TodolistsType> = [];
 
 // меня вызовут и дадут мне стейт (почти всегда объект)
 // и инструкцию (action, тоже объект)

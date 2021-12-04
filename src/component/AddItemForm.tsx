@@ -26,7 +26,10 @@ function AddItemForm ( props : AddItemPropsType ) {
 
 	// добавление item по нажатию на Enter
 	const onNewTaskKeyPressHandler = ( e : KeyboardEvent<HTMLInputElement> ) => {
-		setError ( null ); // убирает ошибку - title is required, при нажатии любой клавиши
+		// дополнительно не перерисовывает
+		if (error !== null) {
+			setError ( null ); // убирает ошибку - title is required, при нажатии любой клавиши
+		}
 		if (e.charCode === 13) {
 			onNewTaskClickHandler ();
 		}
