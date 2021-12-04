@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from 'react';
-import { TaskFilterType, TasksType } from '../App';
-import AddItemForm from './AddItemForm';
+import { AddItemForm } from './AddItemForm';
 import { EditableSpan } from './EditableSpan';
+import { TaskFilterType, TasksType } from '../AppWithRedux';
 
 type TodolistPropsType = {
 	title : string
@@ -17,7 +17,9 @@ type TodolistPropsType = {
 	changeTodolistTitle : ( todolistId : string, newTitle : string ) => void
 }
 
-export function Todolist ( props : TodolistPropsType ) {
+export const Todolist = React.memo ( ( props : TodolistPropsType ) => {
+
+	console.log ( 'todolist is called' );
 
 	// кнопки фильтрации
 	const onAllClickFilterHandler = () => props.changeFilter ( 'all', props.todolistId );
@@ -93,4 +95,4 @@ export function Todolist ( props : TodolistPropsType ) {
 			</div>
 		</div>
 	);
-}
+} );

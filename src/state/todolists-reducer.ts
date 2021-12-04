@@ -1,5 +1,5 @@
-import { TaskFilterType, TodolistsType } from '../App';
 import { v1 } from 'uuid';
+import { TaskFilterType, TodolistsType } from '../AppWithRedux';
 
 // typing
 

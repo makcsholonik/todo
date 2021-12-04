@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import { Todolist } from './component/Todolist';
-import AddItemForm from './component/AddItemForm';
+import { AddItemForm } from './component/AddItemForm';
 import {
 	addTodolistAC,
 	changeTodolistFilterAC,
@@ -27,7 +27,7 @@ export type TasksStateType = {
 	[ key : string ] : Array<TasksType>
 }
 
-export function AppWithRedux () {
+export const AppWithRedux = React.memo ( () => {
 
 	// получаем ф-ию dispatch которая в стор может задиспатчить экшн.
 	const dispatch = useDispatch ();
@@ -98,4 +98,4 @@ export function AppWithRedux () {
 			}
 		</div>
 	);
-}
+} );

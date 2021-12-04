@@ -4,7 +4,9 @@ export type AddItemPropsType = {
 	addItem : ( newTitle : string ) => void
 }
 
-function AddItemForm ( props : AddItemPropsType ) {
+export const AddItemForm = React.memo ( ( props : AddItemPropsType ) => {
+
+	console.log ( 'AddItemForm is called' );
 
 	const [taskTitle, setTaskTitle] = useState<string> ( '' );
 	const [error, setError] = useState<string | null> ( null );
@@ -47,6 +49,4 @@ function AddItemForm ( props : AddItemPropsType ) {
 			{ error ? <div className={ 'error-message' }>{ error }</div> : '' }
 		</div>
 	);
-}
-
-export default AddItemForm;
+} );
