@@ -34,12 +34,12 @@ export const Todolist = React.memo ( ( props : TodolistPropsType ) => {
 	// изменение имени тудулиста
 	const changeTodolistTitle = useCallback ( ( newTitle : string ) => {
 		props.changeTodolistTitle ( props.todolistId, newTitle );
-	}, [] );
+	}, [props.changeTodolistTitle, props.todolistId] );
 
 	// обёртка над ф-ей AddItem
 	const addTask = useCallback ( ( title : string ) => {
 		props.addTask ( title, props.todolistId );
-	}, [] );
+	}, [props.addTask, props.todolistId] );
 
 	let taskForTodolist = props.tasks;
 
