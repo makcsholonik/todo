@@ -1,7 +1,8 @@
-import React, { ChangeEvent, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { AddItemForm } from './AddItemForm';
 import { EditableSpan } from './EditableSpan';
 import { TaskFilterType, TasksType } from '../AppWithRedux';
+import { Task } from './Task';
 
 type TodolistPropsType = {
 	title : string
@@ -18,8 +19,6 @@ type TodolistPropsType = {
 }
 
 export const Todolist = React.memo ( ( props : TodolistPropsType ) => {
-
-	console.log ( 'todolist is called' );
 
 	// кнопки фильтрации
 	const onAllClickFilterHandler = useCallback ( () => props.changeFilter ( 'all', props.todolistId ), [props.changeFilter, props.todolistId] );
@@ -60,27 +59,17 @@ export const Todolist = React.memo ( ( props : TodolistPropsType ) => {
 			<ul>
 				{/*Отрисовка тасок*/ }
 				{
-					taskForTodolist.map ( ( t ) => {
-
-						// удаление таски
-						const onRemoveTaskHandler = () => props.removeTask ( t.id, props.todolistId );
-
-						// изменение статуса таски (checkbox)
-						const onChangeStatusHandler = ( e : ChangeEvent<HTMLInputElement> ) => props.changeTaskStatus ( t.id, e.currentTarget.checked, props.todolistId );
-
-						// изменяем имя таски
-						const onChangeTitleHandler = ( newTitle : string ) => props.changeTaskTitle ( t.id, newTitle, props.todolistId );
-
+					taskForTodolist.map ( ( task ) => {
 						return (
-							<li key={ t.id } className={ t.isDone ? 'is-done' : '' }>
-								<input
-									type="checkbox"
-									checked={ t.isDone }
-									onChange={ onChangeStatusHandler }
-								/>
-								<EditableSpan title={ t.title } onChange={ onChangeTitleHandler }/>
-								<button onClick={ onRemoveTaskHandler }>x</button>
-							</li>
+							<Task
+								key={task.id}
+								title={ props.title }
+								task={ task }
+								removeTask={ props.removeTask }
+								changeTaskStatus={ props.changeTaskStatus }
+								changeTaskTitle={ props.changeTaskTitle }
+								todolistId={ props.todolistId }
+							/>
 						);
 					} )
 				}
@@ -105,3 +94,4 @@ export const Todolist = React.memo ( ( props : TodolistPropsType ) => {
 		</div>
 	);
 } );
+
