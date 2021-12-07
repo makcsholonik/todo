@@ -22,9 +22,9 @@ export const Todolist = React.memo ( ( props : TodolistPropsType ) => {
 	console.log ( 'todolist is called' );
 
 	// кнопки фильтрации
-	const onAllClickFilterHandler = () => props.changeFilter ( 'all', props.todolistId );
-	const onActiveClickFilterHandler = () => props.changeFilter ( 'active', props.todolistId );
-	const onCompletedClickFilterHandler = () => props.changeFilter ( 'completed', props.todolistId );
+	const onAllClickFilterHandler = useCallback ( () => props.changeFilter ( 'all', props.todolistId ), [props.changeFilter, props.todolistId] );
+	const onActiveClickFilterHandler = useCallback ( () => props.changeFilter ( 'active', props.todolistId ), [props.changeFilter, props.todolistId] );
+	const onCompletedClickFilterHandler = useCallback ( () => props.changeFilter ( 'completed', props.todolistId ), [props.changeFilter, props.todolistId] );
 
 	// удаление todolist
 	const removeTodolist = () => {
