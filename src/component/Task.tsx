@@ -1,6 +1,8 @@
 import React, { ChangeEvent, useCallback } from 'react';
 import { EditableSpan } from './EditableSpan';
 import { TasksType } from '../AppWithRedux';
+import { Delete } from '@material-ui/icons';
+import { IconButton } from '@material-ui/core';
 
 type TaskPropsType = {
 	title : string
@@ -30,7 +32,9 @@ export const Task = React.memo ( ( props : TaskPropsType ) => {
 				onChange={ onChangeStatusHandler }
 			/>
 			<EditableSpan title={ props.task.title } onChange={ onChangeTitleHandler }/>
-			<button onClick={ onRemoveTaskHandler }>x</button>
+			<IconButton onClick={ onRemoveTaskHandler } color="inherit" size="small">
+				<Delete/>
+			</IconButton>
 		</li>
 	);
 } );

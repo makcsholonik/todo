@@ -3,6 +3,8 @@ import { AddItemForm } from './AddItemForm';
 import { EditableSpan } from './EditableSpan';
 import { TaskFilterType, TasksType } from '../AppWithRedux';
 import { Task } from './Task';
+import { Button, IconButton } from '@material-ui/core';
+import { Delete } from '@material-ui/icons';
 
 type TodolistPropsType = {
 	title : string
@@ -53,7 +55,9 @@ export const Todolist = React.memo ( ( props : TodolistPropsType ) => {
 		<div>
 			<h3>
 				<EditableSpan title={ props.title } onChange={ changeTodolistTitle }/>
-				<button onClick={ removeTodolist }>x</button>
+				<IconButton onClick={removeTodolist} color="inherit" size="small">
+					<Delete/>
+				</IconButton>
 			</h3>
 			<AddItemForm addItem={ addTask }/>
 			<ul>
@@ -75,21 +79,27 @@ export const Todolist = React.memo ( ( props : TodolistPropsType ) => {
 				}
 			</ul>
 			<div>
-				<button
+				<Button
+					variant="outlined"
+					size="small"
 					onClick={ onAllClickFilterHandler }
 					className={ props.filter === 'all' ? 'active-filter' : '' }>
 					All
-				</button>
-				<button
+				</Button>
+				<Button
+					variant="outlined"
+					size="small"
 					onClick={ onActiveClickFilterHandler }
 					className={ props.filter === 'active' ? 'active-filter' : '' }>
 					Active
-				</button>
-				<button
+				</Button>
+				<Button
+					variant="outlined"
+					size="small"
 					onClick={ onCompletedClickFilterHandler }
 					className={ props.filter === 'completed' ? 'active-filter' : '' }>
 					Completed
-				</button>
+				</Button>
 			</div>
 		</div>
 	);
