@@ -1,4 +1,5 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from 'react';
+import { Button } from '@material-ui/core';
 
 export type AddItemPropsType = {
 	addItem : ( newTitle : string ) => void
@@ -45,7 +46,7 @@ export const AddItemForm = React.memo ( ( props : AddItemPropsType ) => {
 				onKeyPress={ onNewTaskKeyPressHandler }
 				className={ error ? 'error' : '' }
 			/>
-			<button onClick={ onNewTaskClickHandler }>+</button>
+			<Button onClick={ onNewTaskClickHandler }>+</Button>
 			{ error ? <div className={ 'error-message' }>{ error }</div> : '' }
 		</div>
 	);
