@@ -49,7 +49,7 @@ export const AddItemForm = React.memo ( ( props : AddItemPropsType ) => {
 				onKeyPress={ onNewTaskKeyPressHandler }
 				className={ error ? 'error' : '' }
 			/>
-			<Button variant="outlined" size="small" onClick={ onNewTaskClickHandler }>+</Button>
+			<Button variant={'outlined'} size={'small'} onClick={ onNewTaskClickHandler }>+</Button>
 			{ error ? <div className={ 'error-message' }>{ error }</div> : '' }
 		</div>
 	);

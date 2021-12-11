@@ -55,7 +55,7 @@ export const Todolist = React.memo ( ( props : TodolistPropsType ) => {
 		<div>
 			<h3>
 				<EditableSpan title={ props.title } onChange={ changeTodolistTitle }/>
-				<IconButton onClick={removeTodolist} color="inherit" size="small">
+				<IconButton onClick={ removeTodolist } color={ 'inherit' } size={ 'small' }>
 					<Delete/>
 				</IconButton>
 			</h3>
@@ -66,7 +66,7 @@ export const Todolist = React.memo ( ( props : TodolistPropsType ) => {
 					taskForTodolist.map ( ( task ) => {
 						return (
 							<Task
-								key={task.id}
+								key={ task.id }
 								title={ props.title }
 								task={ task }
 								removeTask={ props.removeTask }
@@ -80,22 +80,22 @@ export const Todolist = React.memo ( ( props : TodolistPropsType ) => {
 			</ul>
 			<div>
 				<Button
-					variant="outlined"
-					size="small"
+					variant={ 'outlined' }
+					size={ 'small' }
 					onClick={ onAllClickFilterHandler }
 					className={ props.filter === 'all' ? 'active-filter' : '' }>
 					All
 				</Button>
 				<Button
-					variant="outlined"
-					size="small"
+					variant={ 'outlined' }
+					size={ 'small' }
 					onClick={ onActiveClickFilterHandler }
 					className={ props.filter === 'active' ? 'active-filter' : '' }>
 					Active
 				</Button>
 				<Button
-					variant="outlined"
-					size="small"
+					variant={ 'outlined' }
+					size={ 'small' }
 					onClick={ onCompletedClickFilterHandler }
 					className={ props.filter === 'completed' ? 'active-filter' : '' }>
 					Completed
