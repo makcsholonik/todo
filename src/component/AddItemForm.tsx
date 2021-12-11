@@ -41,9 +41,10 @@ export const AddItemForm = React.memo ( ( props : AddItemPropsType ) => {
 	return (
 		<div>
 			<TextField
-				label="Add"
-				variant="standard"
-				color="primary"
+				label={ 'text' }
+				variant={'standard'}
+				color={'primary'}
+				size={'small'}
 				value={ taskTitle }
 				onChange={ onNewTaskChangeHandler }
 				onKeyPress={ onNewTaskKeyPressHandler }
