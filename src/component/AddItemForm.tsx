@@ -43,7 +43,7 @@ export const AddItemForm = React.memo ( ( props : AddItemPropsType ) => {
 		<div>
 			<TextField
 				label={ 'type value' }
-				variant={ 'standard' }
+				variant={ 'outlined' }
 				color={ 'primary' }
 				size={ 'small' }
 				value={ taskTitle }
@@ -52,7 +52,7 @@ export const AddItemForm = React.memo ( ( props : AddItemPropsType ) => {
 				error={ !!error }
 				helperText={ error }
 			/>
-			<IconButton onClick={ onNewTaskClickHandler }>
+			<IconButton onClick={ onNewTaskClickHandler } size={ 'small' }>
 				<Add/>
 			</IconButton>
 			{/*заменили helperText*/ }

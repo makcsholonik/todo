@@ -11,6 +11,7 @@ import {
 import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC } from './state/tasks-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRootState } from './state/store';
+import { AppBar, Button, IconButton, Menu, Toolbar, Typography } from '@material-ui/core';
 
 export type TasksType = {
 	id : string
@@ -66,6 +67,23 @@ export const AppWithRedux = React.memo ( () => {
 
 	return (
 		<div className="App">
+
+			<AppBar position="static">
+				<Toolbar>
+					<IconButton
+						edge="start"
+						color="inherit"
+						aria-label="menu"
+					>
+						<Menu open={false}/>
+					</IconButton>
+					<Typography variant="h6">
+						News
+					</Typography>
+					<Button color="inherit">Login</Button>
+				</Toolbar>
+			</AppBar>
+
 			<AddItemForm addItem={ addTodolist }/>
 			{
 				todolists.map ( ( tl ) => {
