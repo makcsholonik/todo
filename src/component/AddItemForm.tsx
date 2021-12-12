@@ -1,5 +1,6 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from 'react';
-import { Button, TextField } from '@material-ui/core';
+import { IconButton, TextField } from '@material-ui/core';
+import { Add } from '@material-ui/icons';
 
 export type AddItemPropsType = {
 	addItem : ( newTitle : string ) => void
@@ -42,18 +43,20 @@ export const AddItemForm = React.memo ( ( props : AddItemPropsType ) => {
 		<div>
 			<TextField
 				label={ 'type value' }
-				variant={'standard'}
-				color={'primary'}
-				size={'small'}
+				variant={ 'standard' }
+				color={ 'primary' }
+				size={ 'small' }
 				value={ taskTitle }
 				onChange={ onNewTaskChangeHandler }
 				onKeyPress={ onNewTaskKeyPressHandler }
-				error={!!error}
-				helperText={error}
+				error={ !!error }
+				helperText={ error }
 			/>
-			<Button variant={'outlined'} size={'small'} onClick={ onNewTaskClickHandler }>+</Button>
-			{/*заменили helperText*/}
-			{/*{ error ? <div className={ 'error-message' }>{ error }</div> : '' }*/}
+			<IconButton onClick={ onNewTaskClickHandler }>
+				<Add/>
+			</IconButton>
+			{/*заменили helperText*/ }
+			{/*{ error ? <div className={ 'error-message' }>{ error }</div> : '' }*/ }
 		</div>
 	);
 } );

@@ -4,7 +4,7 @@ import { EditableSpan } from './EditableSpan';
 import { TaskFilterType, TasksType } from '../AppWithRedux';
 import { Task } from './Task';
 import { Button, IconButton } from '@material-ui/core';
-import { Delete } from '@material-ui/icons';
+import { RemoveCircle } from '@material-ui/icons';
 
 type TodolistPropsType = {
 	title : string
@@ -56,7 +56,7 @@ export const Todolist = React.memo ( ( props : TodolistPropsType ) => {
 			<h3>
 				<EditableSpan title={ props.title } onChange={ changeTodolistTitle }/>
 				<IconButton onClick={ removeTodolist } color={ 'default' } size={ 'small' }>
-					<Delete/>
+					<RemoveCircle/>
 				</IconButton>
 			</h3>
 			<AddItemForm addItem={ addTask }/>
