@@ -41,17 +41,19 @@ export const AddItemForm = React.memo ( ( props : AddItemPropsType ) => {
 	return (
 		<div>
 			<TextField
-				label={ 'text' }
+				label={ 'type value' }
 				variant={'standard'}
 				color={'primary'}
 				size={'small'}
 				value={ taskTitle }
 				onChange={ onNewTaskChangeHandler }
 				onKeyPress={ onNewTaskKeyPressHandler }
-				className={ error ? 'error' : '' }
+				error={!!error}
+				helperText={error}
 			/>
 			<Button variant={'outlined'} size={'small'} onClick={ onNewTaskClickHandler }>+</Button>
-			{ error ? <div className={ 'error-message' }>{ error }</div> : '' }
+			{/*заменили helperText*/}
+			{/*{ error ? <div className={ 'error-message' }>{ error }</div> : '' }*/}
 		</div>
 	);
 } );
