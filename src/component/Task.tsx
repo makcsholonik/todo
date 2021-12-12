@@ -2,7 +2,7 @@ import React, { ChangeEvent, useCallback } from 'react';
 import { EditableSpan } from './EditableSpan';
 import { TasksType } from '../AppWithRedux';
 import { Delete } from '@material-ui/icons';
-import { IconButton } from '@material-ui/core';
+import { Checkbox, IconButton } from '@material-ui/core';
 
 type TaskPropsType = {
 	title : string
@@ -26,13 +26,14 @@ export const Task = React.memo ( ( props : TaskPropsType ) => {
 
 	return (
 		<li key={ props.task.id } className={ props.task.isDone ? 'is-done' : '' }>
-			<input
-				type="checkbox"
+			<Checkbox
+				size={ 'small' }
+				color={ 'secondary' }
 				checked={ props.task.isDone }
 				onChange={ onChangeStatusHandler }
 			/>
 			<EditableSpan title={ props.task.title } onChange={ onChangeTitleHandler }/>
-			<IconButton onClick={ onRemoveTaskHandler } color={'default'} size={'small'}>
+			<IconButton onClick={ onRemoveTaskHandler } color={ 'default' } size={ 'small' }>
 				<Delete/>
 			</IconButton>
 		</li>
