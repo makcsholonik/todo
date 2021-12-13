@@ -43,7 +43,7 @@ export const AddItemForm = React.memo ( ( props : AddItemPropsType ) => {
 		<div>
 			<TextField
 				label={ 'type value' }
-				variant={ 'outlined' }
+				variant={ 'standard' }
 				color={ 'primary' }
 				size={ 'small' }
 				value={ taskTitle }

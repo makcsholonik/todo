@@ -60,7 +60,7 @@ export const Todolist = React.memo ( ( props : TodolistPropsType ) => {
 				</IconButton>
 			</h3>
 			<AddItemForm addItem={ addTask }/>
-			<ul>
+			<div>
 				{/*Отрисовка тасок*/ }
 				{
 					taskForTodolist.map ( ( task ) => {
@@ -77,7 +77,7 @@ export const Todolist = React.memo ( ( props : TodolistPropsType ) => {
 						);
 					} )
 				}
-			</ul>
+			</div>
 			<div>
 				<Button
 					variant={ props.filter === 'all' ? 'contained' : 'outlined' }

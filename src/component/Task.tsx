@@ -25,7 +25,7 @@ export const Task = React.memo ( ( props : TaskPropsType ) => {
 	), [props.changeTaskTitle, props.task.id, props.todolistId] );
 
 	return (
-		<li key={ props.task.id } className={ props.task.isDone ? 'is-done' : '' }>
+		<div key={ props.task.id } className={ props.task.isDone ? 'is-done' : '' }>
 			<Checkbox
 				size={ 'small' }
 				color={ 'secondary' }
@@ -36,6 +36,6 @@ export const Task = React.memo ( ( props : TaskPropsType ) => {
 			<IconButton onClick={ onRemoveTaskHandler } color={ 'default' } size={ 'small' }>
 				<RemoveCircleOutline/>
 			</IconButton>
-		</li>
+		</div>
 	);
 } );

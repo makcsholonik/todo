@@ -11,7 +11,8 @@ import {
 import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC } from './state/tasks-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRootState } from './state/store';
-import { AppBar, Button, IconButton, Menu, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, Box, Button, Container, Grid, IconButton, Paper, Toolbar, Typography } from '@material-ui/core';
+import { Menu } from '@material-ui/icons';
 
 export type TasksType = {
 	id : string
@@ -68,46 +69,55 @@ export const AppWithRedux = React.memo ( () => {
 	return (
 		<div className="App">
 
-			<AppBar position="static">
-				<Toolbar>
-					<IconButton
-						edge="start"
-						color="inherit"
-						aria-label="menu"
-					>
-						<Menu open={false}/>
-					</IconButton>
-					<Typography variant="h6">
-						News
-					</Typography>
-					<Button color="inherit">Login</Button>
-				</Toolbar>
-			</AppBar>
+			<Box>
+				<AppBar position={ 'static' } color={ 'primary' }>
+					<Toolbar>
+						<IconButton edge={ 'start' } color={ 'inherit' } aria-label={ 'menu' }>
+							<Menu/>
+						</IconButton>
+						<Typography variant={ 'h6' }>
+							News
+						</Typography>
+						<Button color={ 'inherit' }>Login</Button>
+					</Toolbar>
+				</AppBar>
+			</Box>
 
-			<AddItemForm addItem={ addTodolist }/>
-			{
-				todolists.map ( ( tl ) => {
+			<Container fixed>
+				<Grid container style={ { padding : '20px' } }>
+					<AddItemForm addItem={ addTodolist }/>
+				</Grid>
+				<Grid container spacing={ 5 }>
+					{
+						todolists.map ( ( tl ) => {
 
-					let taskForTodolist = tasks[ tl.id ];
+							let taskForTodolist = tasks[ tl.id ];
 
-					return (
-						<Todolist
-							key={ tl.id }
-							title={ tl.title }
-							tasks={ taskForTodolist }
-							removeTask={ removeTask }
-							changeFilter={ changeFilter }
-							addTask={ addTask }
-							changeTaskStatus={ changeTaskStatus }
-							changeTaskTitle={ changeTaskTitle }
-							filter={ tl.filter }
-							todolistId={ tl.id }
-							removeTodolist={ removeTodolist }
-							changeTodolistTitle={ changeTodolistTitle }
-						/>
-					);
-				} )
-			}
+							return (
+								<Grid item>
+									<Paper elevation={ 2 } style={ { padding : '10px' } }>
+										<Todolist
+											key={ tl.id }
+											title={ tl.title }
+											tasks={ taskForTodolist }
+											removeTask={ removeTask }
+											changeFilter={ changeFilter }
+											addTask={ addTask }
+											changeTaskStatus={ changeTaskStatus }
+											changeTaskTitle={ changeTaskTitle }
+											filter={ tl.filter }
+											todolistId={ tl.id }
+											removeTodolist={ removeTodolist }
+											changeTodolistTitle={ changeTodolistTitle }
+										/>
+									</Paper>
+								</Grid>
+							)
+								;
+						} )
+					}
+				</Grid>
+			</Container>
 		</div>
 	);
 } );
