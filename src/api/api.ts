@@ -42,43 +42,54 @@ export const todolistsAPI = {
 // task api
 
 export type TaskType = {
-	description: string
-	title: string
-	completed: boolean
-	status: number
-	priority: number
-	startDate: string
-	deadline: string
-	id: string
-	todoListId: string
-	order: number
-	addedDate: string
+	description : string
+	title : string
+	completed : boolean
+	status : number
+	priority : number
+	startDate : string
+	deadline : string
+	id : string
+	todoListId : string
+	order : number
+	addedDate : string
 }
 
 type GetTasksResponseType = {
-	items: TaskType[]
-	totalCount: number
-	error: string
+	items : TaskType[]
+	totalCount : number
+	error : string | null
 }
 
-type CreateTaskResponseType = {
-	resultCode: number
-	messages: string[]
-	data: {}
+type UpdateTaskType = {
+	title : string
+	description : string
+	completed : boolean
+	status : number
+	priority : number
+	startDate : string
+	deadline : string
 }
 
 export const tasksAPI = {
-	getTasks(todolistId: string) {
-		return instance.get<GetTasksResponseType>(`todo-lists/${ todolistId }/tasks`)
+	getTasks ( todolistId : string ) {
+		return instance.get<GetTasksResponseType> ( `todo-lists/${ todolistId }/tasks` );
 	},
-	createTask(todolistId: string, title: string) {
-		return instance.post<>(`todo-lists/${ todolistId }/tasks`, {title: title})
+	createTask ( todolistId : string, title : string ) {
+		return instance.post<ResponseType> ( `todo-lists/${ todolistId }/tasks`, { title : title } );
 	},
-	deleteTask() {
-		return instance.delete<>()
+	deleteTask ( todolistId : string, taskId : string ) {
+		return instance.get<ResponseType> ( `todo-lists/${ todolistId }/tasks/${ taskId }` );
 	},
-	updateTasks() {
-		return instance.put<>()
+	updateTasks ( todolistId : string, taskId : string, title : string, description : string, completed : boolean, status : number, priority : number, startDate : string, deadline : string ) {
+		return instance.put<UpdateTaskType> ( `todo-lists/${ todolistId }/tasks/${ taskId }`, {
+			title : title,
+			description : description,
+			completed : completed,
+			status : status,
+			priority : priority,
+			startDate : startDate,
+			deadline : deadline
+		} );
 	}
-
 };
