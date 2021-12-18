@@ -1,5 +1,5 @@
 import { v1 } from 'uuid';
-import { TaskFilterType, TodolistsType } from '../AppWithRedux';
+import { TodolistType } from '../api/api';
 
 // typing
 
@@ -33,7 +33,12 @@ export type ChangeTodolistFilterActionType = {
 export const todolistId1 : string = v1 ();
 export const todolistId2 : string = v1 ();
 
-const initialState : Array<TodolistsType> = [];
+const initialState : Array<TodolistDomainType> = [];
+
+export type TaskFilterType = 'all' | 'active' | 'completed';
+export type TodolistDomainType = TodolistType & {
+	filter : TaskFilterType
+}
 
 // меня вызовут и дадут мне стейт (почти всегда объект)
 // и инструкцию (action, тоже объект)
@@ -41,7 +46,7 @@ const initialState : Array<TodolistsType> = [];
 
 // reducer
 
-export const todolistsReducer = ( state : TodolistsType[] = initialState, action : ActionType ) : TodolistsType[] => {
+export const todolistsReducer = ( state : TodolistDomainType[] = initialState, action : ActionType ) : TodolistDomainType[] => {
 	switch (action.type) {
 		case 'REMOVE-TODOLIST': {
 			return state.filter ( tl => tl.id !== action.todolistId );
@@ -50,6 +55,8 @@ export const todolistsReducer = ( state : TodolistsType[] = initialState, action
 			return [...state, {
 				id : action.todolistId,
 				title : action.title,
+				addedDate : '',
+				order : 0,
 				filter : 'all'
 			}];
 		}

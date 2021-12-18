@@ -6,27 +6,19 @@ import {
 	addTodolistAC,
 	changeTodolistFilterAC,
 	changeTodolistTitleAC,
-	removeTodolistAC
+	removeTodolistAC,
+	TaskFilterType,
+	TodolistDomainType
 } from './state/todolists-reducer';
 import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC } from './state/tasks-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRootState } from './state/store';
 import { AppBar, Box, Button, Container, Grid, IconButton, Paper, Toolbar, Typography } from '@material-ui/core';
 import { Menu } from '@material-ui/icons';
+import { TaskType } from './api/api';
 
-export type TasksType = {
-	id : string
-	title : string
-	isDone : boolean
-}
-export type TaskFilterType = 'all' | 'active' | 'completed';
-export type TodolistsType = {
-	id : string
-	title : string
-	filter : TaskFilterType
-}
 export type TasksStateType = {
-	[ key : string ] : Array<TasksType>
+	[ key : string ] : Array<TaskType>
 }
 
 export const AppWithRedux = React.memo ( () => {
@@ -35,7 +27,7 @@ export const AppWithRedux = React.memo ( () => {
 	const dispatch = useDispatch ();
 
 	// достаём тудулисты и таски
-	const todolists = useSelector<AppRootState, Array<TodolistsType>> ( state => state.todolists );
+	const todolists = useSelector<AppRootState, Array<TodolistDomainType>> ( state => state.todolists );
 	const tasks = useSelector<AppRootState, TasksStateType> ( state => state.tasks );
 
 	// tasks
