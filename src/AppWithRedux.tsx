@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppRootState } from './state/store';
 import { AppBar, Box, Button, Container, Grid, IconButton, Paper, Toolbar, Typography } from '@material-ui/core';
 import { Menu } from '@material-ui/icons';
-import { TaskType } from './api/api';
+import { TaskStatuses, TaskType } from './api/api';
 
 export type TasksStateType = {
 	[ key : string ] : Array<TaskType>
@@ -37,8 +37,8 @@ export const AppWithRedux = React.memo ( () => {
 	const removeTask = useCallback ( ( taskId : string, todolistId : string ) => {
 		dispatch ( removeTaskAC ( taskId, todolistId ) );
 	}, [dispatch] );
-	const changeTaskStatus = useCallback ( ( taskId : string, isDone : boolean, todolistId : string ) => {
-		dispatch ( changeTaskStatusAC ( taskId, isDone, todolistId ) );
+	const changeTaskStatus = useCallback ( ( taskId : string, status : TaskStatuses, todolistId : string ) => {
+		dispatch ( changeTaskStatusAC ( taskId, status, todolistId ) );
 	}, [dispatch] );
 	const changeTaskTitle = useCallback ( ( taskId : string, newTitle : string, todolistId : string ) => {
 		dispatch ( changeTaskTitleAC ( taskId, newTitle, todolistId ) );
