@@ -46,7 +46,7 @@ test ( 'correct todolist should be added', () => {
 	let todolistId1 = v1 ();
 	let todolistId2 = v1 ();
 
-	let newTodolistTitle = "New Todolist";
+	let newTodolistTitle = 'New Todolist';
 
 	const startState : Array<TodolistDomainType> = [
 		{
@@ -76,7 +76,7 @@ test ( 'correct todolist should change its name', () => {
 	let todolistId1 = v1 ();
 	let todolistId2 = v1 ();
 
-	let newTodolistTitle = "New Todolist";
+	let newTodolistTitle = 'New Todolist';
 
 	const startState : Array<TodolistDomainType> = [
 		{
@@ -97,7 +97,7 @@ test ( 'correct todolist should change its name', () => {
 
 	const endState = todolistsReducer ( startState, changeTodolistTitleAC ( todolistId2, newTodolistTitle ) );
 
-	expect ( endState[ 0 ].title ).toBe ( "What to learn" );
+	expect ( endState[ 0 ].title ).toBe ( 'What to learn' );
 	expect ( endState[ 1 ].title ).toBe ( newTodolistTitle );
 } );
 
@@ -105,7 +105,7 @@ test ( 'correct filter of todolist should be changed', () => {
 	let todolistId1 = v1 ();
 	let todolistId2 = v1 ();
 
-	let newFilter : TaskFilterType = "completed";
+	let newFilter : TaskFilterType = 'completed';
 
 	const startState : Array<TodolistDomainType> = [
 		{
@@ -126,7 +126,7 @@ test ( 'correct filter of todolist should be changed', () => {
 
 	const endState = todolistsReducer ( startState, changeTodolistFilterAC ( todolistId2, newFilter ) );
 
-	expect ( endState[ 0 ].filter ).toBe ( "all" );
+	expect ( endState[ 0 ].filter ).toBe ( 'all' );
 	expect ( endState[ 1 ].filter ).toBe ( newFilter );
 } );
 
