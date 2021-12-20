@@ -31,7 +31,7 @@ export const App = React.memo ( () => {
 	const todolists = useSelector<AppRootState, Array<TodolistDomainType>> ( state => state.todolists );
 	const tasks = useSelector<AppRootState, TasksStateType> ( state => state.tasks );
 
-	// отрисовка тудулистов
+	// отрисовка тудулистов с сервера
 	useEffect ( () => {
 		fetchTodolistsThunk ( dispatch );
 	}, [] );
