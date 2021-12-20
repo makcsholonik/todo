@@ -113,8 +113,18 @@ export const setTodolistsAC = ( todolists : TodolistType[] ) : SetTodolistsActio
 
 // thunk
 
-export const fetchTodolistsThunk = ( dispatch : Dispatch ) => {
-	todolistsAPI.getTodolists ().then ( ( res ) => {
-		dispatch ( setTodolistsAC ( res.data ) );
-	} );
+// export const fetchTodolistsThunk = ( dispatch : Dispatch ) => {
+// 	todolistsAPI.getTodolists ().then ( ( res ) => {
+// 		dispatch ( setTodolistsAC ( res.data ) );
+// 	} );
+// };
+
+export const fetchTodolistsTC = () => {
+	return (
+		( dispatch : Dispatch ) => {
+			todolistsAPI.getTodolists ().then ( ( res ) => {
+				dispatch ( setTodolistsAC ( res.data ) );
+			} );
+		}
+	);
 };

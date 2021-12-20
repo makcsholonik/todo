@@ -6,7 +6,7 @@ import {
 	addTodolistAC,
 	changeTodolistFilterAC,
 	changeTodolistTitleAC,
-	fetchTodolistsThunk,
+	fetchTodolistsTC,
 	removeTodolistAC,
 	TaskFilterType,
 	TodolistDomainType
@@ -33,7 +33,7 @@ export const App = React.memo ( () => {
 
 	// отрисовка тудулистов с сервера
 	useEffect ( () => {
-		fetchTodolistsThunk ( dispatch );
+		dispatch ( fetchTodolistsTC () );
 	}, [] );
 
 
