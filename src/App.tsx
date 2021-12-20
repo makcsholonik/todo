@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import './App.css';
 import { Todolist } from './component/Todolist';
 import { AddItemForm } from './component/AddItemForm';
@@ -6,6 +6,7 @@ import {
 	addTodolistAC,
 	changeTodolistFilterAC,
 	changeTodolistTitleAC,
+	fetchTodolistsThunk,
 	removeTodolistAC,
 	TaskFilterType,
 	TodolistDomainType
@@ -21,7 +22,7 @@ export type TasksStateType = {
 	[ key : string ] : Array<TaskType>
 }
 
-export const AppWithRedux = React.memo ( () => {
+export const App = React.memo ( () => {
 
 	// получаем ф-ию dispatch которая в стор может задиспатчить экшн.
 	const dispatch = useDispatch ();
@@ -29,6 +30,12 @@ export const AppWithRedux = React.memo ( () => {
 	// достаём тудулисты и таски
 	const todolists = useSelector<AppRootState, Array<TodolistDomainType>> ( state => state.todolists );
 	const tasks = useSelector<AppRootState, TasksStateType> ( state => state.tasks );
+
+	// отрисовка тудулистов
+	useEffect ( () => {
+		fetchTodolistsThunk ( dispatch );
+	}, [] );
+
 
 	// tasks
 	const addTask = useCallback ( ( title : string, todolistId : string ) => {

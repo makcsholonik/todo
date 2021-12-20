@@ -1,6 +1,6 @@
 import { v1 } from 'uuid';
 import { AddTodolistActionType, RemoveTodolistActionType, SetTodolistsActionType } from './todolists-reducer';
-import { TasksStateType } from '../AppWithRedux';
+import { TasksStateType } from '../App';
 import { TaskPriorities, TaskStatuses, TaskType } from '../api/api';
 
 // typing

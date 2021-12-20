@@ -1,5 +1,6 @@
 import { v1 } from 'uuid';
-import { TodolistType } from '../api/api';
+import { todolistsAPI, TodolistType } from '../api/api';
+import { Dispatch } from 'redux';
 
 // typing
 
@@ -108,4 +109,12 @@ export const changeTodolistFilterAC = ( todolistId : string, newFilter : TaskFil
 };
 export const setTodolistsAC = ( todolists : TodolistType[] ) : SetTodolistsActionType => {
 	return { type : 'SET-TODOLISTS', todolists };
+};
+
+// thunk
+
+export const fetchTodolistsThunk = ( dispatch : Dispatch ) => {
+	todolistsAPI.getTodolists ().then ( ( res ) => {
+		dispatch ( setTodolistsAC ( res.data ) );
+	} );
 };
