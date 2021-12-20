@@ -155,6 +155,6 @@ test ( 'todolist should be set to the state', () => {
 
 	expect ( endState.length ).toBe ( 2 );
 	expect ( endState[ 0 ].title ).toBe ( 'What to learn' );
-	expect ( endState[ 1 ].title ).toBe ( 'What to buy' );
+	expect ( endState[ 1 ].title ).toBe ( 'What to buy' ); 
 } );
 
