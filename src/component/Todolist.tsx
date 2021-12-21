@@ -4,7 +4,7 @@ import { EditableSpan } from './EditableSpan';
 import { Task } from './Task';
 import { Button, IconButton } from '@material-ui/core';
 import { RemoveCircle } from '@material-ui/icons';
-import { fetchTodolistsTC, TaskFilterType } from '../state/todolists-reducer';
+import { TaskFilterType } from '../state/todolists-reducer';
 import { TaskStatuses, TaskType } from '../api/api';
 import { useDispatch } from 'react-redux';
 import { fetchTasksTC } from '../state/tasks-reducer';

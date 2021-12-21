@@ -150,7 +150,7 @@ export const fetchTasksTC = ( todolistId : string ) => {
 	return (
 		( dispatch : Dispatch ) => {
 			tasksAPI.getTasks ( todolistId ).then ( ( res ) => {
-				dispatch ( setTodolistsAC ( res.data.items ) );
+				dispatch ( setTasksAC ( res.data.items, todolistId ) );
 			} );
 		}
 	);
