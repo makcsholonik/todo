@@ -1,7 +1,13 @@
 import { v1 } from 'uuid';
-import { AddTodolistActionType, RemoveTodolistActionType, SetTodolistsActionType } from './todolists-reducer';
+import {
+	AddTodolistActionType,
+	RemoveTodolistActionType,
+	setTodolistsAC,
+	SetTodolistsActionType
+} from './todolists-reducer';
 import { TasksStateType } from '../App';
-import { TaskPriorities, TaskStatuses, TaskType } from '../api/api';
+import { TaskPriorities, tasksAPI, TaskStatuses, TaskType, todolistsAPI } from '../api/api';
+import { Dispatch } from 'redux';
 
 // typing
 
@@ -136,4 +142,16 @@ export const changeTaskTitleAC = ( taskId : string, newTitle : string, todolistI
 };
 export const setTasksAC = ( tasks : TaskType[], todolistId : string, ) : SetTasksActionType => {
 	return { type : 'SET-TASKS', tasks, todolistId };
+};
+
+// thunk
+
+export const fetchTasksTC = ( todolistId : string ) => {
+	return (
+		( dispatch : Dispatch ) => {
+			tasksAPI.getTasks ( todolistId ).then ( ( res ) => {
+				dispatch ( setTodolistsAC ( res.data.items ) );
+			} );
+		}
+	);
 };

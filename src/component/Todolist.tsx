@@ -1,11 +1,13 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { AddItemForm } from './AddItemForm';
 import { EditableSpan } from './EditableSpan';
 import { Task } from './Task';
 import { Button, IconButton } from '@material-ui/core';
 import { RemoveCircle } from '@material-ui/icons';
-import { TaskFilterType } from '../state/todolists-reducer';
+import { fetchTodolistsTC, TaskFilterType } from '../state/todolists-reducer';
 import { TaskStatuses, TaskType } from '../api/api';
+import { useDispatch } from 'react-redux';
+import { fetchTasksTC } from '../state/tasks-reducer';
 
 type TodolistPropsType = {
 	title : string
@@ -22,6 +24,12 @@ type TodolistPropsType = {
 }
 
 export const Todolist = React.memo ( ( props : TodolistPropsType ) => {
+
+	const dispatch = useDispatch ();
+
+	useEffect ( () => {
+		dispatch ( fetchTasksTC ( props.todolistId ) );
+	}, [] );
 
 	// кнопки фильтрации
 	const onAllClickFilterHandler = useCallback ( () => props.changeFilter ( 'all', props.todolistId ), [props.changeFilter, props.todolistId] );
