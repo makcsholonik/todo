@@ -38,8 +38,8 @@ export type ChangeTaskTitleType = {
 }
 export type SetTasksActionType = {
 	type : 'SET-TASKS'
-	todolistId : string
 	tasks : TaskType[]
+	todolistId : string
 }
 
 // initial state
@@ -134,6 +134,6 @@ export const changeTaskStatusAC = ( taskId : string, status : TaskStatuses, todo
 export const changeTaskTitleAC = ( taskId : string, newTitle : string, todolistId : string ) : ChangeTaskTitleType => {
 	return { type : 'CHANGE-TASK-TITLE', taskId, newTitle, todolistId };
 };
-export const setTasksAC = ( todolistId : string, tasks : TaskType[] ) : SetTasksActionType => {
-	return { type : 'SET-TASKS', todolistId, tasks };
+export const setTasksAC = ( tasks : TaskType[], todolistId : string, ) : SetTasksActionType => {
+	return { type : 'SET-TASKS', tasks, todolistId };
 };
