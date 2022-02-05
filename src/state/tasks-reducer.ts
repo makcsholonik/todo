@@ -144,9 +144,10 @@ export const setTasksAC = ( tasks : TaskType[], todolistId : string, ) : SetTask
 export const fetchTasksTC = ( todolistId : string ) => {
 	return (
 		( dispatch : Dispatch ) => {
-			tasksAPI.getTasks ( todolistId ).then ( ( res ) => {
-				dispatch ( setTasksAC ( res.data.items, todolistId ) );
-			} );
+			tasksAPI.getTasks ( todolistId )
+				.then ( ( res ) => {
+					dispatch ( setTasksAC ( res.data.items, todolistId ) );
+				} );
 		}
 	);
 };

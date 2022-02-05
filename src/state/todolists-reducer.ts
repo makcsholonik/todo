@@ -122,9 +122,10 @@ export const setTodolistsAC = ( todolists : TodolistType[] ) : SetTodolistsActio
 export const fetchTodolistsTC = () => {
 	return (
 		( dispatch : Dispatch ) => {
-			todolistsAPI.getTodolists ().then ( ( res ) => {
-				dispatch ( setTodolistsAC ( res.data ) );
-			} );
+			todolistsAPI.getTodolists ()
+				.then ( ( res ) => {
+					dispatch ( setTodolistsAC ( res.data ) );
+				} );
 		}
 	);
 };

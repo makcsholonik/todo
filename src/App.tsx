@@ -41,12 +41,15 @@ export const App = React.memo ( () => {
 	const addTask = useCallback ( ( title : string, todolistId : string ) => {
 		dispatch ( addTaskAC ( title, todolistId ) );
 	}, [dispatch] );
+
 	const removeTask = useCallback ( ( taskId : string, todolistId : string ) => {
 		dispatch ( removeTaskAC ( taskId, todolistId ) );
 	}, [dispatch] );
+
 	const changeTaskStatus = useCallback ( ( taskId : string, status : TaskStatuses, todolistId : string ) => {
 		dispatch ( changeTaskStatusAC ( taskId, status, todolistId ) );
 	}, [dispatch] );
+
 	const changeTaskTitle = useCallback ( ( taskId : string, newTitle : string, todolistId : string ) => {
 		dispatch ( changeTaskTitleAC ( taskId, newTitle, todolistId ) );
 	}, [dispatch] );
@@ -55,12 +58,15 @@ export const App = React.memo ( () => {
 	const changeFilter = useCallback ( ( filter : TaskFilterType, todolistId : string ) => {
 		dispatch ( changeTodolistFilterAC ( todolistId, filter ) );
 	}, [dispatch] );
+
 	const addTodolist = useCallback ( ( title : string ) => {
 		dispatch ( addTodolistAC ( title ) );
 	}, [dispatch] );
+
 	const removeTodolist = useCallback ( ( todolistId : string ) => {
 		dispatch ( removeTodolistAC ( todolistId ) );
 	}, [dispatch] );
+
 	const changeTodolistTitle = useCallback ( ( todolistId : string, newTitle : string ) => {
 		dispatch ( changeTodolistTitleAC ( todolistId, newTitle ) );
 	}, [dispatch] );
