@@ -9,48 +9,19 @@ const initialState : TasksStateType = {};
 
 // reducer
 export const tasksReducer = ( state : TasksStateType = initialState, action : ActionType ) : TasksStateType => {
-	switch (action.type) {
-		case 'REMOVE_TASK': {
-			const stateCopy = { ...state };
-			const tasks = stateCopy[ action.todolistId ];
-			const filteredTasks = tasks.filter ( t => t.id !== action.taskId );
-			stateCopy[ action.todolistId ] = filteredTasks;
-			return stateCopy;
-		}
-		// case 'ADD_TASK': {
-		// 	const newTask : TaskType = {
-		// 		description : '',
-		// 		title : action.title,
-		// 		status : TaskStatuses.New,
-		// 		priority : TaskPriorities.Low,
-		// 		startDate : '',
-		// 		deadline : '',
-		// 		id : v1 (),
-		// 		todoListId : action.todolistId,
-		// 		order : 0,
-		// 		addedDate : ''
-		// 	};
-		// 	const stateCopy = { ...state };
-		// 	const tasksTodolist = stateCopy[ action.todolistId ];
-		// 	stateCopy[ action.todolistId ] = [newTask, ...tasksTodolist];
-		// 	return stateCopy;
-		// }
-		case 'ADD_TASK': {
-			const newTask : TaskType = action.task;
-			const stateCopy = { ...state };
-			const tasksTodolist = stateCopy[ newTask.todoListId ];
-			stateCopy[ newTask.todoListId ] = [newTask, ...tasksTodolist];
-			return stateCopy;
-		}
-		case 'UPDATE_TASK': {
-			const stateCopy = { ...state };
-			const tasks = stateCopy[ action.todolistId ];
-			stateCopy[ action.todolistId ] = tasks.map ( t => t.id === action.taskId ? {
-				...t,
-				...action.model
-			} : t );
-			return stateCopy;
-		}
+	switch ( action.type ) {
+		case 'REMOVE_TASK':
+			return { ...state, [ action.todolistId ] : state[ action.todolistId ].filter ( t => t.id !== action.taskId ) };
+		case 'ADD_TASK':
+			return { ...state, [ action.task.todoListId ] : [action.task, ...state[ action.task.todoListId ]] };
+		case 'UPDATE_TASK':
+			return {
+				...state,
+				[ action.todolistId ] : state[ action.todolistId ]
+					.map ( t => t.id === action.taskId ? { ...t, ...action.model } : t )
+			};
+		case 'ADD_TODOLIST':
+			return { ...state, [ action.todolist.id ] : [] };
 		case 'REMOVE_TODOLIST': {
 			const stateCopy = { ...state };
 			delete stateCopy[ action.todolistId ];
@@ -63,11 +34,8 @@ export const tasksReducer = ( state : TasksStateType = initialState, action : Ac
 			} );
 			return stateCopy;
 		}
-		case 'SET_TASKS': {
-			const stateCopy = { ...state };
-			stateCopy[ action.todolistId ] = action.tasks;
-			return stateCopy;
-		}
+		case 'SET_TASKS':
+			return { ...state, [ action.todolistId ] : action.tasks };
 		default:
 			return state;
 	}
@@ -158,3 +126,71 @@ export type UpdateDomainTaskModelType = {
 	startDate? : string
 	deadline? : string
 }
+
+
+// delete
+/*
+export const tasksReducer = ( state : TasksStateType = initialState, action : ActionType ) : TasksStateType => {
+	switch (action.type) {
+		case 'REMOVE_TASK': {
+			const stateCopy = { ...state };
+			const tasks = stateCopy[ action.todolistId ];
+			const filteredTasks = tasks.filter ( t => t.id !== action.taskId );
+			stateCopy[ action.todolistId ] = filteredTasks;
+			return stateCopy;
+		}
+		// case 'ADD_TASK': {
+		// 	const newTask : TaskType = {
+		// 		description : '',
+		// 		title : action.title,
+		// 		status : TaskStatuses.New,
+		// 		priority : TaskPriorities.Low,
+		// 		startDate : '',
+		// 		deadline : '',
+		// 		id : v1 (),
+		// 		todoListId : action.todolistId,
+		// 		order : 0,
+		// 		addedDate : ''
+		// 	};
+		// 	const stateCopy = { ...state };
+		// 	const tasksTodolist = stateCopy[ action.todolistId ];
+		// 	stateCopy[ action.todolistId ] = [newTask, ...tasksTodolist];
+		// 	return stateCopy;
+		// }
+		case 'ADD_TASK': {
+			const newTask : TaskType = action.task;
+			const stateCopy = { ...state };
+			const tasksTodolist = stateCopy[ newTask.todoListId ];
+			stateCopy[ newTask.todoListId ] = [newTask, ...tasksTodolist];
+			return stateCopy;
+		}
+		case 'UPDATE_TASK': {
+			const stateCopy = { ...state };
+			const tasks = stateCopy[ action.todolistId ];
+			stateCopy[ action.todolistId ] = tasks.map ( t => t.id === action.taskId ? {
+				...t,
+				...action.model
+			} : t );
+			return stateCopy;
+		}
+		case 'REMOVE_TODOLIST': {
+			const stateCopy = { ...state };
+			delete stateCopy[ action.todolistId ];
+			return stateCopy;
+		}
+		case 'SET_TODOLISTS': {
+			const stateCopy = { ...state };
+			action.todolists.forEach ( tl => {
+				stateCopy[ tl.id ] = [];
+			} );
+			return stateCopy;
+		}
+		case 'SET_TASKS': {
+			const stateCopy = { ...state };
+			stateCopy[ action.todolistId ] = action.tasks;
+			return stateCopy;
+		}
+		default:
+			return state;
+	}
+};*/
