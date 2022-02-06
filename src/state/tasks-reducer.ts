@@ -6,41 +6,14 @@ import { AppRootState } from './store';
 
 // typing
 
-type ActionType = RemoveTaskActionType
-	| AddTaskActionType
-	| UpdateTaskActionType
-	| ChangeTaskTitleActionType
+type ActionType =
+	| ReturnType<typeof removeTaskAC>
+	| ReturnType<typeof addTaskAC>
+	| ReturnType<typeof updateTaskAC>
 	| AddTodolistActionType
 	| RemoveTodolistActionType
 	| SetTodolistsActionType
-	| SetTasksActionType
-
-export type RemoveTaskActionType = {
-	type : 'REMOVE_TASK'
-	taskId : string
-	todolistId : string
-}
-export type AddTaskActionType = {
-	type : 'ADD_TASK'
-	task : TaskType
-}
-export type UpdateTaskActionType = {
-	type : 'UPDATE_TASK'
-	taskId : string
-	model : UpdateDomainTaskModelType
-	todolistId : string
-}
-export type ChangeTaskTitleActionType = {
-	type : 'CHANGE_TASK_TITLE'
-	taskId : string
-	newTitle : string
-	todolistId : string
-}
-export type SetTasksActionType = {
-	type : 'SET_TASKS'
-	tasks : TaskType[]
-	todolistId : string
-}
+	| ReturnType<typeof setTasksAC>
 
 // initial state
 
@@ -91,20 +64,6 @@ export const tasksReducer = ( state : TasksStateType = initialState, action : Ac
 			} : t );
 			return stateCopy;
 		}
-		case 'CHANGE_TASK_TITLE': {
-			const stateCopy = { ...state };
-			const tasks = stateCopy[ action.todolistId ];
-			stateCopy[ action.todolistId ] = tasks.map ( t => t.id === action.taskId ? {
-				...t,
-				title : action.newTitle
-			} : t );
-			return stateCopy;
-		}
-		case 'ADD_TODOLIST': {
-			const stateCopy = { ...state };
-			stateCopy[ action.todolist.id ] = [];
-			return stateCopy;
-		}
 		case 'REMOVE_TODOLIST': {
 			const stateCopy = { ...state };
 			delete stateCopy[ action.todolistId ];
@@ -127,28 +86,28 @@ export const tasksReducer = ( state : TasksStateType = initialState, action : Ac
 	}
 };
 
-// action creator
+// actions
 
-export const removeTaskAC = ( taskId : string, todolistId : string ) : RemoveTaskActionType => {
-	return { type : 'REMOVE_TASK', taskId, todolistId };
-};
-// export const addTaskAC = ( title : string, todolistId : string ) : AddTaskActionType => {
-// 	return { type : 'ADD_TASK', title, todolistId };
-// };
-export const addTaskAC = ( task : TaskType ) : AddTaskActionType => {
-	return { type : 'ADD_TASK', task };
-};
-export const updateTaskAC = ( taskId : string, model : UpdateDomainTaskModelType, todolistId : string ) : UpdateTaskActionType => {
-	return { type : 'UPDATE_TASK', taskId, model, todolistId };
-};
-export const changeTaskTitleAC = ( taskId : string, newTitle : string, todolistId : string ) : ChangeTaskTitleActionType => {
-	return { type : 'CHANGE_TASK_TITLE', taskId, newTitle, todolistId };
-};
-export const setTasksAC = ( tasks : TaskType[], todolistId : string, ) : SetTasksActionType => {
-	return { type : 'SET_TASKS', tasks, todolistId };
-};
+export const removeTaskAC = ( taskId : string, todolistId : string ) => ({
+	type : 'REMOVE_TASK',
+	taskId,
+	todolistId
+} as const);
+export const addTaskAC = ( task : TaskType ) => ({ type : 'ADD_TASK', task } as const);
+export const updateTaskAC = ( taskId : string, model : UpdateDomainTaskModelType, todolistId : string ) => ({
+	type : 'UPDATE_TASK',
+	taskId,
+	model,
+	todolistId
+} as const);
+export const setTasksAC = ( tasks : TaskType[], todolistId : string, ) => ({
+	type : 'SET_TASKS',
+	tasks,
+	todolistId
+} as const);
 
-// thunk creator (получение тасок)
+
+// thunks
 
 export const fetchTasksTC = ( todolistId : string ) => {
 	return (
@@ -166,7 +125,6 @@ export const fetchTasksTC = ( todolistId : string ) => {
 		}
 	);
 };
-
 export const removeTaskTC = ( todolistId : string, taskId : string ) => {
 	return (
 		( dispatch : Dispatch ) => {
@@ -177,7 +135,6 @@ export const removeTaskTC = ( todolistId : string, taskId : string ) => {
 		}
 	);
 };
-
 export const addTaskTC = ( todolistId : string, title : string, ) => {
 	return (
 		( dispatch : Dispatch ) => {
@@ -190,7 +147,6 @@ export const addTaskTC = ( todolistId : string, title : string, ) => {
 		}
 	);
 };
-
 export type UpdateDomainTaskModelType = {
 	title? : string
 	description? : string
@@ -199,7 +155,6 @@ export type UpdateDomainTaskModelType = {
 	startDate? : string
 	deadline? : string
 }
-
 export const updateTaskTC = ( taskId : string, domainModel : UpdateDomainTaskModelType, todolistId : string ) => {
 	return (
 		( dispatch : Dispatch, getState : () => AppRootState ) => {
