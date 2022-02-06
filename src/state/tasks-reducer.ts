@@ -4,23 +4,10 @@ import { TaskPriorities, tasksAPI, TaskStatuses, TaskType, UpdateTaskModelType }
 import { Dispatch } from 'redux';
 import { AppRootState } from './store';
 
-// typing
-
-type ActionType =
-	| ReturnType<typeof removeTaskAC>
-	| ReturnType<typeof addTaskAC>
-	| ReturnType<typeof updateTaskAC>
-	| AddTodolistActionType
-	| RemoveTodolistActionType
-	| SetTodolistsActionType
-	| ReturnType<typeof setTasksAC>
-
 // initial state
-
 const initialState : TasksStateType = {};
 
 // reducer
-
 export const tasksReducer = ( state : TasksStateType = initialState, action : ActionType ) : TasksStateType => {
 	switch (action.type) {
 		case 'REMOVE_TASK': {
@@ -87,7 +74,6 @@ export const tasksReducer = ( state : TasksStateType = initialState, action : Ac
 };
 
 // actions
-
 export const removeTaskAC = ( taskId : string, todolistId : string ) =>
 	({ type : 'REMOVE_TASK', taskId, todolistId } as const);
 export const addTaskAC = ( task : TaskType ) =>
@@ -99,7 +85,6 @@ export const setTasksAC = ( tasks : TaskType[], todolistId : string, ) =>
 
 
 // thunks
-
 export const fetchTasksTC = ( todolistId : string ) => ( dispatch : Dispatch ) => {
 	tasksAPI.getTasks ( todolistId )
 		.then ( ( res ) => {
@@ -113,7 +98,6 @@ export const fetchTasksTC = ( todolistId : string ) => ( dispatch : Dispatch ) =
 			}
 		);
 };
-
 export const removeTaskTC = ( todolistId : string, taskId : string ) => ( dispatch : Dispatch ) => {
 	tasksAPI.deleteTask ( todolistId, taskId )
 		.then ( ( res ) => {
@@ -128,14 +112,6 @@ export const addTaskTC = ( todolistId : string, title : string, ) => ( dispatch 
 			}
 		);
 };
-export type UpdateDomainTaskModelType = {
-	title? : string
-	description? : string
-	status? : TaskStatuses
-	priority? : TaskPriorities
-	startDate? : string
-	deadline? : string
-}
 export const updateTaskTC = ( taskId : string, domainModel : UpdateDomainTaskModelType, todolistId : string ) =>
 	( dispatch : Dispatch, getState : () => AppRootState ) => {
 
@@ -164,3 +140,21 @@ export const updateTaskTC = ( taskId : string, domainModel : UpdateDomainTaskMod
 				}
 			);
 	};
+
+// types
+type ActionType =
+	| ReturnType<typeof removeTaskAC>
+	| ReturnType<typeof addTaskAC>
+	| ReturnType<typeof updateTaskAC>
+	| AddTodolistActionType
+	| RemoveTodolistActionType
+	| SetTodolistsActionType
+	| ReturnType<typeof setTasksAC>
+export type UpdateDomainTaskModelType = {
+	title? : string
+	description? : string
+	status? : TaskStatuses
+	priority? : TaskPriorities
+	startDate? : string
+	deadline? : string
+}

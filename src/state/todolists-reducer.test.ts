@@ -3,11 +3,10 @@ import {
 	addTodolistAC,
 	changeTodolistFilterAC,
 	changeTodolistTitleAC,
-	removeTodolistAC, setTodolistsAC,
+	removeTodolistAC,
+	setTodolistsAC,
 	TaskFilterType,
 	TodolistDomainType,
-	todolistId1,
-	todolistId2,
 	todolistsReducer
 } from './todolists-reducer';
 import { TodolistType } from '../api/api';
@@ -18,9 +17,10 @@ import { TodolistType } from '../api/api';
 // 2. Action
 // 3. Проверка (expect)
 
+export const todolistId1 : string = v1 ();
+export const todolistId2 : string = v1 ();
+
 test ( 'correct todolist should be removed', () => {
-	let todolistId1 = v1 ();
-	let todolistId2 = v1 ();
 
 	const startState : Array<TodolistDomainType> = [
 		{
@@ -46,8 +46,6 @@ test ( 'correct todolist should be removed', () => {
 } );
 
 test ( 'correct todolist should be added', () => {
-	let todolistId1 = v1 ();
-	let todolistId2 = v1 ();
 
 	let todolist : TodolistType = {
 		id : '123',
@@ -81,8 +79,6 @@ test ( 'correct todolist should be added', () => {
 } );
 
 test ( 'correct todolist should change its name', () => {
-	let todolistId1 = v1 ();
-	let todolistId2 = v1 ();
 
 	let newTodolistTitle = 'New Todolist';
 
@@ -110,8 +106,6 @@ test ( 'correct todolist should change its name', () => {
 } );
 
 test ( 'correct filter of todolist should be changed', () => {
-	let todolistId1 = v1 ();
-	let todolistId2 = v1 ();
 
 	let newFilter : TaskFilterType = 'completed';
 
