@@ -56,11 +56,11 @@ type GetTasksResponseType = {
 	totalCount : number
 	error : string | null
 }
-type UpdateTaskModelType = {
+export type UpdateTaskModelType = {
 	title : string
 	description : string
-	status : number
-	priority : number
+	status : TaskStatuses
+	priority : TaskPriorities
 	startDate : string
 	deadline : string
 }

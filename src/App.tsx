@@ -11,7 +11,13 @@ import {
 	TaskFilterType,
 	TodolistDomainType
 } from './state/todolists-reducer';
-import { addTaskTC, changeTaskStatusAC, changeTaskTitleAC, removeTaskTC } from './state/tasks-reducer';
+import {
+	addTaskTC,
+	changeTaskStatusAC,
+	changeTaskStatusTC,
+	changeTaskTitleAC,
+	removeTaskTC
+} from './state/tasks-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRootState } from './state/store';
 import { AppBar, Box, Button, Container, Grid, IconButton, Paper, Toolbar, Typography } from '@material-ui/core';
@@ -67,8 +73,12 @@ export const App = React.memo ( () => {
 	}, [dispatch] );
 
 
+	// const changeTaskStatus = useCallback ( ( taskId : string, status : TaskStatuses, todolistId : string ) => {
+	// 	dispatch ( changeTaskStatusAC ( taskId, status, todolistId ) );
+	// }, [dispatch] );
 	const changeTaskStatus = useCallback ( ( taskId : string, status : TaskStatuses, todolistId : string ) => {
-		dispatch ( changeTaskStatusAC ( taskId, status, todolistId ) );
+		const thunk = changeTaskStatusTC ( taskId, status, todolistId );
+		dispatch ( thunk );
 	}, [dispatch] );
 
 	const changeTaskTitle = useCallback ( ( taskId : string, newTitle : string, todolistId : string ) => {
