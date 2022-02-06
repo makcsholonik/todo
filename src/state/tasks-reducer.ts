@@ -88,64 +88,45 @@ export const tasksReducer = ( state : TasksStateType = initialState, action : Ac
 
 // actions
 
-export const removeTaskAC = ( taskId : string, todolistId : string ) => ({
-	type : 'REMOVE_TASK',
-	taskId,
-	todolistId
-} as const);
-export const addTaskAC = ( task : TaskType ) => ({ type : 'ADD_TASK', task } as const);
-export const updateTaskAC = ( taskId : string, model : UpdateDomainTaskModelType, todolistId : string ) => ({
-	type : 'UPDATE_TASK',
-	taskId,
-	model,
-	todolistId
-} as const);
-export const setTasksAC = ( tasks : TaskType[], todolistId : string, ) => ({
-	type : 'SET_TASKS',
-	tasks,
-	todolistId
-} as const);
+export const removeTaskAC = ( taskId : string, todolistId : string ) =>
+	({ type : 'REMOVE_TASK', taskId, todolistId } as const);
+export const addTaskAC = ( task : TaskType ) =>
+	({ type : 'ADD_TASK', task } as const);
+export const updateTaskAC = ( taskId : string, model : UpdateDomainTaskModelType, todolistId : string ) =>
+	({ type : 'UPDATE_TASK', taskId, model, todolistId } as const);
+export const setTasksAC = ( tasks : TaskType[], todolistId : string, ) =>
+	({ type : 'SET_TASKS', tasks, todolistId } as const);
 
 
 // thunks
 
-export const fetchTasksTC = ( todolistId : string ) => {
-	return (
-		( dispatch : Dispatch ) => {
-			tasksAPI.getTasks ( todolistId )
-				.then ( ( res ) => {
+export const fetchTasksTC = ( todolistId : string ) => ( dispatch : Dispatch ) => {
+	tasksAPI.getTasks ( todolistId )
+		.then ( ( res ) => {
 
-					// const tasks = res.data.items;
-					// const action = setTasksAC ( tasks, todolistId );
-					// dispatch ( action );
-					// Заменяем всё одной строкой
+				// const tasks = res.data.items;
+				// const action = setTasksAC ( tasks, todolistId );
+				// dispatch ( action );
+				// Заменяем всё одной строкой
 
-					dispatch ( setTasksAC ( res.data.items, todolistId ) );
-				} );
-		}
-	);
+				dispatch ( setTasksAC ( res.data.items, todolistId ) );
+			}
+		);
 };
-export const removeTaskTC = ( todolistId : string, taskId : string ) => {
-	return (
-		( dispatch : Dispatch ) => {
-			tasksAPI.deleteTask ( todolistId, taskId )
-				.then ( ( res ) => {
-					dispatch ( removeTaskAC ( taskId, todolistId ) );
-				} );
-		}
-	);
+
+export const removeTaskTC = ( todolistId : string, taskId : string ) => ( dispatch : Dispatch ) => {
+	tasksAPI.deleteTask ( todolistId, taskId )
+		.then ( ( res ) => {
+				dispatch ( removeTaskAC ( taskId, todolistId ) );
+			}
+		);
 };
-export const addTaskTC = ( todolistId : string, title : string, ) => {
-	return (
-		( dispatch : Dispatch ) => {
-			tasksAPI.createTask ( todolistId, title )
-				.then ( ( res ) => {
-					const task = res.data.data.item;
-					const action = addTaskAC ( task );
-					dispatch ( action );
-				} );
-		}
-	);
+export const addTaskTC = ( todolistId : string, title : string, ) => ( dispatch : Dispatch ) => {
+	tasksAPI.createTask ( todolistId, title )
+		.then ( ( res ) => {
+				dispatch ( addTaskAC ( res.data.data.item ) );
+			}
+		);
 };
 export type UpdateDomainTaskModelType = {
 	title? : string
@@ -155,34 +136,31 @@ export type UpdateDomainTaskModelType = {
 	startDate? : string
 	deadline? : string
 }
-export const updateTaskTC = ( taskId : string, domainModel : UpdateDomainTaskModelType, todolistId : string ) => {
-	return (
-		( dispatch : Dispatch, getState : () => AppRootState ) => {
+export const updateTaskTC = ( taskId : string, domainModel : UpdateDomainTaskModelType, todolistId : string ) =>
+	( dispatch : Dispatch, getState : () => AppRootState ) => {
 
-			// Получаем state
-			const state = getState ();
-			// Получаем таску нужного тудулиста
-			const task = state.tasks[ todolistId ].find ( t => t.id === taskId );
-			// Прерываем если таска не нашлась
-			if ( !task) {
-				console.warn ( 'task not found in the state' );
-				return;
-			}
-
-			const apiModel : UpdateTaskModelType = {
-				title : task.title,
-				description : task.description,
-				priority : TaskPriorities.Low,
-				startDate : task.startDate,
-				deadline : task.deadline,
-				status : task.status,
-				...domainModel
-			};
-			tasksAPI.updateTasks ( todolistId, taskId, apiModel )
-				.then ( ( res ) => {
+		// Получаем state
+		const state = getState ();
+		// Получаем таску нужного тудулиста
+		const task = state.tasks[ todolistId ].find ( t => t.id === taskId );
+		// Прерываем если таска не нашлась
+		if ( !task) {
+			console.warn ( 'task not found in the state' );
+			return;
+		}
+		const apiModel : UpdateTaskModelType = {
+			title : task.title,
+			description : task.description,
+			priority : TaskPriorities.Low,
+			startDate : task.startDate,
+			deadline : task.deadline,
+			status : task.status,
+			...domainModel
+		};
+		tasksAPI.updateTasks ( todolistId, taskId, apiModel )
+			.then ( ( res ) => {
 					const action = updateTaskAC ( taskId, domainModel, todolistId );
 					dispatch ( action );
-				} );
-		}
-	);
-};
+				}
+			);
+	};
