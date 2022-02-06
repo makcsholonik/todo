@@ -1,8 +1,8 @@
 import React, { ChangeEvent, useCallback } from 'react';
-import { EditableSpan } from './EditableSpan';
+import { EditableSpan } from '../../../../component/EditableSpan/EditableSpan';
 import { RemoveCircleOutline } from '@material-ui/icons';
 import { Checkbox, IconButton } from '@material-ui/core';
-import { TaskStatuses, TaskType } from '../api/api';
+import { TaskStatuses, TaskType } from '../../../../api/api';
 
 type TaskPropsType = {
 	title : string

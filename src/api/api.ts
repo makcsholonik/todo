@@ -79,6 +79,9 @@ export type UpdateTaskModelType = {
 	startDate : string
 	deadline : string
 }
+export type TasksStateType = {
+	[ key : string ] : Array<TaskType>
+}
 
 // enums
 export enum TaskStatuses {

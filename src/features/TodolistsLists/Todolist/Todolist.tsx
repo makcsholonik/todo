@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect } from 'react';
-import { AddItemForm } from './AddItemForm';
-import { EditableSpan } from './EditableSpan';
-import { Task } from './Task';
+import { AddItemForm } from '../../../component/AddItemForm/AddItemForm';
+import { EditableSpan } from '../../../component/EditableSpan/EditableSpan';
+import { Task } from './Task/Task';
 import { Button, IconButton } from '@material-ui/core';
 import { RemoveCircle } from '@material-ui/icons';
-import { TaskFilterType } from '../state/todolists-reducer';
-import { TaskStatuses, TaskType } from '../api/api';
+import { TaskFilterType } from '../../../state/todolists-reducer';
+import { TaskStatuses, TaskType } from '../../../api/api';
 import { useDispatch } from 'react-redux';
-import { fetchTasksTC } from '../state/tasks-reducer';
+import { fetchTasksTC } from '../../../state/tasks-reducer';
 
 type TodolistPropsType = {
 	title : string
