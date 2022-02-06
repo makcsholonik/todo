@@ -111,7 +111,7 @@ export const setTodolistsAC = ( todolists : TodolistType[] ) : SetTodolistsActio
 	return { type : 'SET_TODOLISTS', todolists };
 };
 
-// thunk
+// thunk creator
 
 // export const fetchTodolistsThunk = ( dispatch : Dispatch ) => {
 // 	todolistsAPI.getTodolists ().then ( ( res ) => {

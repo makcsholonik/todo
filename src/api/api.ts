@@ -92,7 +92,7 @@ export const tasksAPI = {
 		return instance.post<ResponseType<{ item : TaskType }>> ( `todo-lists/${ todolistId }/tasks`, { title : taskTitle } );
 	},
 	deleteTask ( todolistId : string, taskId : string ) {
-		return instance.get<ResponseType> ( `todo-lists/${ todolistId }/tasks/${ taskId }` );
+		return instance.delete<ResponseType> ( `todo-lists/${ todolistId }/tasks/${ taskId }` );
 	},
 	updateTasks ( todolistId : string, taskId : string, model : UpdateTaskModelType ) {
 		return instance.put<UpdateTaskModelType> ( `todo-lists/${ todolistId }/tasks/${ taskId }`, model );

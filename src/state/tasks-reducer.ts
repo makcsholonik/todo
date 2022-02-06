@@ -3,6 +3,7 @@ import { AddTodolistActionType, RemoveTodolistActionType, SetTodolistsActionType
 import { TasksStateType } from '../App';
 import { TaskPriorities, tasksAPI, TaskStatuses, TaskType } from '../api/api';
 import { Dispatch } from 'redux';
+import { strict } from 'assert';
 
 // typing
 
@@ -139,14 +140,31 @@ export const setTasksAC = ( tasks : TaskType[], todolistId : string, ) : SetTask
 	return { type : 'SET_TASKS', tasks, todolistId };
 };
 
-// thunk
+// thunk creator (получение тасок)
 
 export const fetchTasksTC = ( todolistId : string ) => {
 	return (
 		( dispatch : Dispatch ) => {
 			tasksAPI.getTasks ( todolistId )
 				.then ( ( res ) => {
+
+					// const tasks = res.data.items;
+					// const action = setTasksAC ( tasks, todolistId );
+					// dispatch ( action );
+					// Заменяем всё одной строкой
+
 					dispatch ( setTasksAC ( res.data.items, todolistId ) );
+				} );
+		}
+	);
+};
+
+export const removeTaskTC = ( todolistId : string, taskId : string ) => {
+	return (
+		( dispatch : Dispatch ) => {
+			tasksAPI.deleteTask ( todolistId, taskId )
+				.then ( (res) => {
+					dispatch ( removeTaskAC ( taskId, todolistId ) );
 				} );
 		}
 	);

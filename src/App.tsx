@@ -11,12 +11,12 @@ import {
 	TaskFilterType,
 	TodolistDomainType
 } from './state/todolists-reducer';
-import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC } from './state/tasks-reducer';
+import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, removeTaskTC } from './state/tasks-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRootState } from './state/store';
 import { AppBar, Box, Button, Container, Grid, IconButton, Paper, Toolbar, Typography } from '@material-ui/core';
 import { Menu } from '@material-ui/icons';
-import { TaskStatuses, TaskType } from './api/api';
+import { tasksAPI, TaskStatuses, TaskType } from './api/api';
 
 export type TasksStateType = {
 	[ key : string ] : Array<TaskType>
@@ -38,13 +38,30 @@ export const App = React.memo ( () => {
 
 
 	// tasks
+
+	// добавление таски в тудулист
 	const addTask = useCallback ( ( title : string, todolistId : string ) => {
 		dispatch ( addTaskAC ( title, todolistId ) );
 	}, [dispatch] );
 
+	// удаление таски из тудулиста
+	// const removeTask = useCallback ( ( taskId : string, todolistId : string ) => {
+	// 	dispatch ( removeTaskAC ( taskId, todolistId ) );
+	// }, [dispatch] );
+
+	// UI => API => Server => API => UI => BLL => UI
+	// const removeTask = useCallback ( ( taskId : string, todolistId : string ) => {
+	// 	tasksAPI.deleteTask ( todolistId, taskId )
+	// 		.then ( res => {
+	// 			dispatch ( removeTaskAC ( taskId, todolistId ) );
+	// 		} );
+	// }, [dispatch] );
+
+	// UI (dispatch thunk) => BLL (thunk) => API => BLL (change state) => UI
 	const removeTask = useCallback ( ( taskId : string, todolistId : string ) => {
-		dispatch ( removeTaskAC ( taskId, todolistId ) );
+		dispatch ( removeTaskTC (  todolistId, taskId ) );
 	}, [dispatch] );
+
 
 	const changeTaskStatus = useCallback ( ( taskId : string, status : TaskStatuses, todolistId : string ) => {
 		dispatch ( changeTaskStatusAC ( taskId, status, todolistId ) );
