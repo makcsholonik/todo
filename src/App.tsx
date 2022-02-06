@@ -5,19 +5,13 @@ import { AddItemForm } from './component/AddItemForm';
 import {
 	addTodolistTC,
 	changeTodolistFilterAC,
-	changeTodolistTitleAC, changeTodolistTitleTC,
+	changeTodolistTitleTC,
 	fetchTodolistsTC,
 	removeTodolistTC,
 	TaskFilterType,
 	TodolistDomainType
 } from './state/todolists-reducer';
-import {
-	addTaskTC,
-	changeTaskStatusAC,
-	changeTaskStatusTC,
-	changeTaskTitleAC,
-	removeTaskTC
-} from './state/tasks-reducer';
+import { addTaskTC, removeTaskTC, updateTaskTC } from './state/tasks-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRootState } from './state/store';
 import { AppBar, Box, Button, Container, Grid, IconButton, Paper, Toolbar, Typography } from '@material-ui/core';
@@ -77,12 +71,13 @@ export const App = React.memo ( () => {
 	// 	dispatch ( changeTaskStatusAC ( taskId, status, todolistId ) );
 	// }, [dispatch] );
 	const changeTaskStatus = useCallback ( ( taskId : string, status : TaskStatuses, todolistId : string ) => {
-		const thunk = changeTaskStatusTC ( taskId, status, todolistId );
+		const thunk = updateTaskTC ( taskId, {status}, todolistId );
 		dispatch ( thunk );
 	}, [dispatch] );
 
 	const changeTaskTitle = useCallback ( ( taskId : string, newTitle : string, todolistId : string ) => {
-		dispatch ( changeTaskTitleAC ( taskId, newTitle, todolistId ) );
+		const thunk = updateTaskTC ( taskId, {title: newTitle}, todolistId );
+		dispatch ( thunk );
 	}, [dispatch] );
 
 	// todolists

@@ -8,8 +8,8 @@ import { AppRootState } from './store';
 
 type ActionType = RemoveTaskActionType
 	| AddTaskActionType
-	| ChangeTaskStatusType
-	| ChangeTaskTitleType
+	| UpdateTaskActionType
+	| ChangeTaskTitleActionType
 	| AddTodolistActionType
 	| RemoveTodolistActionType
 	| SetTodolistsActionType
@@ -24,13 +24,13 @@ export type AddTaskActionType = {
 	type : 'ADD_TASK'
 	task : TaskType
 }
-export type ChangeTaskStatusType = {
-	type : 'CHANGE_TASK_STATUS'
+export type UpdateTaskActionType = {
+	type : 'UPDATE_TASK'
 	taskId : string
-	status : TaskStatuses
+	model : UpdateDomainTaskModelType
 	todolistId : string
 }
-export type ChangeTaskTitleType = {
+export type ChangeTaskTitleActionType = {
 	type : 'CHANGE_TASK_TITLE'
 	taskId : string
 	newTitle : string
@@ -82,12 +82,12 @@ export const tasksReducer = ( state : TasksStateType = initialState, action : Ac
 			stateCopy[ newTask.todoListId ] = [newTask, ...tasksTodolist];
 			return stateCopy;
 		}
-		case 'CHANGE_TASK_STATUS': {
+		case 'UPDATE_TASK': {
 			const stateCopy = { ...state };
 			const tasks = stateCopy[ action.todolistId ];
 			stateCopy[ action.todolistId ] = tasks.map ( t => t.id === action.taskId ? {
 				...t,
-				status : action.status
+				...action.model
 			} : t );
 			return stateCopy;
 		}
@@ -138,10 +138,10 @@ export const removeTaskAC = ( taskId : string, todolistId : string ) : RemoveTas
 export const addTaskAC = ( task : TaskType ) : AddTaskActionType => {
 	return { type : 'ADD_TASK', task };
 };
-export const changeTaskStatusAC = ( taskId : string, status : TaskStatuses, todolistId : string ) : ChangeTaskStatusType => {
-	return { type : 'CHANGE_TASK_STATUS', taskId, status, todolistId };
+export const updateTaskAC = ( taskId : string, model : UpdateDomainTaskModelType, todolistId : string ) : UpdateTaskActionType => {
+	return { type : 'UPDATE_TASK', taskId, model, todolistId };
 };
-export const changeTaskTitleAC = ( taskId : string, newTitle : string, todolistId : string ) : ChangeTaskTitleType => {
+export const changeTaskTitleAC = ( taskId : string, newTitle : string, todolistId : string ) : ChangeTaskTitleActionType => {
 	return { type : 'CHANGE_TASK_TITLE', taskId, newTitle, todolistId };
 };
 export const setTasksAC = ( tasks : TaskType[], todolistId : string, ) : SetTasksActionType => {
@@ -191,7 +191,16 @@ export const addTaskTC = ( todolistId : string, title : string, ) => {
 	);
 };
 
-export const changeTaskStatusTC = ( taskId : string, status : TaskStatuses, todolistId : string ) => {
+export type UpdateDomainTaskModelType = {
+	title? : string
+	description? : string
+	status? : TaskStatuses
+	priority? : TaskPriorities
+	startDate? : string
+	deadline? : string
+}
+
+export const updateTaskTC = ( taskId : string, domainModel : UpdateDomainTaskModelType, todolistId : string ) => {
 	return (
 		( dispatch : Dispatch, getState : () => AppRootState ) => {
 
@@ -205,18 +214,18 @@ export const changeTaskStatusTC = ( taskId : string, status : TaskStatuses, todo
 				return;
 			}
 
-			const model : UpdateTaskModelType = {
-				// title : task.title,
-				// description : task.description,
-				// priority : TaskPriorities.Low,
-				// startDate : task.startDate,
-				// deadline : task.deadline
-				...task,
-				status : status
+			const apiModel : UpdateTaskModelType = {
+				title : task.title,
+				description : task.description,
+				priority : TaskPriorities.Low,
+				startDate : task.startDate,
+				deadline : task.deadline,
+				status : task.status,
+				...domainModel
 			};
-			tasksAPI.updateTasks ( todolistId, taskId, model )
+			tasksAPI.updateTasks ( todolistId, taskId, apiModel )
 				.then ( ( res ) => {
-					const action = changeTaskStatusAC ( taskId, status, todolistId );
+					const action = updateTaskAC ( taskId, domainModel, todolistId );
 					dispatch ( action );
 				} );
 		}
