@@ -157,3 +157,14 @@ export const addTodolistTC = ( title : string ) => {
 		}
 	);
 };
+
+export const changeTodolistTitleTC = ( todolistId : string, title : string ) => {
+	return (
+		( dispatch : Dispatch ) => {
+			todolistsAPI.updateTodolistTitle ( todolistId, title )
+				.then ( ( res ) => {
+					dispatch ( changeTodolistTitleAC ( todolistId, title ) );
+				} );
+		}
+	);
+};

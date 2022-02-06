@@ -5,7 +5,7 @@ import { AddItemForm } from './component/AddItemForm';
 import {
 	addTodolistTC,
 	changeTodolistFilterAC,
-	changeTodolistTitleAC,
+	changeTodolistTitleAC, changeTodolistTitleTC,
 	fetchTodolistsTC,
 	removeTodolistTC,
 	TaskFilterType,
@@ -100,9 +100,16 @@ export const App = React.memo ( () => {
 		dispatch ( thunk );
 	}, [dispatch] );
 
+	// изменение заголовка тудулиста
+	// const changeTodolistTitle = useCallback ( ( todolistId : string, newTitle : string ) => {
+	// 	dispatch ( changeTodolistTitleAC ( todolistId, newTitle ) );
+	// }, [dispatch] );
+
 	const changeTodolistTitle = useCallback ( ( todolistId : string, newTitle : string ) => {
-		dispatch ( changeTodolistTitleAC ( todolistId, newTitle ) );
+		const thunk = changeTodolistTitleTC ( todolistId, newTitle );
+		dispatch ( thunk );
 	}, [dispatch] );
+
 
 	return (
 		<div className="App">
