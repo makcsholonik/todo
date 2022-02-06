@@ -43,16 +43,21 @@ export const tasksAPI = {
 };
 
 // types
+type ResponseType<D = {}> = {
+	resultCode : number
+	messages : string[],
+	data : D
+}
+type GetTasksResponseType = {
+	items : TaskType[]
+	totalCount : number
+	error : string | null
+}
 export type TodolistType = {
 	id : string
 	title : string
 	addedDate : string
 	order : number
-}
-export type ResponseType<D = {}> = {
-	resultCode : number
-	messages : string[],
-	data : D
 }
 export type TaskType = {
 	description : string
@@ -65,11 +70,6 @@ export type TaskType = {
 	todoListId : string
 	order : number
 	addedDate : string
-}
-export type GetTasksResponseType = {
-	items : TaskType[]
-	totalCount : number
-	error : string | null
 }
 export type UpdateTaskModelType = {
 	title : string

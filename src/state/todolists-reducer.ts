@@ -8,47 +8,16 @@ const initialState : Array<TodolistDomainType> = [];
 // reducer
 export const todolistsReducer = ( state : TodolistDomainType[] = initialState, action : ActionType ) : TodolistDomainType[] => {
 	switch (action.type) {
-		case 'REMOVE_TODOLIST': {
+		case 'REMOVE_TODOLIST':
 			return state.filter ( tl => tl.id !== action.todolistId );
-		}
-		// case 'ADD_TODOLIST': {
-		// 	return [...state, {
-		// 		id : action.todolistId,
-		// 		title : action.title,
-		// 		addedDate : '',
-		// 		order : 0,
-		// 		filter : 'all'
-		// 	}];
-		// }
-		case 'ADD_TODOLIST': {
-			const newTodolist : TodolistDomainType = {
-				...action.todolist,
-				filter : 'all'
-			};
-			return [...state, newTodolist];
-		}
-		case 'CHANGE_TODOLIST_TITLE': {
-			let todolist = state.find ( tl => tl.id === action.id );
-			if (todolist) {
-				todolist.title = action.title;
-			}
-			return [...state];
-		}
-		case 'CHANGE_TODOLIST_FILTER': {
-			let todolist = state.find ( tl => tl.id === action.id );
-			if (todolist) {
-				todolist.filter = action.filter;
-			}
-			return [...state];
-		}
-		case 'SET_TODOLISTS': {
-			return action.todolists.map ( tl => {
-				return {
-					...tl,
-					filter : 'all'
-				};
-			} );
-		}
+		case 'ADD_TODOLIST':
+			return [{ ...action.todolist, filter : 'all' }, ...state];
+		case 'CHANGE_TODOLIST_TITLE':
+			return state.map ( tl => tl.id === action.id ? { ...tl, title : action.title } : tl );
+		case 'CHANGE_TODOLIST_FILTER':
+			return state.map ( tl => tl.id === action.id ? { ...tl, filter : action.filter } : tl );
+		case 'SET_TODOLISTS':
+			return action.todolists.map ( tl => ({ ...tl, filter : 'all' }) );
 		default:
 			return state;
 	}
