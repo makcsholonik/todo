@@ -163,8 +163,19 @@ export const removeTaskTC = ( todolistId : string, taskId : string ) => {
 	return (
 		( dispatch : Dispatch ) => {
 			tasksAPI.deleteTask ( todolistId, taskId )
-				.then ( (res) => {
+				.then ( ( res ) => {
 					dispatch ( removeTaskAC ( taskId, todolistId ) );
+				} );
+		}
+	);
+};
+
+export const addTaskTC = ( todolistId : string, title : string, ) => {
+	return (
+		( dispatch : Dispatch ) => {
+			tasksAPI.createTask ( todolistId, title )
+				.then ( ( res ) => {
+					dispatch ( addTaskAC ( title, todolistId ) );
 				} );
 		}
 	);
