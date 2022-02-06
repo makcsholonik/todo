@@ -3,7 +3,7 @@ import './App.css';
 import { Todolist } from './component/Todolist';
 import { AddItemForm } from './component/AddItemForm';
 import {
-	addTodolistAC,
+	addTodolistTC,
 	changeTodolistFilterAC,
 	changeTodolistTitleAC,
 	fetchTodolistsTC,
@@ -81,8 +81,13 @@ export const App = React.memo ( () => {
 	}, [dispatch] );
 
 	// добавление тудулиста
+	// const addTodolist = useCallback ( ( title : string ) => {
+	// 	dispatch ( addTodolistAC ( title ) );
+	// }, [dispatch] );
+
 	const addTodolist = useCallback ( ( title : string ) => {
-		dispatch ( addTodolistAC ( title ) );
+		const thunk = addTodolistTC ( title );
+		dispatch ( thunk );
 	}, [dispatch] );
 
 	// удаление тудулиста
