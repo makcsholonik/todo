@@ -10,6 +10,7 @@ import {
 	todolistId2,
 	todolistsReducer
 } from './todolists-reducer';
+import { TodolistType } from '../api/api';
 
 
 // тестирование (тест состоит из 3-х частей)
@@ -48,7 +49,12 @@ test ( 'correct todolist should be added', () => {
 	let todolistId1 = v1 ();
 	let todolistId2 = v1 ();
 
-	let newTodolistTitle = 'New Todolist';
+	let todolist : TodolistType = {
+		id : '123',
+		title : 'New Todolist',
+		addedDate : '',
+		order : 0
+	};
 
 	const startState : Array<TodolistDomainType> = [
 		{
@@ -67,10 +73,10 @@ test ( 'correct todolist should be added', () => {
 		}
 	];
 
-	const endState = todolistsReducer ( startState, addTodolistAC ( newTodolistTitle ) );
+	const endState = todolistsReducer ( startState, addTodolistAC ( todolist ) );
 
 	expect ( endState.length ).toBe ( 3 );
-	expect ( endState[ 2 ].title ).toBe ( newTodolistTitle );
+	expect ( endState[ 2 ].title ).toBe ( todolist.title );
 	expect ( endState[ 2 ].filter ).toBe ( 'all' );
 } );
 
@@ -155,6 +161,6 @@ test ( 'todolist should be set to the state', () => {
 
 	expect ( endState.length ).toBe ( 2 );
 	expect ( endState[ 0 ].title ).toBe ( 'What to learn' );
-	expect ( endState[ 1 ].title ).toBe ( 'What to buy' ); 
+	expect ( endState[ 1 ].title ).toBe ( 'What to buy' );
 } );
 
