@@ -23,8 +23,7 @@ export type RemoveTaskActionType = {
 }
 export type AddTaskActionType = {
 	type : 'ADD_TASK'
-	title : string
-	todolistId : string
+	task : TaskType
 }
 export type ChangeTaskStatusType = {
 	type : 'CHANGE_TASK_STATUS'
@@ -59,22 +58,29 @@ export const tasksReducer = ( state : TasksStateType = initialState, action : Ac
 			stateCopy[ action.todolistId ] = filteredTasks;
 			return stateCopy;
 		}
+		// case 'ADD_TASK': {
+		// 	const newTask : TaskType = {
+		// 		description : '',
+		// 		title : action.title,
+		// 		status : TaskStatuses.New,
+		// 		priority : TaskPriorities.Low,
+		// 		startDate : '',
+		// 		deadline : '',
+		// 		id : v1 (),
+		// 		todoListId : action.todolistId,
+		// 		order : 0,
+		// 		addedDate : ''
+		// 	};
+		// 	const stateCopy = { ...state };
+		// 	const tasksTodolist = stateCopy[ action.todolistId ];
+		// 	stateCopy[ action.todolistId ] = [newTask, ...tasksTodolist];
+		// 	return stateCopy;
+		// }
 		case 'ADD_TASK': {
-			const newTask : TaskType = {
-				description : '',
-				title : action.title,
-				status : TaskStatuses.New,
-				priority : TaskPriorities.Low,
-				startDate : '',
-				deadline : '',
-				id : v1 (),
-				todoListId : action.todolistId,
-				order : 0,
-				addedDate : ''
-			};
+			const newTask : TaskType = action.task;
 			const stateCopy = { ...state };
-			const tasksTodolist = stateCopy[ action.todolistId ];
-			stateCopy[ action.todolistId ] = [newTask, ...tasksTodolist];
+			const tasksTodolist = stateCopy[ newTask.todoListId ];
+			stateCopy[ newTask.todoListId ] = [newTask, ...tasksTodolist];
 			return stateCopy;
 		}
 		case 'CHANGE_TASK_STATUS': {
@@ -127,8 +133,11 @@ export const tasksReducer = ( state : TasksStateType = initialState, action : Ac
 export const removeTaskAC = ( taskId : string, todolistId : string ) : RemoveTaskActionType => {
 	return { type : 'REMOVE_TASK', taskId, todolistId };
 };
-export const addTaskAC = ( title : string, todolistId : string ) : AddTaskActionType => {
-	return { type : 'ADD_TASK', title, todolistId };
+// export const addTaskAC = ( title : string, todolistId : string ) : AddTaskActionType => {
+// 	return { type : 'ADD_TASK', title, todolistId };
+// };
+export const addTaskAC = ( task : TaskType ) : AddTaskActionType => {
+	return { type : 'ADD_TASK', task };
 };
 export const changeTaskStatusAC = ( taskId : string, status : TaskStatuses, todolistId : string ) : ChangeTaskStatusType => {
 	return { type : 'CHANGE_TASK_STATUS', taskId, status, todolistId };
@@ -175,7 +184,9 @@ export const addTaskTC = ( todolistId : string, title : string, ) => {
 		( dispatch : Dispatch ) => {
 			tasksAPI.createTask ( todolistId, title )
 				.then ( ( res ) => {
-					dispatch ( addTaskAC ( title, todolistId ) );
+					const task = res.data.data.item;
+					const action = addTaskAC ( task );
+					dispatch ( action );
 				} );
 		}
 	);
