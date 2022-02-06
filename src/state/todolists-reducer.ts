@@ -129,3 +129,14 @@ export const fetchTodolistsTC = () => {
 		}
 	);
 };
+
+export const removeTodolistTC = ( todolistId : string ) => {
+	return (
+		( dispatch : Dispatch ) => {
+			todolistsAPI.deleteTodolist ( todolistId )
+				.then ( ( res ) => {
+					dispatch ( removeTodolistAC ( todolistId ) );
+				} );
+		}
+	);
+};

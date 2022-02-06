@@ -7,7 +7,7 @@ import {
 	changeTodolistFilterAC,
 	changeTodolistTitleAC,
 	fetchTodolistsTC,
-	removeTodolistAC,
+	removeTodolistTC,
 	TaskFilterType,
 	TodolistDomainType
 } from './state/todolists-reducer';
@@ -80,12 +80,19 @@ export const App = React.memo ( () => {
 		dispatch ( changeTodolistFilterAC ( todolistId, filter ) );
 	}, [dispatch] );
 
+	// добавление тудулиста
 	const addTodolist = useCallback ( ( title : string ) => {
 		dispatch ( addTodolistAC ( title ) );
 	}, [dispatch] );
 
+	// удаление тудулиста
+	// const removeTodolist = useCallback ( ( todolistId : string ) => {
+	// 	dispatch ( removeTodolistAC ( todolistId ) );
+	// }, [dispatch] );
+
 	const removeTodolist = useCallback ( ( todolistId : string ) => {
-		dispatch ( removeTodolistAC ( todolistId ) );
+		const thunk = removeTodolistTC ( todolistId );
+		dispatch ( thunk );
 	}, [dispatch] );
 
 	const changeTodolistTitle = useCallback ( ( todolistId : string, newTitle : string ) => {
