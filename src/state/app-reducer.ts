@@ -17,11 +17,13 @@ export const appReducer = ( state : InitialStateType = initialState, action : Ac
 };
 
 // actions
-export const setErrorAC = ( error : string | null ) => ({ type : 'APP/SET-ERROR', error });
+export const setStatusAC = ( status : StatusType ) => ({ type : 'APP/SET-STATUS', status } as const);
+export const setErrorAC = ( error : string | null ) => ({ type : 'APP/SET-ERROR', error } as const);
 
 // types
+export type StatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 export type InitialStateType = {
-	status : 'idle' | 'loading' | 'succeeded' | 'failed',
+	status : StatusType,
 	error : string | null
 }
-type ActionsType = any
+type ActionsType = ReturnType<typeof setStatusAC> | ReturnType<typeof setErrorAC>
