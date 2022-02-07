@@ -1,7 +1,7 @@
 import { AddTodolistActionType, RemoveTodolistActionType, SetTodolistsActionType } from './todolists-reducer';
 import { TaskPriorities, tasksAPI, TasksStateType, TaskStatuses, TaskType, UpdateTaskModelType } from '../api/api';
 import { Dispatch } from 'redux';
-import { AppRootState } from './store';
+import { AppRootStateType } from './store';
 
 // initial state
 const initialState : TasksStateType = {};
@@ -80,7 +80,7 @@ export const addTaskTC = ( todolistId : string, title : string, ) => ( dispatch 
 		);
 };
 export const updateTaskTC = ( taskId : string, domainModel : UpdateDomainTaskModelType, todolistId : string ) =>
-	( dispatch : Dispatch<ActionType>, getState : () => AppRootState ) => {
+	( dispatch : Dispatch<ActionType>, getState : () => AppRootStateType ) => {
 
 		// Получаем state
 		const state = getState ();
