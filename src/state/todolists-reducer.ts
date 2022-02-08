@@ -53,10 +53,12 @@ export const removeTodolistTC = ( todolistId : string ) =>
 				}
 			);
 	};
-export const addTodolistTC = ( title : string ) => ( dispatch : Dispatch<ActionType> ) => {
+export const addTodolistTC = ( title : string ) => ( dispatch : Dispatch<ActionType | SetStatusActionType> ) => {
+	dispatch ( setStatusAC ( 'loading' ) );
 	todolistsAPI.createTodolist ( title )
 		.then ( ( res ) => {
 				dispatch ( addTodolistAC ( res.data.data.item ) );
+				dispatch ( setStatusAC ( 'succeeded' ) );
 			}
 		);
 };
