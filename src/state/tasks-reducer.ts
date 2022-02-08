@@ -81,6 +81,8 @@ export const addTaskTC = ( todolistId : string, title : string, ) => ( dispatch 
 				} else {
 					if (res.data.messages.length) {
 						dispatch ( setErrorAC ( res.data.messages[ 0 ] ) );
+					} else {
+						dispatch ( setErrorAC ( 'some error occurred' ) );
 					}
 				}
 			}
