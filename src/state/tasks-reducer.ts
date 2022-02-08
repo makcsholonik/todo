@@ -79,17 +79,21 @@ export const addTaskTC = ( todolistId : string, title : string, ) => ( dispatch 
 	dispatch ( setAppStatusAC ( 'loading' ) );
 	tasksAPI.createTask ( todolistId, title )
 		.then ( ( res ) => {
-				if (res.data.resultCode === 0) {
-					dispatch ( addTaskAC ( res.data.data.item ) );
-					dispatch ( setAppStatusAC ( 'succeeded' ) );
+			if (res.data.resultCode === 0) {
+				dispatch ( addTaskAC ( res.data.data.item ) );
+				dispatch ( setAppStatusAC ( 'succeeded' ) );
+			} else {
+				if (res.data.messages.length) {
+					dispatch ( setAppErrorAC ( res.data.messages[ 0 ] ) );
 				} else {
-					if (res.data.messages.length) {
-						dispatch ( setAppErrorAC ( res.data.messages[ 0 ] ) );
-					} else {
-						dispatch ( setAppErrorAC ( 'some error occurred' ) );
-					}
-					dispatch ( setAppStatusAC ( 'failed' ) );
+					dispatch ( setAppErrorAC ( 'some error occurred' ) );
 				}
+				dispatch ( setAppStatusAC ( 'failed' ) );
+			}
+		} )
+		.catch ( ( error ) => {
+				dispatch ( setAppErrorAC ( error.message ) );
+				dispatch ( setAppStatusAC ( 'failed' ) );
 			}
 		);
 };

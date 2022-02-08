@@ -1,6 +1,6 @@
 import { todolistsAPI, TodolistType } from '../api/api';
 import { Dispatch } from 'redux';
-import { setAppStatusAC, SetStatusActionType, StatusType } from './app-reducer';
+import { setAppErrorAC, setAppStatusAC, SetErrorActionType, SetStatusActionType, StatusType } from './app-reducer';
 
 // initial state
 const initialState : Array<TodolistDomainType> = [];
@@ -62,12 +62,16 @@ export const removeTodolistTC = ( todolistId : string ) =>
 			);
 	};
 export const addTodolistTC = ( title : string ) =>
-	( dispatch : Dispatch<ActionType | SetStatusActionType> ) => {
+	( dispatch : Dispatch<ActionType | SetStatusActionType | SetErrorActionType> ) => {
 		dispatch ( setAppStatusAC ( 'loading' ) );
 		todolistsAPI.createTodolist ( title )
 			.then ( ( res ) => {
-					dispatch ( addTodolistAC ( res.data.data.item ) );
-					dispatch ( setAppStatusAC ( 'succeeded' ) );
+				dispatch ( addTodolistAC ( res.data.data.item ) );
+				dispatch ( setAppStatusAC ( 'succeeded' ) );
+			} )
+			.catch ( ( error ) => {
+					dispatch ( setAppErrorAC ( error.message ) );
+					dispatch ( setAppStatusAC ( 'failed' ) );
 				}
 			);
 	};
