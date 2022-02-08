@@ -1,6 +1,6 @@
 import { todolistsAPI, TodolistType } from '../api/api';
 import { Dispatch } from 'redux';
-import { setStatusAC, SetStatusActionType } from './app-reducer';
+import { setStatusAC, SetStatusActionType, StatusType } from './app-reducer';
 
 // initial state
 const initialState : Array<TodolistDomainType> = [];
@@ -11,13 +11,13 @@ export const todolistsReducer = ( state : TodolistDomainType[] = initialState, a
 		case 'REMOVE_TODOLIST':
 			return state.filter ( tl => tl.id !== action.todolistId );
 		case 'ADD_TODOLIST':
-			return [{ ...action.todolist, filter : 'all' }, ...state];
+			return [{ ...action.todolist, filter : 'all', entityStatus : 'idle' }, ...state];
 		case 'CHANGE_TODOLIST_TITLE':
 			return state.map ( tl => tl.id === action.id ? { ...tl, title : action.title } : tl );
 		case 'CHANGE_TODOLIST_FILTER':
 			return state.map ( tl => tl.id === action.id ? { ...tl, filter : action.filter } : tl );
 		case 'SET_TODOLISTS':
-			return action.todolists.map ( tl => ({ ...tl, filter : 'all' }) );
+			return action.todolists.map ( tl => ({ ...tl, filter : 'all', entityStatus : 'idle' }) );
 		default:
 			return state;
 	}
@@ -83,4 +83,5 @@ type ActionType =
 export type TaskFilterType = 'all' | 'active' | 'completed';
 export type TodolistDomainType = TodolistType & {
 	filter : TaskFilterType
+	entityStatus : StatusType
 }

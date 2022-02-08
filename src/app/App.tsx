@@ -8,8 +8,11 @@ import { useSelector } from 'react-redux';
 import { AppRootStateType } from '../state/store';
 import { StatusType } from '../state/app-reducer';
 
+type AppPropsType = {
+	demo? : boolean
+}
 
-export const App = React.memo ( () => {
+export const App = React.memo ( ({demo = false}: AppPropsType) => {
 
 	const status = useSelector<AppRootStateType, StatusType> ( state => state.app.status );
 
@@ -31,7 +34,7 @@ export const App = React.memo ( () => {
 			</Box>
 			<ErrorSnackbar/>
 			<Container fixed>
-				<TodolistsLists/>
+				<TodolistsLists demo={demo}/>
 			</Container>
 		</div>
 	);

@@ -51,6 +51,7 @@ export const AddItemForm = React.memo ( ( props : AddItemPropsType ) => {
 				onKeyPress={ onNewTaskKeyPressHandler }
 				error={ !!error }
 				helperText={ error }
+				// disabled={}
 			/>
 			<IconButton onClick={ onNewTaskClickHandler } size={ 'small' }>
 				<Add/>
