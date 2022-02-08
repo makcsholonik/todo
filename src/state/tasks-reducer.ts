@@ -2,13 +2,13 @@ import { AddTodolistActionType, RemoveTodolistActionType, SetTodolistsActionType
 import { TaskPriorities, tasksAPI, TasksStateType, TaskStatuses, TaskType, UpdateTaskModelType } from '../api/api';
 import { Dispatch } from 'redux';
 import { AppRootStateType } from './store';
-import { setAppErrorAC, SetErrorActionType, setAppStatusAC, SetStatusActionType } from './app-reducer';
+import { setAppErrorAC, SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType } from './app-reducer';
 
 // initial state
 const initialState : TasksStateType = {};
 
 // reducer
-export const tasksReducer = ( state : TasksStateType = initialState, action : ActionType ) : TasksStateType => {
+export const tasksReducer = ( state : TasksStateType = initialState, action : TaskActionType ) : TasksStateType => {
 	switch ( action.type ) {
 		case 'REMOVE_TASK':
 			return { ...state, [ action.todolistId ] : state[ action.todolistId ].filter ( t => t.id !== action.taskId ) };
@@ -53,7 +53,7 @@ export const setTasksAC = ( tasks : TaskType[], todolistId : string, ) =>
 
 
 // thunks
-export const fetchTasksTC = ( todolistId : string ) => ( dispatch : Dispatch<ActionType | SetStatusActionType> ) => {
+export const fetchTasksTC = ( todolistId : string ) => ( dispatch : ThunkDispatchType ) => {
 	dispatch ( setAppStatusAC ( 'loading' ) );
 	tasksAPI.getTasks ( todolistId )
 		.then ( ( res ) => {
@@ -68,14 +68,14 @@ export const fetchTasksTC = ( todolistId : string ) => ( dispatch : Dispatch<Act
 			}
 		);
 };
-export const removeTaskTC = ( todolistId : string, taskId : string ) => ( dispatch : Dispatch<ActionType> ) => {
+export const removeTaskTC = ( todolistId : string, taskId : string ) => ( dispatch : ThunkDispatchType ) => {
 	tasksAPI.deleteTask ( todolistId, taskId )
 		.then ( ( res ) => {
 				dispatch ( removeTaskAC ( taskId, todolistId ) );
 			}
 		);
 };
-export const addTaskTC = ( todolistId : string, title : string, ) => ( dispatch : Dispatch<ActionType | SetErrorActionType | SetStatusActionType> ) => {
+export const addTaskTC = ( todolistId : string, title : string, ) => ( dispatch : ThunkDispatchType ) => {
 	dispatch ( setAppStatusAC ( 'loading' ) );
 	tasksAPI.createTask ( todolistId, title )
 		.then ( ( res ) => {
@@ -98,7 +98,8 @@ export const addTaskTC = ( todolistId : string, title : string, ) => ( dispatch 
 		);
 };
 export const updateTaskTC = ( taskId : string, domainModel : UpdateDomainTaskModelType, todolistId : string ) =>
-	( dispatch : Dispatch<ActionType>, getState : () => AppRootStateType ) => {
+	( dispatch : ThunkDispatchType, getState : () => AppRootStateType ) => {
+		dispatch ( setAppStatusAC ( 'loading' ) );
 
 		// Получаем state
 		const state = getState ();
@@ -120,14 +121,27 @@ export const updateTaskTC = ( taskId : string, domainModel : UpdateDomainTaskMod
 		};
 		tasksAPI.updateTasks ( todolistId, taskId, apiModel )
 			.then ( ( res ) => {
-					const action = updateTaskAC ( taskId, domainModel, todolistId );
-					dispatch ( action );
+				if (res.data.resultCode === 0) {
+					dispatch ( updateTaskAC ( taskId, domainModel, todolistId ) );
+					dispatch ( setAppStatusAC ( 'succeeded' ) );
+				} else {
+					if (res.data.messages.length) {
+						dispatch ( setAppErrorAC ( res.data.messages[ 0 ] ) );
+					} else {
+						dispatch ( setAppErrorAC ( 'some error occurred' ) );
+					}
+					dispatch ( setAppStatusAC ( 'failed' ) );
+				}
+			} )
+			.catch ( ( error ) => {
+					dispatch ( setAppErrorAC ( error.message ) );
+					dispatch ( setAppStatusAC ( 'failed' ) );
 				}
 			);
 	};
 
 // types
-type ActionType =
+type TaskActionType =
 	| ReturnType<typeof removeTaskAC>
 	| ReturnType<typeof addTaskAC>
 	| ReturnType<typeof updateTaskAC>
@@ -143,6 +157,7 @@ export type UpdateDomainTaskModelType = {
 	startDate? : string
 	deadline? : string
 }
+type ThunkDispatchType = Dispatch<TaskActionType | SetAppStatusActionType | SetAppErrorActionType>
 
 
 // delete
