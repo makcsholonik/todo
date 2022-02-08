@@ -4,9 +4,14 @@ import { AppBar, Box, Button, Container, IconButton, LinearProgress, Toolbar, Ty
 import { Menu } from '@material-ui/icons';
 import { TodolistsLists } from '../features/TodolistsLists/TodolistsLists';
 import { ErrorSnackbar } from '../component/ErrorSnackbar/ErrorSnackbar';
+import { useSelector } from 'react-redux';
+import { AppRootStateType } from '../state/store';
+import { StatusType } from '../state/app-reducer';
 
 
 export const App = React.memo ( () => {
+
+	const status = useSelector<AppRootStateType, StatusType> ( state => state.app.status );
 
 	return (
 		<div className="App">
@@ -21,7 +26,7 @@ export const App = React.memo ( () => {
 						</Typography>
 						<Button color={ 'inherit' }>Login</Button>
 					</Toolbar>
-					{/*<LinearProgress color="secondary" />*/}
+					{ status === 'loading' && <LinearProgress color="secondary"/> }
 				</AppBar>
 			</Box>
 			<ErrorSnackbar/>

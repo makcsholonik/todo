@@ -2,7 +2,7 @@ import { AddTodolistActionType, RemoveTodolistActionType, SetTodolistsActionType
 import { TaskPriorities, tasksAPI, TasksStateType, TaskStatuses, TaskType, UpdateTaskModelType } from '../api/api';
 import { Dispatch } from 'redux';
 import { AppRootStateType } from './store';
-import { setErrorAC, SetErrorActionType } from './app-reducer';
+import { setErrorAC, SetErrorActionType, setStatusAC, SetStatusActionType } from './app-reducer';
 
 // initial state
 const initialState : TasksStateType = {};
@@ -53,7 +53,8 @@ export const setTasksAC = ( tasks : TaskType[], todolistId : string, ) =>
 
 
 // thunks
-export const fetchTasksTC = ( todolistId : string ) => ( dispatch : Dispatch<ActionType> ) => {
+export const fetchTasksTC = ( todolistId : string ) => ( dispatch : Dispatch<ActionType | SetStatusActionType> ) => {
+	dispatch ( setStatusAC ( 'loading' ) );
 	tasksAPI.getTasks ( todolistId )
 		.then ( ( res ) => {
 
@@ -63,6 +64,7 @@ export const fetchTasksTC = ( todolistId : string ) => ( dispatch : Dispatch<Act
 				// Заменяем всё одной строкой
 
 				dispatch ( setTasksAC ( res.data.items, todolistId ) );
+			dispatch ( setStatusAC ( 'succeeded' ) );
 			}
 		);
 };
