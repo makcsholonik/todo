@@ -1,12 +1,13 @@
 import { todolistsAPI, TodolistType } from '../api/api';
 import { Dispatch } from 'redux';
+import { setStatusAC, SetStatusActionType } from './app-reducer';
 
 // initial state
 const initialState : Array<TodolistDomainType> = [];
 
 // reducer
 export const todolistsReducer = ( state : TodolistDomainType[] = initialState, action : ActionType ) : TodolistDomainType[] => {
-	switch (action.type) {
+	switch ( action.type ) {
 		case 'REMOVE_TODOLIST':
 			return state.filter ( tl => tl.id !== action.todolistId );
 		case 'ADD_TODOLIST':
@@ -35,10 +36,12 @@ export const setTodolistsAC = ( todolists : TodolistType[] ) =>
 	({ type : 'SET_TODOLISTS', todolists } as const);
 
 // thunks
-export const fetchTodolistsTC = () => ( dispatch : Dispatch<ActionType> ) => {
+export const fetchTodolistsTC = () => ( dispatch : Dispatch<ActionType | SetStatusActionType> ) => {
+	dispatch ( setStatusAC ( 'loading' ) );
 	todolistsAPI.getTodolists ()
 		.then ( ( res ) => {
 				dispatch ( setTodolistsAC ( res.data ) );
+				dispatch ( setStatusAC ( 'succeeded' ) );
 			}
 		);
 };

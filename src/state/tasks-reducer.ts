@@ -64,7 +64,7 @@ export const fetchTasksTC = ( todolistId : string ) => ( dispatch : Dispatch<Act
 				// Заменяем всё одной строкой
 
 				dispatch ( setTasksAC ( res.data.items, todolistId ) );
-			dispatch ( setStatusAC ( 'succeeded' ) );
+				dispatch ( setStatusAC ( 'succeeded' ) );
 			}
 		);
 };
@@ -75,17 +75,20 @@ export const removeTaskTC = ( todolistId : string, taskId : string ) => ( dispat
 			}
 		);
 };
-export const addTaskTC = ( todolistId : string, title : string, ) => ( dispatch : Dispatch<ActionType | SetErrorActionType> ) => {
+export const addTaskTC = ( todolistId : string, title : string, ) => ( dispatch : Dispatch<ActionType | SetErrorActionType | SetStatusActionType> ) => {
+	dispatch ( setStatusAC ( 'loading' ) );
 	tasksAPI.createTask ( todolistId, title )
 		.then ( ( res ) => {
 				if (res.data.resultCode === 0) {
 					dispatch ( addTaskAC ( res.data.data.item ) );
+					dispatch ( setStatusAC ( 'succeeded' ) );
 				} else {
 					if (res.data.messages.length) {
 						dispatch ( setErrorAC ( res.data.messages[ 0 ] ) );
 					} else {
 						dispatch ( setErrorAC ( 'some error occurred' ) );
 					}
+					dispatch ( setStatusAC ( 'failed' ) );
 				}
 			}
 		);
