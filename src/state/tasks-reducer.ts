@@ -3,7 +3,7 @@ import { TaskPriorities, tasksAPI, TasksStateType, TaskStatuses, TaskType, Updat
 import { Dispatch } from 'redux';
 import { AppRootStateType } from './store';
 import { setAppErrorAC, SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType } from './app-reducer';
-import { handleServerErrorAppError } from '../utils/error-utils';
+import { handleServerErrorAppError, handleServerNetworkAppError } from '../utils/error-utils';
 
 // initial state
 const initialState : TasksStateType = {};
@@ -88,8 +88,7 @@ export const addTaskTC = ( todolistId : string, title : string, ) => ( dispatch 
 			}
 		} )
 		.catch ( ( error ) => {
-				dispatch ( setAppErrorAC ( error.message ) );
-				dispatch ( setAppStatusAC ( 'failed' ) );
+				handleServerNetworkAppError ( error, dispatch );
 			}
 		);
 };
@@ -125,8 +124,7 @@ export const updateTaskTC = ( taskId : string, domainModel : UpdateDomainTaskMod
 				}
 			} )
 			.catch ( ( error ) => {
-					dispatch ( setAppErrorAC ( error.message ) );
-					dispatch ( setAppStatusAC ( 'failed' ) );
+					handleServerNetworkAppError ( error, dispatch );
 				}
 			);
 	};

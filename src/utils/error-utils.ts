@@ -6,8 +6,13 @@ export const handleServerErrorAppError = <D> ( data : ResponseType<D>, dispatch 
 		if (data.messages.length) {
 			dispatch ( setAppErrorAC ( data.messages[ 0 ] ) );
 		} else {
-			dispatch ( setAppErrorAC ( 'some error occurred' ) );
+			dispatch ( setAppErrorAC ( 'Some error occurred' ) );
 		}
 		dispatch ( setAppStatusAC ( 'failed' ) );
 	}
 ;
+
+export const handleServerNetworkAppError = ( error : any, dispatch : Dispatch<SetAppStatusActionType | SetAppErrorActionType> ) => {
+	dispatch ( setAppErrorAC ( error.message ? error.message : 'Some error occurred' ) );
+	dispatch ( setAppStatusAC ( 'failed' ) );
+};
