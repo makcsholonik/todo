@@ -3,6 +3,7 @@ import { TaskPriorities, tasksAPI, TasksStateType, TaskStatuses, TaskType, Updat
 import { Dispatch } from 'redux';
 import { AppRootStateType } from './store';
 import { setAppErrorAC, SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType } from './app-reducer';
+import { handleServerErrorAppError } from '../utils/error-utils';
 
 // initial state
 const initialState : TasksStateType = {};
@@ -83,12 +84,7 @@ export const addTaskTC = ( todolistId : string, title : string, ) => ( dispatch 
 				dispatch ( addTaskAC ( res.data.data.item ) );
 				dispatch ( setAppStatusAC ( 'succeeded' ) );
 			} else {
-				if (res.data.messages.length) {
-					dispatch ( setAppErrorAC ( res.data.messages[ 0 ] ) );
-				} else {
-					dispatch ( setAppErrorAC ( 'some error occurred' ) );
-				}
-				dispatch ( setAppStatusAC ( 'failed' ) );
+				handleServerErrorAppError ( res.data, dispatch );
 			}
 		} )
 		.catch ( ( error ) => {
@@ -125,12 +121,7 @@ export const updateTaskTC = ( taskId : string, domainModel : UpdateDomainTaskMod
 					dispatch ( updateTaskAC ( taskId, domainModel, todolistId ) );
 					dispatch ( setAppStatusAC ( 'succeeded' ) );
 				} else {
-					if (res.data.messages.length) {
-						dispatch ( setAppErrorAC ( res.data.messages[ 0 ] ) );
-					} else {
-						dispatch ( setAppErrorAC ( 'some error occurred' ) );
-					}
-					dispatch ( setAppStatusAC ( 'failed' ) );
+					handleServerErrorAppError ( res.data, dispatch );
 				}
 			} )
 			.catch ( ( error ) => {

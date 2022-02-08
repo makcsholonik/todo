@@ -23,7 +23,6 @@ export const ErrorSnackbar = () => {
 		dispatch ( setAppErrorAC ( null ) );
 	};
 
-
 	const open = error !== null;
 
 	return (
