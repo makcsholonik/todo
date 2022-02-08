@@ -2,6 +2,7 @@ import { AddTodolistActionType, RemoveTodolistActionType, SetTodolistsActionType
 import { TaskPriorities, tasksAPI, TasksStateType, TaskStatuses, TaskType, UpdateTaskModelType } from '../api/api';
 import { Dispatch } from 'redux';
 import { AppRootStateType } from './store';
+import { setErrorAC, SetErrorActionType } from './app-reducer';
 
 // initial state
 const initialState : TasksStateType = {};
@@ -72,10 +73,16 @@ export const removeTaskTC = ( todolistId : string, taskId : string ) => ( dispat
 			}
 		);
 };
-export const addTaskTC = ( todolistId : string, title : string, ) => ( dispatch : Dispatch<ActionType> ) => {
+export const addTaskTC = ( todolistId : string, title : string, ) => ( dispatch : Dispatch<ActionType | SetErrorActionType> ) => {
 	tasksAPI.createTask ( todolistId, title )
 		.then ( ( res ) => {
-				dispatch ( addTaskAC ( res.data.data.item ) );
+				if (res.data.resultCode === 0) {
+					dispatch ( addTaskAC ( res.data.data.item ) );
+				} else {
+					if (res.data.messages.length) {
+						dispatch ( setErrorAC ( res.data.messages[ 0 ] ) );
+					}
+				}
 			}
 		);
 };

@@ -21,7 +21,7 @@ export const App = React.memo ( () => {
 						</Typography>
 						<Button color={ 'inherit' }>Login</Button>
 					</Toolbar>
-					<LinearProgress color="secondary" />
+					{/*<LinearProgress color="secondary" />*/}
 				</AppBar>
 			</Box>
 			<ErrorSnackbar/>
