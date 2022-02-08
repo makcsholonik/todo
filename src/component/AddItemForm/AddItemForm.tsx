@@ -4,9 +4,10 @@ import { Add } from '@material-ui/icons';
 
 export type AddItemPropsType = {
 	addItem : ( newTitle : string ) => void
+	disabled : boolean
 }
 
-export const AddItemForm = React.memo ( ( props : AddItemPropsType ) => {
+export const AddItemForm = React.memo ( ( { addItem, disabled = false } : AddItemPropsType ) => {
 
 	console.log ( 'AddItemForm is called' );
 
@@ -17,7 +18,7 @@ export const AddItemForm = React.memo ( ( props : AddItemPropsType ) => {
 		// title не равен пустой строке и отсекаем пробелы
 		let newTitle = taskTitle.trim ();
 		if (newTitle !== '') {
-			props.addItem ( newTitle );
+			addItem ( newTitle );
 			setTaskTitle ( '' );
 		} else {
 			setError ( 'title is required' );
@@ -51,13 +52,11 @@ export const AddItemForm = React.memo ( ( props : AddItemPropsType ) => {
 				onKeyPress={ onNewTaskKeyPressHandler }
 				error={ !!error }
 				helperText={ error }
-				// disabled={}
+				disabled={ disabled }
 			/>
-			<IconButton onClick={ onNewTaskClickHandler } size={ 'small' }>
+			<IconButton onClick={ onNewTaskClickHandler } size={ 'small' } disabled={ disabled }>
 				<Add/>
 			</IconButton>
-			{/*заменили helperText*/ }
-			{/*{ error ? <div className={ 'error-message' }>{ error }</div> : '' }*/ }
 		</div>
 	);
 } );
