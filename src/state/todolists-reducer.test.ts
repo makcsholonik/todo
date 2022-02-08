@@ -93,7 +93,7 @@ test ( 'todolist should be set to the state', () => {
 	expect ( endState[ 1 ].title ).toBe ( 'What to buy' );
 } );
 
-test ( 'correct status of todolist should be changed', () => {
+test ( 'correct entity status of todolist should be changed', () => {
 
 	let newEntityStatus : StatusType = 'loading';
 
