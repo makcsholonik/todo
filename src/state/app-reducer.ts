@@ -2,6 +2,11 @@ import { Dispatch } from 'redux';
 import { authAPI } from '../api/api';
 import { AuthActionType, setIsLoggedInAC } from './auth-reducer';
 
+// actions
+const SET_STATUS = 'app/SET_STATUS';
+const SET_ERROR = 'app/SET_ERROR';
+const SET_IS_INITIALIZED = 'app/SET_IS_INITIALIZED';
+
 // initial state
 const initialState : InitialStateType = {
 	status : 'idle',
@@ -12,26 +17,26 @@ const initialState : InitialStateType = {
 // reducer
 export const appReducer = ( state : InitialStateType = initialState, action : AppActionType ) : InitialStateType => {
 	switch ( action.type ) {
-		case 'app/SET_STATUS':
+		case SET_STATUS:
 			return { ...state, status : action.status };
-		case 'app/SET_ERROR':
+		case SET_ERROR:
 			return { ...state, error : action.error };
-		case 'app/SET_IS_INITIALIZED':
+		case SET_IS_INITIALIZED:
 			return { ...state, isInitialized : action.isInitialized };
 		default:
 			return state;
 	}
 };
 
-// actions
-export const setAppStatusAC = ( status : StatusType ) => ({ type : 'app/SET_STATUS', status } as const);
-export const setAppErrorAC = ( error : string | null ) => ({ type : 'app/SET_ERROR', error } as const);
+// action creators
+export const setAppStatusAC = ( status : StatusType ) => ({ type : SET_STATUS, status } as const);
+export const setAppErrorAC = ( error : string | null ) => ({ type : SET_ERROR, error } as const);
 export const setAppIsInitializedAC = ( isInitialized : boolean ) => ({
-	type : 'app/SET_IS_INITIALIZED',
+	type : SET_IS_INITIALIZED,
 	isInitialized
 } as const);
 
-// thunks
+// thunk creators
 export const initializeAppTC = () => ( dispatch : ThunkDispatchType ) => {
 	authAPI.me ()
 		.then ( ( res ) => {
