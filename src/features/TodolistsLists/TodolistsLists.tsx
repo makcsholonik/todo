@@ -29,8 +29,8 @@ export const TodolistsLists : React.FC<TodolistsListsPropsType> = ( { demo = fal
 	const tasks = useSelector<AppRootStateType, TasksStateType> ( state => state.tasks );
 	const isLoggedIn = useSelector<AppRootStateType, boolean> ( state => state.auth.isLoggedIn );
 
+	// если не залогинены переходим на страницу Login
 	const navigate = useNavigate ();
-
 	useEffect ( () => {
 		if ( !isLoggedIn) {
 			return navigate ( '/login' );

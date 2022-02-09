@@ -5,7 +5,7 @@ import { Dispatch } from 'redux';
 import { SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType } from './app-reducer';
 
 const initialState : InitialStateType = {
-	isLoggedIn : false
+	isLoggedIn : false // true - пользователь залогинен (т.е. есть кука)
 };
 
 // reducer
@@ -26,7 +26,7 @@ export const authTC = ( data : AuthDataType ) => ( dispatch : ThunkDispatchType 
 	authAPI.login ( data )
 		.then ( ( res ) => {
 			if (res.data.resultCode === 0) {
-				dispatch ( setIsLoggedInAC ( true ) );
+				dispatch ( setIsLoggedInAC ( true ) ); // залогинены удачно!
 				dispatch ( setAppStatusAC ( 'succeeded' ) );
 			} else {
 				handleServerErrorAppError ( res.data, dispatch );

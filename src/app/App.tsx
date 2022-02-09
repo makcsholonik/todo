@@ -28,20 +28,20 @@ type AppPropsType = {
 export const App = React.memo ( ( { demo = false } : AppPropsType ) => {
 
 			const status = useSelector<AppRootStateType, StatusType> ( state => state.app.status );
-			const isInitialized = useSelector<AppRootStateType, boolean> ( state => state.app.initialized );
+			const isInitialized = useSelector<AppRootStateType, boolean> ( state => state.app.isInitialized );
 			const dispatch = useDispatch ();
 
 			useEffect ( () => {
-				dispatch ( initializeAppTC );
+				dispatch ( initializeAppTC () );
 			}, [] );
 
-			// if ( !isInitialized) {
-			// 	return (
-			// 		<Box sx={ { display : 'block', textAlign : 'center', top : '50%' } }>
-			// 			<CircularProgress/>
-			// 		</Box>
-			// 	);
-			// }
+			if ( !isInitialized) {
+				return (
+					<Box sx={ { display : 'block', textAlign : 'center' } }>
+						<CircularProgress/>
+					</Box>
+				);
+			}
 
 			return (
 				<div className="App">

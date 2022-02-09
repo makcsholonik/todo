@@ -1,14 +1,12 @@
-// initial state
-
 import { Dispatch } from 'redux';
 import { authAPI } from '../api/api';
-import { updateTaskAC } from './tasks-reducer';
 import { AuthActionType, setIsLoggedInAC } from './auth-reducer';
 
+// initial state
 const initialState : InitialStateType = {
 	status : 'idle',
 	error : null,
-	initialized : false
+	isInitialized : false // true - приложение инициализированно (проверили пользователя, получили настройки и т.д.)
 };
 
 // reducer
@@ -19,7 +17,7 @@ export const appReducer = ( state : InitialStateType = initialState, action : Ap
 		case 'app/SET_ERROR':
 			return { ...state, error : action.error };
 		case 'app/SET_IS_INITIALIZED':
-			return { ...state, initialized : action.initialized };
+			return { ...state, isInitialized : action.isInitialized };
 		default:
 			return state;
 	}
@@ -28,9 +26,9 @@ export const appReducer = ( state : InitialStateType = initialState, action : Ap
 // actions
 export const setAppStatusAC = ( status : StatusType ) => ({ type : 'app/SET_STATUS', status } as const);
 export const setAppErrorAC = ( error : string | null ) => ({ type : 'app/SET_ERROR', error } as const);
-export const setAppIsInitializedAC = ( initialized : boolean ) => ({
+export const setAppIsInitializedAC = ( isInitialized : boolean ) => ({
 	type : 'app/SET_IS_INITIALIZED',
-	initialized
+	isInitialized
 } as const);
 
 // thunks
@@ -53,7 +51,7 @@ export type InitialStateType = {
 	// если произойдёт глобальная ошибка, мы запишем текст сюда
 	error : string | null
 	// true - когда приложение проинициализировалось
-	initialized : boolean
+	isInitialized : boolean
 }
 
 export type SetAppStatusActionType = ReturnType<typeof setAppStatusAC>
