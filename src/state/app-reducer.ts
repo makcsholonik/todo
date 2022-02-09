@@ -7,9 +7,9 @@ const initialState : InitialStateType = {
 // reducer
 export const appReducer = ( state : InitialStateType = initialState, action : ActionType ) : InitialStateType => {
 	switch ( action.type ) {
-		case 'APP/SET-STATUS':
+		case 'app/SET_STATUS':
 			return { ...state, status : action.status };
-		case 'APP/SET-ERROR':
+		case 'app/SET_ERROR':
 			return { ...state, error : action.error };
 		default:
 			return state;
@@ -17,8 +17,8 @@ export const appReducer = ( state : InitialStateType = initialState, action : Ac
 };
 
 // actions
-export const setAppStatusAC = ( status : StatusType ) => ({ type : 'APP/SET-STATUS', status } as const);
-export const setAppErrorAC = ( error : string | null ) => ({ type : 'APP/SET-ERROR', error } as const);
+export const setAppStatusAC = ( status : StatusType ) => ({ type : 'app/SET_STATUS', status } as const);
+export const setAppErrorAC = ( error : string | null ) => ({ type : 'app/SET_ERROR', error } as const);
 
 // types
 export type StatusType = 'idle' | 'loading' | 'succeeded' | 'failed'

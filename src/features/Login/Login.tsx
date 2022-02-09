@@ -1,26 +1,35 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
+	Button,
 	Checkbox,
 	FormControl,
 	FormControlLabel,
 	FormGroup,
 	FormLabel,
-	TextField,
-	Button,
-	Grid
+	Grid,
+	TextField
 } from '@material-ui/core';
-import { useFormik, FormikErrors } from 'formik';
-
-type FormValuesType = {
-	email : string
-	password : string
-	rememberMe : boolean
-}
+import { FormikErrors, useFormik } from 'formik';
+import { useDispatch, useSelector } from 'react-redux';
+import { authTC } from '../../state/auth-reducer';
+import { AuthDataType } from '../../api/api';
+import { AppRootStateType } from '../../state/store';
+import { useNavigate } from 'react-router-dom';
 
 export const Login = () => {
 
-		const validate = ( values : FormValuesType ) => {
-			const errors : FormikErrors<FormValuesType> = {};
+		const dispatch = useDispatch ();
+		const navigate = useNavigate ();
+
+		const isLoggedIn = useSelector<AppRootStateType, boolean> ( state => state.auth.isLoggedIn );
+		useEffect ( () => {
+			if (isLoggedIn) {
+				return navigate ( '/' );
+			}
+		}, [isLoggedIn] );
+
+		const validate = ( values : AuthDataType ) => {
+			const errors : FormikErrors<AuthDataType> = {};
 			if ( !values.email) {
 				errors.email = 'Required';
 			} else if ( !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test ( values.email )) {
@@ -38,11 +47,12 @@ export const Login = () => {
 			initialValues : {
 				email : '',
 				password : '',
-				rememberMe : false
+				rememberMe : false,
+				captcha : ''
 			},
 			validate,
 			onSubmit : values => {
-				alert ( JSON.stringify ( values, null, 2 ) );
+				dispatch ( authTC ( values ) );
 			},
 		} );
 

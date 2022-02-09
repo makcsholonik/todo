@@ -42,6 +42,13 @@ export const tasksAPI = {
 	}
 };
 
+// auth api
+export const authAPI = {
+	login ( data : AuthDataType ) {
+		return instance.post<ResponseType<{ userId? : number }>> ( `auth/login`, data );
+	}
+};
+
 // types
 export type ResponseType<D = {}> = {
 	resultCode : number
@@ -81,6 +88,12 @@ export type UpdateTaskModelType = {
 }
 export type TasksStateType = {
 	[ key : string ] : Array<TaskType>
+}
+export type AuthDataType = {
+	email : string
+	password : string
+	rememberMe : boolean
+	captcha? : string
 }
 
 // enums

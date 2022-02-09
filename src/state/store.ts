@@ -3,13 +3,15 @@ import { todolistsReducer } from './todolists-reducer';
 import { tasksReducer } from './tasks-reducer';
 import thunk from 'redux-thunk';
 import { appReducer } from './app-reducer';
+import { authReducer } from './auth-reducer';
 
 
 // объединяем редьюсеры в один общий
 const rootReducer = combineReducers ( {
 	todolists : todolistsReducer,
 	tasks : tasksReducer,
-	app : appReducer
+	app : appReducer,
+	auth : authReducer
 } );
 
 // типизируем редьюсер

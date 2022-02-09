@@ -1,7 +1,6 @@
 import { addTaskAC, removeTaskAC, setTasksAC, tasksReducer, updateTaskAC } from './tasks-reducer';
 import { addTodolistAC, removeTodolistAC, setTodolistsAC } from './todolists-reducer';
-import { TasksStateType } from '../app/App';
-import { TaskPriorities, TaskStatuses } from '../api/api';
+import { TaskPriorities, TasksStateType, TaskStatuses } from '../api/api';
 
 const startState : TasksStateType = {
 	'todolistId1' : [
