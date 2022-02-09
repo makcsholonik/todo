@@ -1,14 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
-import { AppBar, Box, Button, Container, IconButton, LinearProgress, Toolbar, Typography } from '@material-ui/core';
+import {
+	AppBar,
+	Box,
+	Button,
+	CircularProgress,
+	Container,
+	IconButton,
+	LinearProgress,
+	Toolbar,
+	Typography
+} from '@material-ui/core';
 import { Menu } from '@material-ui/icons';
 import { TodolistsLists } from '../features/TodolistsLists/TodolistsLists';
 import { ErrorSnackbar } from '../component/ErrorSnackbar/ErrorSnackbar';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppRootStateType } from '../state/store';
-import { StatusType } from '../state/app-reducer';
+import { initializeAppTC, StatusType } from '../state/app-reducer';
 import { Login } from '../features/Login/Login';
 import { Routes, Route } from 'react-router-dom';
+
 
 type AppPropsType = {
 	demo? : boolean
@@ -16,33 +27,48 @@ type AppPropsType = {
 
 export const App = React.memo ( ( { demo = false } : AppPropsType ) => {
 
-		const status = useSelector<AppRootStateType, StatusType> ( state => state.app.status );
+			const status = useSelector<AppRootStateType, StatusType> ( state => state.app.status );
+			const isInitialized = useSelector<AppRootStateType, boolean> ( state => state.app.initialized );
+			const dispatch = useDispatch ();
 
-		return (
-			<div className="App">
-				<Box>
-					<AppBar position={ 'static' } color={ 'primary' }>
-						<Toolbar>
-							<IconButton edge={ 'start' } color={ 'inherit' } aria-label={ 'menu' }>
-								<Menu/>
-							</IconButton>
-							<Typography variant={ 'h6' }>
-								News
-							</Typography>
-							<Button color={ 'inherit' }>Login</Button>
-						</Toolbar>
-						{ status === 'loading' && <LinearProgress color="secondary"/> }
-					</AppBar>
-				</Box>
-				<ErrorSnackbar/>
-				<Container fixed>
-					<Routes>
-						<Route path={ '/' } element={ <TodolistsLists demo={ demo }/> }/>
-						<Route path={ '/login' } element={ <Login/> }/>
-					</Routes>
-				</Container>
-			</div>
-		);
-	}
-);
+			useEffect ( () => {
+				dispatch ( initializeAppTC );
+			}, [] );
+
+			// if ( !isInitialized) {
+			// 	return (
+			// 		<Box sx={ { display : 'block', textAlign : 'center', top : '50%' } }>
+			// 			<CircularProgress/>
+			// 		</Box>
+			// 	);
+			// }
+
+			return (
+				<div className="App">
+					<Box>
+						<AppBar position={ 'static' } color={ 'primary' }>
+							<Toolbar>
+								<IconButton edge={ 'start' } color={ 'inherit' } aria-label={ 'menu' }>
+									<Menu/>
+								</IconButton>
+								<Typography variant={ 'h6' }>
+									News
+								</Typography>
+								<Button color={ 'inherit' }>Login</Button>
+							</Toolbar>
+							{ status === 'loading' && <LinearProgress color="secondary"/> }
+						</AppBar>
+					</Box>
+					<ErrorSnackbar/>
+					<Container fixed>
+						<Routes>
+							<Route path={ '/' } element={ <TodolistsLists demo={ demo }/> }/>
+							<Route path={ '/login' } element={ <Login/> }/>
+						</Routes>
+					</Container>
+				</div>
+			);
+		}
+	)
+;
 

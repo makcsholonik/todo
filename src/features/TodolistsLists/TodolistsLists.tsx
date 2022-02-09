@@ -15,6 +15,7 @@ import { TasksStateType, TaskStatuses } from '../../api/api';
 import { Grid, Paper } from '@material-ui/core';
 import { AddItemForm } from '../../component/AddItemForm/AddItemForm';
 import { Todolist } from './Todolist/Todolist';
+import { useNavigate } from 'react-router-dom';
 
 type TodolistsListsPropsType = {
 	demo? : boolean
@@ -26,6 +27,15 @@ export const TodolistsLists : React.FC<TodolistsListsPropsType> = ( { demo = fal
 	// достаём тудулисты и таски
 	const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>> ( state => state.todolists );
 	const tasks = useSelector<AppRootStateType, TasksStateType> ( state => state.tasks );
+	const isLoggedIn = useSelector<AppRootStateType, boolean> ( state => state.auth.isLoggedIn );
+
+	const navigate = useNavigate ();
+
+	useEffect ( () => {
+		if ( !isLoggedIn) {
+			return navigate ( '/login' );
+		}
+	}, [isLoggedIn] );
 
 	// отрисовка тудулистов с сервера
 	useEffect ( () => {
@@ -83,7 +93,7 @@ export const TodolistsLists : React.FC<TodolistsListsPropsType> = ( { demo = fal
 	return (
 		<>
 			<Grid container style={ { padding : '20px' } }>
-				<AddItemForm addItem={ addTodolist } disabled={false} />
+				<AddItemForm addItem={ addTodolist } disabled={ false }/>
 			</Grid>
 			<Grid container spacing={ 5 }>
 				{
@@ -96,7 +106,7 @@ export const TodolistsLists : React.FC<TodolistsListsPropsType> = ( { demo = fal
 								<Paper elevation={ 2 } style={ { padding : '10px' } }>
 									<Todolist
 										key={ tl.id }
-										todolist={tl}
+										todolist={ tl }
 										tasks={ taskForTodolist }
 										removeTask={ removeTask }
 										changeFilter={ changeFilter }

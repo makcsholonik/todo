@@ -28,7 +28,6 @@ export const authTC = ( data : AuthDataType ) => ( dispatch : ThunkDispatchType 
 			if (res.data.resultCode === 0) {
 				dispatch ( setIsLoggedInAC ( true ) );
 				dispatch ( setAppStatusAC ( 'succeeded' ) );
-
 			} else {
 				handleServerErrorAppError ( res.data, dispatch );
 			}

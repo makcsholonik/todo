@@ -46,6 +46,9 @@ export const tasksAPI = {
 export const authAPI = {
 	login ( data : AuthDataType ) {
 		return instance.post<ResponseType<{ userId? : number }>> ( `auth/login`, data );
+	},
+	me () {
+		return instance.get<ResponseType<{ id : number, email : string, login : string }>> ( `auth/me` );
 	}
 };
 
@@ -55,7 +58,7 @@ export type ResponseType<D = {}> = {
 	messages : string[],
 	data : D
 }
-type GetTasksResponseType = {
+export type GetTasksResponseType = {
 	items : TaskType[]
 	totalCount : number
 	error : string | null
