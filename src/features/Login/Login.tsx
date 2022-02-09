@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 import { FormikErrors, useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
-import { authTC } from '../../state/auth-reducer';
+import { loginTC } from '../../state/auth-reducer';
 import { AuthDataType } from '../../api/api';
 import { AppRootStateType } from '../../state/store';
 import { useNavigate } from 'react-router-dom';
@@ -53,7 +53,7 @@ export const Login = () => {
 			},
 			validate,
 			onSubmit : values => {
-				dispatch ( authTC ( values ) );
+				dispatch ( loginTC ( values ) );
 			},
 		} );
 

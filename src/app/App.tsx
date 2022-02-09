@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import './App.css';
 import {
 	AppBar,
@@ -18,7 +18,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppRootStateType } from '../state/store';
 import { initializeAppTC, StatusType } from '../state/app-reducer';
 import { Login } from '../features/Login/Login';
-import { Routes, Route } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
+import { logoutTC } from '../state/auth-reducer';
 
 
 type AppPropsType = {
@@ -29,11 +30,18 @@ export const App = React.memo ( ( { demo = false } : AppPropsType ) => {
 
 			const status = useSelector<AppRootStateType, StatusType> ( state => state.app.status );
 			const isInitialized = useSelector<AppRootStateType, boolean> ( state => state.app.isInitialized );
+			const isLoggedIn = useSelector<AppRootStateType, boolean> ( state => state.auth.isLoggedIn );
 			const dispatch = useDispatch ();
 
 			useEffect ( () => {
 				dispatch ( initializeAppTC () );
 			}, [] );
+
+			const logoutHandler = useCallback ( () => {
+				const thunk = logoutTC ();
+				dispatch ( thunk );
+			}, [dispatch] );
+
 
 			if ( !isInitialized) {
 				return (
@@ -54,7 +62,7 @@ export const App = React.memo ( ( { demo = false } : AppPropsType ) => {
 								<Typography variant={ 'h6' }>
 									News
 								</Typography>
-								<Button color={ 'inherit' }>Login</Button>
+								{ isLoggedIn && <Button color={ 'inherit' } onClick={ logoutHandler }>Log out</Button> }
 							</Toolbar>
 							{ status === 'loading' && <LinearProgress color="secondary"/> }
 						</AppBar>

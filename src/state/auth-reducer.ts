@@ -21,7 +21,7 @@ export const authReducer = ( state : InitialStateType = initialState, action : A
 export const setIsLoggedInAC = ( isLoggedIn : boolean ) => ({ type : 'auth/SET_IS_LOGGED_IN', isLoggedIn } as const);
 
 // thunks
-export const authTC = ( data : AuthDataType ) => ( dispatch : ThunkDispatchType ) => {
+export const loginTC = ( data : AuthDataType ) => ( dispatch : ThunkDispatchType ) => {
 	dispatch ( setAppStatusAC ( 'loading' ) );
 	authAPI.login ( data )
 		.then ( ( res ) => {
@@ -37,6 +37,23 @@ export const authTC = ( data : AuthDataType ) => ( dispatch : ThunkDispatchType 
 			}
 		);
 };
+export const logoutTC = () => ( dispatch : ThunkDispatchType ) => {
+	dispatch ( setAppStatusAC ( 'loading' ) );
+	authAPI.logout ()
+		.then ( ( res ) => {
+			if (res.data.resultCode === 0) {
+				dispatch ( setIsLoggedInAC ( false ) ); // залогинены удачно!
+				dispatch ( setAppStatusAC ( 'succeeded' ) );
+			} else {
+				handleServerErrorAppError ( res.data, dispatch );
+			}
+		} )
+		.catch ( ( error ) => {
+				handleServerNetworkAppError ( error, dispatch );
+			}
+		);
+};
+
 
 // types
 export type InitialStateType = {
