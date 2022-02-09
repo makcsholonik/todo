@@ -1,9 +1,12 @@
-// initial state
 import { authAPI, AuthDataType } from '../api/api';
 import { handleServerErrorAppError, handleServerNetworkAppError } from '../utils/error-utils';
 import { Dispatch } from 'redux';
 import { SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType } from './app-reducer';
 
+// actions
+const SET_IS_LOGGED_IN = 'auth/SET_IS_LOGGED_IN';
+
+// initial state
 const initialState : InitialStateType = {
 	isLoggedIn : false // true - пользователь залогинен (т.е. есть кука)
 };
@@ -11,16 +14,16 @@ const initialState : InitialStateType = {
 // reducer
 export const authReducer = ( state : InitialStateType = initialState, action : AuthActionType ) : InitialStateType => {
 	switch ( action.type ) {
-		case 'auth/SET_IS_LOGGED_IN':
+		case SET_IS_LOGGED_IN:
 			return { ...state, isLoggedIn : action.isLoggedIn };
 	}
 	return state;
 };
 
-// actions
-export const setIsLoggedInAC = ( isLoggedIn : boolean ) => ({ type : 'auth/SET_IS_LOGGED_IN', isLoggedIn } as const);
+// action creators
+export const setIsLoggedInAC = ( isLoggedIn : boolean ) => ({ type : SET_IS_LOGGED_IN, isLoggedIn } as const);
 
-// thunks
+// thunk creators
 export const loginTC = ( data : AuthDataType ) => ( dispatch : ThunkDispatchType ) => {
 	dispatch ( setAppStatusAC ( 'loading' ) );
 	authAPI.login ( data )
@@ -53,7 +56,6 @@ export const logoutTC = () => ( dispatch : ThunkDispatchType ) => {
 			}
 		);
 };
-
 
 // types
 export type InitialStateType = {

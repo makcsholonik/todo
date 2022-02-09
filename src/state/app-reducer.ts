@@ -58,7 +58,6 @@ export type InitialStateType = {
 	// true - когда приложение проинициализировалось
 	isInitialized : boolean
 }
-
 export type SetAppStatusActionType = ReturnType<typeof setAppStatusAC>
 export type SetAppErrorActionType = ReturnType<typeof setAppErrorAC>
 type AppActionType =
