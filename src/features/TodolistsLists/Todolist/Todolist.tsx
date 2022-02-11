@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect } from 'react';
-import { AddItemForm } from '../../../component/AddItemForm/AddItemForm';
-import { EditableSpan } from '../../../component/EditableSpan/EditableSpan';
+import { AddItemForm } from 'component/AddItemForm/AddItemForm';
+import { EditableSpan } from 'component/EditableSpan/EditableSpan';
 import { Task } from './Task/Task';
 import { Button, IconButton } from '@material-ui/core';
 import { Delete } from '@material-ui/icons';
-import { TaskFilterType, TodolistDomainType } from '../../../state/todolists-reducer';
-import { TaskStatuses, TaskType } from '../../../api/api';
+import { TaskFilterType, TodolistDomainType } from 'state/todolists-reducer';
+import { TaskStatuses, TaskType } from 'api/api';
 import { useDispatch } from 'react-redux';
-import { fetchTasksTC } from '../../../state/tasks-reducer';
+import { fetchTasksTC } from 'state/tasks-reducer';
 
 type TodolistPropsType = {
 	todolist : TodolistDomainType
@@ -92,19 +92,19 @@ export const Todolist = React.memo ( ( { demo = false, ...props } : TodolistProp
 			<div>
 				<Button
 					variant={ props.todolist.filter === 'all' ? 'contained' : 'outlined' }
-					size={ 'small' }
+					color={ 'inherit' }
 					onClick={ onAllClickFilterHandler }>
 					All
 				</Button>
 				<Button
 					variant={ props.todolist.filter === 'active' ? 'contained' : 'outlined' }
-					size={ 'small' }
+					color={ 'primary' }
 					onClick={ onActiveClickFilterHandler }>
 					Active
 				</Button>
 				<Button
 					variant={ props.todolist.filter === 'completed' ? 'contained' : 'outlined' }
-					size={ 'small' }
+					color={ 'secondary' }
 					onClick={ onCompletedClickFilterHandler }>
 					Completed
 				</Button>

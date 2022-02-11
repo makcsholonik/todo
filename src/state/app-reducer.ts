@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import { authAPI } from '../api/api';
+import { authAPI } from 'api/api';
 import { AuthActionType, setIsLoggedInAC } from './auth-reducer';
 
 // actions

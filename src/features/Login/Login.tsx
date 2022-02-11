@@ -11,10 +11,10 @@ import {
 } from '@material-ui/core';
 import { FormikErrors, useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginTC } from '../../state/auth-reducer';
-import { AuthDataType } from '../../api/api';
-import { AppRootStateType } from '../../state/store';
+import { loginTC } from 'state/auth-reducer';
+import { AuthDataType } from 'api/api';
 import { useNavigate } from 'react-router-dom';
+import { AppRootStateType } from 'state/store';
 
 export const Login = () => {
 

@@ -1,5 +1,5 @@
-import { authAPI, AuthDataType } from '../api/api';
-import { handleServerErrorAppError, handleServerNetworkAppError } from '../utils/error-utils';
+import { authAPI, AuthDataType } from 'api/api';
+import { handleServerErrorAppError, handleServerNetworkAppError } from 'utils/error-utils';
 import { Dispatch } from 'redux';
 import { SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType } from './app-reducer';
 

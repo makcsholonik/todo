@@ -1,4 +1,4 @@
-import { todolistsAPI, TodolistType } from '../api/api';
+import { todolistsAPI, TodolistType } from 'api/api';
 import { Dispatch } from 'redux';
 import {
 	setAppErrorAC,
@@ -7,7 +7,7 @@ import {
 	SetAppStatusActionType,
 	StatusType
 } from './app-reducer';
-import { handleServerNetworkAppError } from '../utils/error-utils';
+import { handleServerNetworkAppError } from 'utils/error-utils';
 
 // actions
 const REMOVE_TODOLIST = 'REMOVE_TODOLIST';

@@ -12,14 +12,14 @@ import {
 	Typography
 } from '@material-ui/core';
 import { Menu } from '@material-ui/icons';
-import { TodolistsLists } from '../features/TodolistsLists/TodolistsLists';
-import { ErrorSnackbar } from '../component/ErrorSnackbar/ErrorSnackbar';
+import { TodolistsLists } from 'features/TodolistsLists/TodolistsLists';
+import { ErrorSnackbar } from 'component/ErrorSnackbar/ErrorSnackbar';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppRootStateType } from '../state/store';
-import { initializeAppTC, StatusType } from '../state/app-reducer';
-import { Login } from '../features/Login/Login';
+import { AppRootStateType } from 'state/store';
+import { initializeAppTC, StatusType } from 'state/app-reducer';
+import { Login } from 'features/Login/Login';
 import { Route, Routes } from 'react-router-dom';
-import { logoutTC } from '../state/auth-reducer';
+import { logoutTC } from 'state/auth-reducer';
 
 
 type AppPropsType = {
