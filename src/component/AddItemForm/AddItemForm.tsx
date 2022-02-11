@@ -7,7 +7,7 @@ export type AddItemPropsType = {
 	disabled : boolean
 }
 
-export const AddItemForm = React.memo ( ( { addItem, disabled = false } : AddItemPropsType ) => {
+export const AddItemForm : React.FC<AddItemPropsType> = React.memo ( ( { addItem, disabled = false } ) => {
 
 	console.log ( 'AddItemForm is called' );
 

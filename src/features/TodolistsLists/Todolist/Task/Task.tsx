@@ -12,7 +12,7 @@ type TaskPropsType = {
 	changeTaskTitle : ( taskId : string, newTitle : string, todolistId : string ) => void
 	todolistId : string
 }
-export const Task = React.memo ( ( props : TaskPropsType ) => {
+export const Task : React.FC<TaskPropsType> = React.memo ( ( props ) => {
 	// удаление таски
 	const onRemoveTaskHandler = () => props.removeTask ( props.task.id, props.todolistId );
 

@@ -16,7 +16,7 @@ import { AuthDataType } from 'api/api';
 import { useNavigate } from 'react-router-dom';
 import { AppRootStateType } from 'state/store';
 
-export const Login = () => {
+export const Login : React.FC = () => {
 
 		const dispatch = useDispatch ();
 		const navigate = useNavigate ();

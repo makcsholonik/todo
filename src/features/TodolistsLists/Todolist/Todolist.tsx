@@ -22,7 +22,7 @@ type TodolistPropsType = {
 	demo? : boolean
 }
 
-export const Todolist = React.memo ( ( { demo = false, ...props } : TodolistPropsType ) => {
+export const Todolist : React.FC<TodolistPropsType> = React.memo ( ( { demo = false, ...props } ) => {
 
 	const dispatch = useDispatch ();
 
