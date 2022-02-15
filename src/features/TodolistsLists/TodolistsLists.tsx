@@ -21,7 +21,12 @@ type TodolistsListsPropsType = {
 	demo? : boolean
 }
 
-export const TodolistsLists : React.FC<TodolistsListsPropsType> = ( { demo = false } ) => {
+export const TodolistsLists : React.FC<TodolistsListsPropsType> = ( props ) => {
+
+	const {
+		demo = false
+	} = props;
+
 	const dispatch = useDispatch ();
 
 	// достаём тудулисты и таски

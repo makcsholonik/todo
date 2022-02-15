@@ -26,7 +26,11 @@ type AppPropsType = {
 	demo? : boolean
 }
 
-export const App : React.FC<AppPropsType> = React.memo ( ( { demo = false } ) => {
+export const App : React.FC<AppPropsType> = React.memo ( ( props ) => {
+
+			const {
+				demo = false
+			} = props;
 
 			const status = useSelector<AppRootStateType, StatusType> ( state => state.app.status );
 			const isInitialized = useSelector<AppRootStateType, boolean> ( state => state.app.isInitialized );

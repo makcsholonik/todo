@@ -10,12 +10,14 @@ import {
 import { handleServerNetworkAppError } from 'utils/error-utils';
 
 // actions
-const REMOVE_TODOLIST = 'REMOVE_TODOLIST';
-const ADD_TODOLIST = 'ADD_TODOLIST';
-const CHANGE_TODOLIST_TITLE = 'CHANGE_TODOLIST_TITLE';
-const CHANGE_TODOLIST_FILTER = 'CHANGE_TODOLIST_FILTER';
-const CHANGE_TODOLIST_ENTITY_STATUS = 'CHANGE_TODOLIST_ENTITY_STATUS';
-const SET_TODOLISTS = 'SET_TODOLISTS';
+enum TodolistsActionTypes {
+	REMOVE_TODOLIST = 'REMOVE_TODOLIST',
+	ADD_TODOLIST = 'ADD_TODOLIST',
+	CHANGE_TODOLIST_TITLE = 'CHANGE_TODOLIST_TITLE',
+	CHANGE_TODOLIST_FILTER = 'CHANGE_TODOLIST_FILTER',
+	CHANGE_TODOLIST_ENTITY_STATUS = 'CHANGE_TODOLIST_ENTITY_STATUS',
+	SET_TODOLISTS = 'SET_TODOLISTS'
+}
 
 // initial state
 const initialState : Array<TodolistDomainType> = [];
@@ -23,17 +25,17 @@ const initialState : Array<TodolistDomainType> = [];
 // reducer
 export const todolistsReducer = ( state : TodolistDomainType[] = initialState, action : TodolistActionType ) : TodolistDomainType[] => {
 	switch ( action.type ) {
-		case REMOVE_TODOLIST:
+		case TodolistsActionTypes.REMOVE_TODOLIST:
 			return state.filter ( tl => tl.id !== action.todolistId );
-		case ADD_TODOLIST:
+		case TodolistsActionTypes.ADD_TODOLIST:
 			return [{ ...action.todolist, filter : 'all', entityStatus : 'idle' }, ...state];
-		case CHANGE_TODOLIST_TITLE:
+		case TodolistsActionTypes.CHANGE_TODOLIST_TITLE:
 			return state.map ( tl => tl.id === action.id ? { ...tl, title : action.title } : tl );
-		case CHANGE_TODOLIST_FILTER:
+		case TodolistsActionTypes.CHANGE_TODOLIST_FILTER:
 			return state.map ( tl => tl.id === action.id ? { ...tl, filter : action.filter } : tl );
-		case CHANGE_TODOLIST_ENTITY_STATUS:
+		case TodolistsActionTypes.CHANGE_TODOLIST_ENTITY_STATUS:
 			return state.map ( tl => tl.id === action.id ? { ...tl, entityStatus : action.entityStatus } : tl );
-		case SET_TODOLISTS:
+		case TodolistsActionTypes.SET_TODOLISTS:
 			return action.todolists.map ( tl => ({ ...tl, filter : 'all', entityStatus : 'idle' }) );
 		default:
 			return state;
@@ -42,17 +44,17 @@ export const todolistsReducer = ( state : TodolistDomainType[] = initialState, a
 
 // action creators
 export const removeTodolistAC = ( todolistId : string ) =>
-	({ type : REMOVE_TODOLIST, todolistId } as const);
+	({ type : TodolistsActionTypes.REMOVE_TODOLIST, todolistId } as const);
 export const addTodolistAC = ( todolist : TodolistType ) =>
-	({ type : ADD_TODOLIST, todolist } as const);
+	({ type : TodolistsActionTypes.ADD_TODOLIST, todolist } as const);
 export const changeTodolistTitleAC = ( todolistId : string, newTodolistTitle : string ) =>
-	({ type : CHANGE_TODOLIST_TITLE, id : todolistId, title : newTodolistTitle } as const);
+	({ type : TodolistsActionTypes.CHANGE_TODOLIST_TITLE, id : todolistId, title : newTodolistTitle } as const);
 export const changeTodolistFilterAC = ( todolistId : string, newFilter : TaskFilterType ) =>
-	({ type : CHANGE_TODOLIST_FILTER, id : todolistId, filter : newFilter } as const);
+	({ type : TodolistsActionTypes.CHANGE_TODOLIST_FILTER, id : todolistId, filter : newFilter } as const);
 export const changeTodolistEntityStatusAC = ( todolistId : string, entityStatus : StatusType ) =>
-	({ type : CHANGE_TODOLIST_ENTITY_STATUS, id : todolistId, entityStatus } as const);
+	({ type : TodolistsActionTypes.CHANGE_TODOLIST_ENTITY_STATUS, id : todolistId, entityStatus } as const);
 export const setTodolistsAC = ( todolists : TodolistType[] ) =>
-	({ type : SET_TODOLISTS, todolists } as const);
+	({ type : TodolistsActionTypes.SET_TODOLISTS, todolists } as const);
 
 // thunk creators
 export const fetchTodolistsTC = () =>

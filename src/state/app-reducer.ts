@@ -3,9 +3,11 @@ import { authAPI } from 'api/api';
 import { AuthActionType, setIsLoggedInAC } from './auth-reducer';
 
 // actions
-const SET_STATUS = 'app/SET_STATUS';
-const SET_ERROR = 'app/SET_ERROR';
-const SET_IS_INITIALIZED = 'app/SET_IS_INITIALIZED';
+export enum AppActionTypes {
+	SET_STATUS = 'app/SET_STATUS',
+	SET_ERROR = 'app/SET_ERROR',
+	SET_IS_INITIALIZED = 'app/SET_IS_INITIALIZED'
+}
 
 // initial state
 const initialState : InitialStateType = {
@@ -17,11 +19,11 @@ const initialState : InitialStateType = {
 // reducer
 export const appReducer = ( state : InitialStateType = initialState, action : AppActionType ) : InitialStateType => {
 	switch ( action.type ) {
-		case SET_STATUS:
+		case AppActionTypes.SET_STATUS:
 			return { ...state, status : action.status };
-		case SET_ERROR:
+		case AppActionTypes.SET_ERROR:
 			return { ...state, error : action.error };
-		case SET_IS_INITIALIZED:
+		case AppActionTypes.SET_IS_INITIALIZED:
 			return { ...state, isInitialized : action.isInitialized };
 		default:
 			return state;
@@ -29,15 +31,15 @@ export const appReducer = ( state : InitialStateType = initialState, action : Ap
 };
 
 // action creators
-export const setAppStatusAC = ( status : StatusType ) => ({ type : SET_STATUS, status } as const);
-export const setAppErrorAC = ( error : string | null ) => ({ type : SET_ERROR, error } as const);
+export const setAppStatusAC = ( status : StatusType ) => ({ type : AppActionTypes.SET_STATUS, status } as const);
+export const setAppErrorAC = ( error : string | null ) => ({ type : AppActionTypes.SET_ERROR, error } as const);
 export const setAppIsInitializedAC = ( isInitialized : boolean ) => ({
-	type : SET_IS_INITIALIZED,
+	type : AppActionTypes.SET_IS_INITIALIZED,
 	isInitialized
 } as const);
 
 // thunk creators
-export const initializeAppTC = () => ( dispatch : ThunkDispatchType ) => {
+export const initializeAppTC = () => ( dispatch : AppThunkDispatchType ) => {
 	authAPI.me ()
 		.then ( ( res ) => {
 			if (res.data.resultCode === 0) {
@@ -64,4 +66,4 @@ type AppActionType =
 	| SetAppStatusActionType
 	| SetAppErrorActionType
 	| ReturnType<typeof setAppIsInitializedAC>
-type ThunkDispatchType = Dispatch<AppActionType | AuthActionType>
+type AppThunkDispatchType = Dispatch<AppActionType | AuthActionType>;

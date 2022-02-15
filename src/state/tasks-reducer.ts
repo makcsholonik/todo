@@ -6,13 +6,15 @@ import { SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType } from '.
 import { handleServerErrorAppError, handleServerNetworkAppError } from 'utils/error-utils';
 
 // actions
-const REMOVE_TASK = 'REMOVE_TASK';
-const ADD_TASK = 'ADD_TASK';
-const UPDATE_TASK = 'UPDATE_TASK';
-const ADD_TODOLIST = 'ADD_TODOLIST';
-const REMOVE_TODOLIST = 'REMOVE_TODOLIST';
-const SET_TODOLISTS = 'SET_TODOLISTS';
-const SET_TASKS = 'SET_TASKS';
+enum TasksActionTypes {
+	REMOVE_TASK = 'REMOVE_TASK',
+	ADD_TASK = 'ADD_TASK',
+	UPDATE_TASK = 'UPDATE_TASK',
+	ADD_TODOLIST = 'ADD_TODOLIST',
+	REMOVE_TODOLIST = 'REMOVE_TODOLIST',
+	SET_TODOLISTS = 'SET_TODOLISTS',
+	SET_TASKS = 'SET_TASKS'
+}
 
 // initial state
 const initialState : TasksStateType = {};
@@ -20,31 +22,31 @@ const initialState : TasksStateType = {};
 // reducer
 export const tasksReducer = ( state : TasksStateType = initialState, action : TaskActionType ) : TasksStateType => {
 	switch ( action.type ) {
-		case REMOVE_TASK:
+		case TasksActionTypes.REMOVE_TASK:
 			return { ...state, [ action.todolistId ] : state[ action.todolistId ].filter ( t => t.id !== action.taskId ) };
-		case ADD_TASK:
+		case TasksActionTypes.ADD_TASK:
 			return { ...state, [ action.task.todoListId ] : [action.task, ...state[ action.task.todoListId ]] };
-		case UPDATE_TASK:
+		case TasksActionTypes.UPDATE_TASK:
 			return {
 				...state,
 				[ action.todolistId ] : state[ action.todolistId ]
 					.map ( t => t.id === action.taskId ? { ...t, ...action.model } : t )
 			};
-		case ADD_TODOLIST:
+		case TasksActionTypes.ADD_TODOLIST:
 			return { ...state, [ action.todolist.id ] : [] };
-		case REMOVE_TODOLIST: {
+		case TasksActionTypes.REMOVE_TODOLIST: {
 			const stateCopy = { ...state };
 			delete stateCopy[ action.todolistId ];
 			return stateCopy;
 		}
-		case SET_TODOLISTS: {
+		case TasksActionTypes.SET_TODOLISTS: {
 			const stateCopy = { ...state };
 			action.todolists.forEach ( tl => {
 				stateCopy[ tl.id ] = [];
 			} );
 			return stateCopy;
 		}
-		case SET_TASKS:
+		case TasksActionTypes.SET_TASKS:
 			return { ...state, [ action.todolistId ] : action.tasks };
 		default:
 			return state;
@@ -53,13 +55,13 @@ export const tasksReducer = ( state : TasksStateType = initialState, action : Ta
 
 // action creators
 export const removeTaskAC = ( taskId : string, todolistId : string ) =>
-	({ type : REMOVE_TASK, taskId, todolistId } as const);
+	({ type : TasksActionTypes.REMOVE_TASK, taskId, todolistId } as const);
 export const addTaskAC = ( task : TaskType ) =>
-	({ type : ADD_TASK, task } as const);
+	({ type : TasksActionTypes.ADD_TASK, task } as const);
 export const updateTaskAC = ( taskId : string, model : UpdateDomainTaskModelType, todolistId : string ) =>
-	({ type : UPDATE_TASK, taskId, model, todolistId } as const);
+	({ type : TasksActionTypes.UPDATE_TASK, taskId, model, todolistId } as const);
 export const setTasksAC = ( tasks : TaskType[], todolistId : string, ) =>
-	({ type : SET_TASKS, tasks, todolistId } as const);
+	({ type : TasksActionTypes.SET_TASKS, tasks, todolistId } as const);
 
 
 // thunk creators

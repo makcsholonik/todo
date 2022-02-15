@@ -4,7 +4,9 @@ import { Dispatch } from 'redux';
 import { SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType } from './app-reducer';
 
 // actions
-const SET_IS_LOGGED_IN = 'auth/SET_IS_LOGGED_IN';
+enum AuthActionTypes {
+	SET_IS_LOGGED_IN = 'auth/SET_IS_LOGGED_IN'
+}
 
 // initial state
 const initialState : InitialStateType = {
@@ -14,17 +16,17 @@ const initialState : InitialStateType = {
 // reducer
 export const authReducer = ( state : InitialStateType = initialState, action : AuthActionType ) : InitialStateType => {
 	switch ( action.type ) {
-		case SET_IS_LOGGED_IN:
+		case AuthActionTypes.SET_IS_LOGGED_IN:
 			return { ...state, isLoggedIn : action.isLoggedIn };
 	}
 	return state;
 };
 
 // action creators
-export const setIsLoggedInAC = ( isLoggedIn : boolean ) => ({ type : SET_IS_LOGGED_IN, isLoggedIn } as const);
+export const setIsLoggedInAC = ( isLoggedIn : boolean ) => ({ type : AuthActionTypes.SET_IS_LOGGED_IN, isLoggedIn } as const);
 
 // thunk creators
-export const loginTC = ( data : AuthDataType ) => ( dispatch : ThunkDispatchType ) => {
+export const loginTC = ( data : AuthDataType ) => ( dispatch : AuthThunkDispatchType ) => {
 	dispatch ( setAppStatusAC ( 'loading' ) );
 	authAPI.login ( data )
 		.then ( ( res ) => {
@@ -40,7 +42,7 @@ export const loginTC = ( data : AuthDataType ) => ( dispatch : ThunkDispatchType
 			}
 		);
 };
-export const logoutTC = () => ( dispatch : ThunkDispatchType ) => {
+export const logoutTC = () => ( dispatch : AuthThunkDispatchType ) => {
 	dispatch ( setAppStatusAC ( 'loading' ) );
 	authAPI.logout ()
 		.then ( ( res ) => {
@@ -62,4 +64,4 @@ export type InitialStateType = {
 	isLoggedIn : boolean
 }
 export type AuthActionType = ReturnType<typeof setIsLoggedInAC>
-type ThunkDispatchType = Dispatch<AuthActionType | SetAppStatusActionType | SetAppErrorActionType>
+type AuthThunkDispatchType = Dispatch<AuthActionType | SetAppStatusActionType | SetAppErrorActionType>
