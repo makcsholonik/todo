@@ -10,7 +10,7 @@ import {
 import { handleServerNetworkAppError } from 'utils/error-utils';
 
 // actions
-enum TodolistsActionTypes {
+export enum TodolistsActionTypes {
 	REMOVE_TODOLIST = 'REMOVE_TODOLIST',
 	ADD_TODOLIST = 'ADD_TODOLIST',
 	CHANGE_TODOLIST_TITLE = 'CHANGE_TODOLIST_TITLE',

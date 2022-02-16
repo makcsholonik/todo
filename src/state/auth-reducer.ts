@@ -4,7 +4,7 @@ import { Dispatch } from 'redux';
 import { SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType } from './app-reducer';
 
 // actions
-enum AuthActionTypes {
+export enum AuthActionTypes {
 	SET_IS_LOGGED_IN = 'auth/SET_IS_LOGGED_IN'
 }
 
